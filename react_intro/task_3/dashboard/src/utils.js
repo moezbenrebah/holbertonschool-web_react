@@ -1,4 +1,4 @@
-export function getFullYear() {
+export function getCurrentYear() {
     return new Date().getFullYear();
   }
 

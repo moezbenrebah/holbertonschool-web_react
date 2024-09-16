@@ -1,6 +1,6 @@
 import HolbertonLogo from '../assets/holberton-logo.jpg';
 import './App.css'
-import { getFullYear, getFooterCopy } from '../utils/utils';
+import { getCurrentYear, getFooterCopy } from '../utils/utils';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         <button className='label-button'>OK</button>
       </div>
       <div className='App-footer'>
-        <p> Copyright {getFullYear()} {getFooterCopy()}</p>
+        <p> Copyright {getCurrentYear()} {getFooterCopy()}</p>
       </div>
     </div>
   );

@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Notifications from './Notifications';
 import { getLatestNotification } from './utils';

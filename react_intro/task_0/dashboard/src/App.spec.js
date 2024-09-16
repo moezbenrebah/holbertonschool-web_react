@@ -1,16 +1,14 @@
-/**
- * @jest-environment jsdom
- */
-
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from "./App.jsx";
 
 test('should contain a <p/> element with specific text, <h1/>, and an <img/>', () => {
   render(<App />);
 
+  const currentYear = new Date().getFullYear();
+  const regex = new RegExp(`copyright ${currentYear} - holberton school`, 'i');
+
   const paragraphElement = screen.getByText('Login to access the full dashboard');
-  const footerParagraphElement = screen.getByText(/copyright/i);
+  const footerParagraphElement = screen.getByText(regex);
   // this would accept ("School Dashboard", "school dashboard", "SCHOOL DASHBOARD")
   const headingElement = screen.getByRole('heading', { name: /School dashboard/i });
   // check whether the img tag exists or not, we can't rely on the alt because its value is not specified in the task.

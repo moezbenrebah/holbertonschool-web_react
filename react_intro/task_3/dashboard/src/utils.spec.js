@@ -1,9 +1,9 @@
-import { getFullYear, getFooterCopy, getLatestNotification } from './utils';
+import { getCurrentYear, getFooterCopy, getLatestNotification } from './utils';
 
 describe('Testing utility functions', () => {
   test('getFullYear returns the correct year', () => {
     const currentYear = new Date().getFullYear();
-    expect(getFullYear()).toBe(currentYear);
+    expect(getCurrentYear()).toBe(currentYear);
   });
 
   test('getFooterCopy returns correct string based on argument', () => {

@@ -32,7 +32,7 @@ describe('Notifications component', () => {
 
   test('logs message when close button is clicked', () => {
     render(<Notifications />);
-    console.log = jest.spyOn(console, 'log');
+    const consoleSpy = jest.spyOn(console, 'log');
     const notificationsButton = screen.getByRole('button');
     fireEvent.click(notificationsButton);
 

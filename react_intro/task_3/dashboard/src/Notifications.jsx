@@ -17,7 +17,7 @@ export default function Notifications() {
       <button
         aria-label='Close'
         type='button'
-        onClick={() => console.log('Close button has been clicked')}
+        onClick={() => console.log('Hello holbies!')}
         style={{
           position: 'absolute',
           right: '16px',

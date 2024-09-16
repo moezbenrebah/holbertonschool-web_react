@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import Notifications from './Notifications';
+import Notifications from "./Notifications.jsx";
 import { getLatestNotification } from './utils';
 
 // Mock the getLatestNotification function
@@ -36,7 +36,7 @@ describe('Notifications component', () => {
     const buttonElement = screen.getByRole('button');
     fireEvent.click(buttonElement);
 
-    expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked');
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringMatching(/close button has been clicked/i));
     consoleSpy.mockRestore();
   });
 

@@ -15,14 +15,14 @@ function App() {
       </div>
       <div className='App-body'>
         <p>Login to access the full dashboard</p>
-        <label className='email'>
+        <label htmlFor='email' className='email'>
           Email:
         </label>
-        <input type='email'/>
-        <label className='password'>
+        <input id='email' type='email'/>
+        <label htmlFor='password' className='password'>
           Password: 
         </label>
-        <input type='password'/>
+        <input id='password' type='password'/>
         <button className='label-button'>OK</button>
       </div>
       <div className='App-footer'>

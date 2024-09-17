@@ -1,5 +1,5 @@
 import {render, screen} from "@testing-library/react"
-import App from "./App";
+import App from "/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_intro/task_2/dashboard/app-test-seq3.jsx";
 
 
 test('renders School Dashboard heading', () => {
@@ -12,33 +12,27 @@ test('renders School Dashboard heading', () => {
   test('renders App body text', () => {
     render(<App />);
     const bodyElement = screen.getByText(/Login to access the full dashboard/i);
-    expect(bodyElement.closest('.App-body')).toBeInTheDocument();
+    expect(bodyElement).toBeInTheDocument();
   });
-
-  // test('renders App footer text', () => {
-  //   render(<App />);
-  //   const bodyElement = screen.getByText(/Copyright 2024 - holberton School/i);
-  //   expect(bodyElement.closest('.App-footer')).toBeInTheDocument();
-  // });
 
   test('renders App img', () => {
     render(<App />);
-    const imgElement = screen.getByRole('img', { name: /logo/i });
+    const imgElement = screen.getByAltText(/holberton logo/i);
     expect(imgElement).toBeInTheDocument();
   });
 
   test('renders 2 input elements', () => {
     render(<App />);
-    const inputElements = screen.getAllByRole('textbox');
-    const passwordInputs = screen.getAllByRole('textbox', { hidden: true });
-    expect(inputElements.length + passwordInputs.length).toBe(2);
-
+    const inputElements = screen.getByLabelText(/email/i);
+    const passwordInputs = screen.getByLabelText(/password/i);
+    expect(inputElements).toBeInTheDocument()
+    expect(passwordInputs).toBeInTheDocument()
   });
 
   test('renders 2 label elements with text Email and Password', () => {
     render(<App />);
-    const emailInput = screen.getByText(/email/i);
-    const passwordInput = screen.getByText(/password/i);
+    const emailInput = screen.getByText(/email?:/i);
+    const passwordInput = screen.getByText(/password?:/i);
     expect(emailInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
   });

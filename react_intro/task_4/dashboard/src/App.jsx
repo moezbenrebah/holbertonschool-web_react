@@ -1,7 +1,7 @@
 import HolbertonLogo from './assets/holberton-logo.jpg';
 import './App.css'
-import { getCurrentYear, getFooterCopy } from './utils';
-import Notifications from './Notifications';
+import { getCurrentYear, getFooterCopy } from './utils.js';
+import Notifications from './Notifications.jsx';
 
 function App() {
   return (

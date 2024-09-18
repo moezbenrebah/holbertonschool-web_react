@@ -1,5 +1,5 @@
 import './Notifications.css'
-import { getLatestNotification } from './utils';
+import { getLatestNotification } from './utils.js';
 import close from './assets/close-button.png'
 
 export default function Notifications() {

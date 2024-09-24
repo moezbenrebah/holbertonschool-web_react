@@ -4,7 +4,7 @@ import Notifications from './Notifications';
 
 test('it should display a title, button and a 3 list items, whenever the "displayDrawer" set to true', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id:1, type:'default', value:'New course available' },
       { id:2, type:'urgent', value:'New resume available' },
       { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
@@ -24,7 +24,7 @@ test('it should display a title, button and a 3 list items, whenever the "displa
 
 test('it should display 3 notification items as expected', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id: 1, type: 'default', value: 'New course available' },
       { id: 2, type: 'urgent', value: 'New resume available' },
       { id: 3, type: 'urgent', html: { __html: getLatestNotification() } }
@@ -57,7 +57,7 @@ test('it should display 3 notification items as expected', () => {
 
 test('it should display the correct notification colors', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id: 1, type: 'default', value: 'New course available' },
       { id: 2, type: 'urgent', value: 'New resume available' },
       { id: 3, type: 'urgent', html: { __html: getLatestNotification() } }
@@ -84,7 +84,7 @@ test('it should display the correct notification colors', () => {
 
 test('it should log "Close button has been clicked" whenever the close button is clicked and, the "displayDrawer" set to true', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id:1, type:'default', value:'New course available' },
       { id:2, type:'urgent', value:'New resume available' },
       { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
@@ -106,7 +106,7 @@ test('it should log "Close button has been clicked" whenever the close button is
 
 test('it should render the 3 given notifications text, whenever the "displayDrawer" set to true', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id:1, type:'default', value:'New course available' },
       { id:2, type:'urgent', value:'New resume available' },
       { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
@@ -122,7 +122,7 @@ test('it should render the 3 given notifications text, whenever the "displayDraw
 
 test('it should not display a title, button and a 3 list items, whenever the "displayDrawer" set to false', () => {
   const props = {
-    listNotifications: [
+    notificationsList: [
       { id:1, type:'default', value:'New course available' },
       { id:2, type:'urgent', value:'New resume available' },
       { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
@@ -142,7 +142,7 @@ test('it should not display a title, button and a 3 list items, whenever the "di
 
 test('it should display a paragraph of "No new notification for now" whenever the listNotification prop is empty', () => {
   const props = {
-    listNotifications: [], 
+    notificationsList: [], 
     displayDrawer: true
   }
   render(<Notifications {...props} />)
@@ -152,134 +152,3 @@ test('it should display a paragraph of "No new notification for now" whenever th
   expect(notificationsTitle).toBeInTheDocument();
 });
 
-// === The items ===: [
-//   <ref *1> HTMLLIElement {
-//     '__reactFiber$lu2vj9wnsi9': FiberNode {
-//       tag: 5,
-//       key: null,
-//       elementType: 'li',
-//       type: 'li',
-//       stateNode: [Circular *1],
-//       return: [FiberNode],
-//       child: null,
-//       sibling: null,
-//       index: 0,
-//       ref: null,
-//       pendingProps: [Object],
-//       memoizedProps: [Object],
-//       updateQueue: null,
-//       memoizedState: null,
-//       dependencies: null,
-//       mode: 1,
-//       flags: 0,
-//       subtreeFlags: 0,
-//       deletions: null,
-//       lanes: 0,
-//       childLanes: 0,
-//       alternate: null,
-//       actualDuration: 0,
-//       actualStartTime: -1,
-//       selfBaseDuration: 0,
-//       treeBaseDuration: 0,
-//       _debugSource: undefined,
-//       _debugOwner: [FiberNode],
-//       _debugNeedsRemount: false,
-//       _debugHookTypes: null
-//     },
-//     '__reactProps$lu2vj9wnsi9': {
-//       style: [Object],
-//       'data-notification-type': 'default',
-//       children: 'New course available'
-//     },
-//     [Symbol(SameObject caches)]: [Object: null prototype] {
-//       style: [CSSStyleDeclaration],
-//       childNodes: NodeList {}
-//     }
-//   },
-//   <ref *2> HTMLLIElement {
-//     '__reactFiber$lu2vj9wnsi9': FiberNode {
-//       tag: 5,
-//       key: null,
-//       elementType: 'li',
-//       type: 'li',
-//       stateNode: [Circular *2],
-//       return: [FiberNode],
-//       child: null,
-//       sibling: null,
-//       index: 0,
-//       ref: null,
-//       pendingProps: [Object],
-//       memoizedProps: [Object],
-//       updateQueue: null,
-//       memoizedState: null,
-//       dependencies: null,
-//       mode: 1,
-//       flags: 0,
-//       subtreeFlags: 0,
-//       deletions: null,
-//       lanes: 0,
-//       childLanes: 0,
-//       alternate: null,
-//       actualDuration: 0,
-//       actualStartTime: -1,
-//       selfBaseDuration: 0,
-//       treeBaseDuration: 0,
-//       _debugSource: undefined,
-//       _debugOwner: [FiberNode],
-//       _debugNeedsRemount: false,
-//       _debugHookTypes: null
-//     },
-//     '__reactProps$lu2vj9wnsi9': {
-//       style: [Object],
-//       'data-notification-type': 'urgent',
-//       children: 'New resume available'
-//     },
-//     [Symbol(SameObject caches)]: [Object: null prototype] {
-//       style: [CSSStyleDeclaration],
-//       childNodes: NodeList {}
-//     }
-//   },
-//   <ref *3> HTMLLIElement {
-//     '__reactFiber$lu2vj9wnsi9': FiberNode {
-//       tag: 5,
-//       key: null,
-//       elementType: 'li',
-//       type: 'li',
-//       stateNode: [Circular *3],
-//       return: [FiberNode],
-//       child: null,
-//       sibling: null,
-//       index: 0,
-//       ref: null,
-//       pendingProps: [Object],
-//       memoizedProps: [Object],
-//       updateQueue: null,
-//       memoizedState: null,
-//       dependencies: null,
-//       mode: 1,
-//       flags: 0,
-//       subtreeFlags: 0,
-//       deletions: null,
-//       lanes: 0,
-//       childLanes: 0,
-//       alternate: null,
-//       actualDuration: 0,
-//       actualStartTime: -1,
-//       selfBaseDuration: 0,
-//       treeBaseDuration: 0,
-//       _debugSource: undefined,
-//       _debugOwner: [FiberNode],
-//       _debugNeedsRemount: false,
-//       _debugHookTypes: null
-//     },
-//     '__reactProps$lu2vj9wnsi9': {
-//       style: [Object],
-//       'data-notification-type': 'urgent',
-//       dangerouslySetInnerHTML: [Object]
-//     },
-//     [Symbol(SameObject caches)]: [Object: null prototype] {
-//       style: [CSSStyleDeclaration],
-//       childNodes: NodeList {}
-//     }
-//   }
-// ]

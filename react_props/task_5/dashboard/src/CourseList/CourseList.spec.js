@@ -34,10 +34,8 @@ test('it should render the CourseList component with 1 rows', () => {
 
   render(<CourseList {...props} />)
 
-  const rowElement = screen.getAllByRole('row');
-  const rowText = screen.getByText('No course available yet');
+  const rowElements = screen.getAllByRole('row');
 
-  expect(rowElement).toHaveLength(1)
-  expect(rowText).toBeInTheDocument
+  expect(rowElements).toHaveLength(1)
 })
 

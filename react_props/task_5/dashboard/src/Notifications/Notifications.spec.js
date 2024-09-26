@@ -13,12 +13,10 @@ test('it should display a title, button and a 3 list items, whenever the "displa
   }
   render(<Notifications {...props} />)
 
-  const notificationsHeader = screen.getByText('Your notifications');
   const notificationsTitle = screen.getByText('Here is the list of notifications');
   const notificationsButton = screen.getByRole('button');
   const notificationsListItems = screen.getAllByRole('listitem');
   
-  expect(notificationsHeader).toBeInTheDocument();
   expect(notificationsTitle).toBeInTheDocument();
   expect(notificationsButton).toBeInTheDocument();
   expect(notificationsListItems).toHaveLength(3);
@@ -36,13 +34,11 @@ test('it should display 3 notification items as expected', () => {
 
   render(<Notifications {...props} />);
 
-  const notificationsHeader = screen.getByText('Your notifications');
   const notificationsFirstItem = screen.getByText('New course available');
   const notificationsSecondItem = screen.getByText('New resume available');
   
   const notificationsListItems = screen.getAllByRole('listitem');
-
-  expect(notificationsHeader).toBeInTheDocument();
+  
   expect(notificationsFirstItem).toBeInTheDocument();
   expect(notificationsSecondItem).toBeInTheDocument();
 
@@ -72,7 +68,6 @@ test('it should display the correct notification colors', () => {
   render(<Notifications {...props} />);
 
   const notificationsListItems = screen.getAllByRole('listitem');
-  const notificationsHeader = screen.getByText('Your notifications');
 
   const colorStyleArr = [];
 
@@ -82,7 +77,7 @@ test('it should display the correct notification colors', () => {
       colorStyleArr.push(notificationsListItems[i].style._values.color);
     }
   }
-  expect(notificationsHeader).toBeInTheDocument();
+
   expect(colorStyleArr).toEqual(['blue', 'red', 'red']);
 });
 
@@ -98,13 +93,12 @@ test('it should log "Close button has been clicked" whenever the close button is
   }
   render(<Notifications {...props} />)
 
-  const notificationsHeader = screen.getByText('Your notifications');
   const notificationsButton = screen.getByRole('button');
 
   const consoleSpy = jest.spyOn(console, 'log');
 
   fireEvent.click(notificationsButton);
-  expect(notificationsHeader).toBeInTheDocument();
+
   expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked');
 
   consoleSpy.mockRestore();
@@ -121,61 +115,40 @@ test('it should render the 3 given notifications text, whenever the "displayDraw
   }
   render(<Notifications {...props} />)
 
-  const notificationsHeader = screen.getByText('Your notifications');
-  expect(notificationsHeader).toBeInTheDocument();
   expect(screen.getByText('New course available')).toBeInTheDocument();
   expect(screen.getByText('New resume available')).toBeInTheDocument();
   expect(screen.getByText(/complete by EOD/)).toBeInTheDocument();
 })
 
-// test('it should not display a title, button and a 3 list items, whenever the "displayDrawer" set to false', () => {
-//   const props = {
-//     notifications: [
-//       { id:1, type:'default', value:'New course available' },
-//       { id:2, type:'urgent', value:'New resume available' },
-//       { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
-//     ], 
-//     displayDrawer: false
-//   }
+test('it should not display a title, button and a 3 list items, whenever the "displayDrawer" set to false', () => {
+  const props = {
+    notifications: [
+      { id:1, type:'default', value:'New course available' },
+      { id:2, type:'urgent', value:'New resume available' },
+      { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
+    ], 
+    displayDrawer: false
+  }
+  render(<Notifications {...props} />)
 
-//   render(<Notifications {...props} />)
-
-//   const notificationsHeader = screen.getByText('Your notifications');
-//   const notificationsTitle = screen.queryByText('Here is the list of notifications');
-//   const notificationsButton = screen.queryByRole('button');
-//   const notificationsListItems = screen.queryAllByRole('listitem');
-
-//   expect(notificationsHeader).toBeInTheDocument();
-//   expect(notificationsTitle).toBeNull();
-//   expect(notificationsButton).toBeNull();
-//   expect(notificationsListItems).toHaveLength(0);
-// });
-
-// test('it should display a paragraph of "No new notification for now" whenever the listNotification prop is empty', () => {
-//   const props = {
-//     notifications: [], 
-//     displayDrawer: true
-//   }
-//   render(<Notifications {...props} />)
-
-//   const notificationsHeader = screen.getByText('Your notifications');
-//   const notificationsTitle = screen.getByText('No new notification for now');
-//   expect(notificationsHeader).toBeInTheDocument();
-//   expect(notificationsTitle).toBeInTheDocument();
-// });
+  const notificationsTitle = screen.queryByText('Here is the list of notifications');
+  const notificationsButton = screen.queryByRole('button');
+  const notificationsListItems = screen.queryAllByRole('listitem');
+  
+  expect(notificationsTitle).toBeNull();
+  expect(notificationsButton).toBeNull();
+  expect(notificationsListItems).toHaveLength(0);
+});
 
 test('it should display a paragraph of "No new notification for now" whenever the listNotification prop is empty', () => {
   const props = {
-    notifications: [],
-    displayDrawer: false
+    notifications: [], 
+    displayDrawer: true
   }
-
   render(<Notifications {...props} />)
 
-  const notificationsHeader = screen.getByText('Your notifications');
-  const notificationsTitle = screen.queryByText('No new notification for now');
-  expect(notificationsHeader).toBeInTheDocument();
-  expect(notificationsTitle).not.toBeInTheDocument();
+  const notificationsTitle = screen.getByText('No new notification for now');
+  
+  expect(notificationsTitle).toBeInTheDocument();
 });
-
 

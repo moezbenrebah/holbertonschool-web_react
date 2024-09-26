@@ -1,4 +1,5 @@
 import './App.css';
+import PropTypes from 'prop-types';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -18,7 +19,7 @@ const coursesList = [
   { id:3, name:'React', credit:40 }
 ];
 
-export default function App({ isLoggedIn = false }) {
+export default function App({ isLoggedIn = true }) {
 
   return (
     <>

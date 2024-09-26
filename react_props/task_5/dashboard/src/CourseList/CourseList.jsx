@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import CourseListRow from './CourseListRow';
+import CourseShape from './CourseShape';
 import './CourseList.css'
 
-export default function CourseList({ courses = [] }) {
+function CourseList({ courses = [] }) {
   return (
     <div className='courses'>
       {
@@ -36,7 +38,7 @@ export default function CourseList({ courses = [] }) {
             <thead>
               <CourseListRow 
                 isHeader={true} 
-                textFirstCell="No course available yet"
+                textFirstCell="No course available yet" 
               />
             </thead>
           </table>
@@ -45,3 +47,9 @@ export default function CourseList({ courses = [] }) {
     </div>
   );
 }
+
+CourseList.propTypes = {
+  courses: PropTypes.arrayOf(CourseShape),
+}
+
+export default CourseList;

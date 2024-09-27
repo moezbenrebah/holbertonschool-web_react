@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-
-function CourseListRow({ 
+export default function CourseListRow({ 
   isHeader = false, 
   textFirstCell = '', 
   textSecondCell = null 
@@ -34,13 +32,3 @@ function CourseListRow({
   //   );
   // }
 }
-
-CourseListRow.propTypes = {
-  isHeader: PropTypes.bool, 
-  textFirstCell: PropTypes.string, 
-  textSecondCell: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.number
-  ]),
-}
-
-export default CourseListRow

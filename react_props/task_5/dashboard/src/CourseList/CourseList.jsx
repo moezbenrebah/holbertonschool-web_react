@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
 import CourseListRow from './CourseListRow';
-import CourseShape from './CourseShape';
 import './CourseList.css'
 
-function CourseList({ courses = [] }) {
+export default function CourseList({ courses = [] }) {
   return (
     <div className='courses'>
       {
@@ -48,8 +46,3 @@ function CourseList({ courses = [] }) {
   );
 }
 
-CourseList.propTypes = {
-  courses: PropTypes.arrayOf(CourseShape),
-}
-
-export default CourseList;

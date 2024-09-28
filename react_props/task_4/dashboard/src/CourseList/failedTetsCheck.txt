@@ -1,9 +1,0 @@
-CourseList:
-Fault: The component only renders the header rows and ignores the course rows.
-Fault: The component renders two rows instead of one, even when there are no courses.
-
-CourseListRow:
-Fault: Incorrectly assigns colSpan=1 instead of colSpan=2 when textSecondCell is null.
-Fault: The second th is not rendered even though textSecondCell exists.
-Fault: The component renders only one td instead of two when isHeader is false.
-

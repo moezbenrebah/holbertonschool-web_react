@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import './App.css';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -17,23 +19,30 @@ const coursesList = [
   { id:3, name:'React', credit:40 }
 ];
 
-function App ({isLoggedIn}) {
-  return (
-    <>
-      <Notifications notifications={notificationsList} />
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { isLoggedIn } = this.props;
+
+    return (
       <>
-        <Header />
-        {
-          !isLoggedIn ? (
-            <Login />
-          ) : (
-            <CourseList courses={coursesList} />
-          )
-        }
+        <Notifications notifications={notificationsList} />
+        <>
+          <Header />
+          {
+            !isLoggedIn ? (
+              <Login />
+            ) : (
+              <CourseList courses={coursesList} />
+            )
+          }
+        </>
+        <Footer />
       </>
-      <Footer />
-    </>
-  );
+    );
+  }
 }
 
 export default App;

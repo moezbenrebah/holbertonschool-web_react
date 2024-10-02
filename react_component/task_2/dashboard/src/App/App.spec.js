@@ -28,7 +28,7 @@ test('it should call the logOut prop once whenever the user hits "Ctrl" + "h" ke
   jest.spyOn(window, 'alert').mockImplementation(() => {});
   render(<App isLoggedIn={true} logOut={logOutMock} />);
 
-  fireEvent.keyDown(window, { ctrlKey: true, key: 'h' });
+  fireEvent.keyDown(document, { ctrlKey: true, key: 'h' });
 
   expect(logOutMock).toHaveBeenCalledTimes(1);
 });
@@ -39,7 +39,7 @@ test('it should display an alert window whenever the user hit "ctrl" + "h" keybo
   
   render(<App logOut={logoutSpy} />);
   
-  fireEvent.keyDown(window, { ctrlKey: true, key: 'h' });
+  fireEvent.keyDown(document, { ctrlKey: true, key: 'h' });
   
   expect(window.alert).toHaveBeenCalledWith('Logging you out');
 });

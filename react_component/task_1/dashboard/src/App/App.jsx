@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import './App.css';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';

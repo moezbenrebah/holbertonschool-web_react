@@ -1,6 +1,6 @@
+import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import App from "/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_component/task_1/dashboard/faultyJSX-component.jsx";
-import React from 'react'
+import App from './App';
 
 beforeEach(() => {
   jest.spyOn(document, 'addEventListener');

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react';
-import App from './App'
+import App from './App';
 
 beforeEach(() => {
   jest.spyOn(document, 'addEventListener');

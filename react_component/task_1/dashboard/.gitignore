@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 test.spec.js
 faultyJSX-component.jsx
+testRunner.js

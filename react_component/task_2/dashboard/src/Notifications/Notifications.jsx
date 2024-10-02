@@ -9,7 +9,7 @@ class Notifications extends Component {
   }
 
   markAsRead = (id) => {
-    console.log(`Notification ${id} has been marked as read`);
+    console.log(`Notification ${id + 1} has been marked as read`);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -21,7 +21,7 @@ class Notifications extends Component {
   }
 
   render() {
-    const { notifications = [], displayDrawer = false } = this.props;
+    const { notifications = [], displayDrawer = true } = this.props;
     return (
       <>
         <div className="notification-title">Your notifications</div>
@@ -40,7 +40,8 @@ class Notifications extends Component {
                   <ul>
                     {notifications.map((notification, index) => (
                       <NotificationItem
-                        key={index}
+                        id={index}
+                        key={notification.id}
                         type={notification.type}
                         value={notification.value}
                         html={notification.html}

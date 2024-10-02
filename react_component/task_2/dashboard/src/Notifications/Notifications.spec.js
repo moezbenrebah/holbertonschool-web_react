@@ -153,3 +153,31 @@ test('it should display a paragraph of "No new notification for now" whenever th
   expect(notificationsTitle).toBeInTheDocument();
 });
 
+test('it should rerender when prop values change', () => {
+  const consoleSpy = jest.spyOn(console, 'log');
+  const initialProps = {
+    displayDrawer: false,
+    notifications: [],
+  };
+
+  render(<Notifications {...initialProps} />);
+
+  expect(screen.queryByText('Here is the list of notifications')).toBeNull();
+
+  const updatedProps = {
+    displayDrawer: true,
+    notifications: [
+      { id: 1, type: 'default', value: 'New notification' }
+    ],
+  };
+
+  render(<Notifications {...updatedProps} />);
+  const firstListItemElement = screen.getAllByRole('listitem')[0];
+
+  fireEvent.click(firstListItemElement)
+
+  expect(consoleSpy).toHaveBeenCalledWith('Notification 1 has been marked as read')
+
+  expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
+  expect(screen.getByRole('listitem')).toBeInTheDocument()
+});

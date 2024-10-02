@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import App from "./App";
+import App from "/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_component/task_1/dashboard/faultyJSX-component.jsx";
 import React from 'react'
 
 beforeEach(() => {
@@ -28,7 +28,7 @@ test('it should call the logOut prop once whenever the user hits "Ctrl" + "h" ke
   jest.spyOn(window, 'alert').mockImplementation(() => {});
   render(<App isLoggedIn={true} logOut={logOutMock} />);
 
-  fireEvent.keyDown(document, { key: 'h', ctrlKey: true });
+  fireEvent.keyDown(window, { ctrlKey: true, key: 'h' });
 
   expect(logOutMock).toHaveBeenCalledTimes(1);
 });
@@ -39,7 +39,7 @@ test('it should display an alert window whenever the user hit "ctrl" + "h" keybo
   
   render(<App logOut={logoutSpy} />);
   
-  fireEvent.keyDown(document.body, { key: 'h', ctrlKey: true });
+  fireEvent.keyDown(window, { ctrlKey: true, key: 'h' });
   
   expect(window.alert).toHaveBeenCalledWith('Logging you out');
 });

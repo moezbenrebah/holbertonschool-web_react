@@ -26,6 +26,7 @@ describe('BodySectionWithMarginBottom', () => {
         </BodySectionWithMarginBottom>
       );
 
+      expect(mockBodySection).toHaveBeenCalled();
       expect(container.firstChild.classList.contains('bodySectionWithMargin')).toBe(true);
       expect(mockBodySection).toHaveBeenCalledWith(
         expect.objectContaining({

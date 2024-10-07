@@ -22,7 +22,7 @@ class Notifications extends Component {
 
   render() {
     const { notifications = [], displayDrawer = true } = this.props;
-    console.log({...this.children})
+
     return (
       <>
         <div className="notification-title">Your notifications</div>

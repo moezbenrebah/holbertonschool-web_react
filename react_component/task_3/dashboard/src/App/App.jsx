@@ -6,6 +6,8 @@ import Header from '../Header/Header';
 import Login from '../Login/Login';
 import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import BodySection from '../BodySection/BodySection';
 
 const notificationsList = [
   { id:1, type:'default', value:'New course available' },
@@ -52,11 +54,20 @@ class App extends Component {
           <Header />
           {
             !isLoggedIn ? (
-              <Login />
+              <BodySectionWithMarginBottom title='Log in to continue'>
+                <Login />
+              </BodySectionWithMarginBottom>
             ) : (
-              <CourseList courses={coursesList} />
+              <BodySectionWithMarginBottom title='Course list'>
+                <CourseList courses={coursesList} />
+              </BodySectionWithMarginBottom>
             )
           }
+          <BodySection title="News from the School">
+            <p>
+              Holberton School news goes here
+            </p>
+          </BodySection>
         </>
         <Footer />
       </>

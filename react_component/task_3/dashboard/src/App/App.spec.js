@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
 
 beforeEach(() => {
@@ -58,4 +58,23 @@ test('should add event listener in componentDidMount', () => {
   render(<App isLoggedIn={false} />);
 
   expect(document.addEventListener).toHaveBeenCalledWith('keydown', expect.any(Function));
+});
+
+test('it should add the title of "course list" above the CourseList component when the isLoggedIn prop set to true', () => {
+  render(<App isLoggedIn={true} />)
+
+  expect(screen.getByRole('heading', { name: /course list/i })).toBeInTheDocument();
+});
+
+test('it should add the title of "Log in to continue" above the Login component when the isLoggedIn prop set to false', () => {
+  render(<App isLoggedIn={false} />)
+
+  expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
+});
+
+test('it should render a heading element with a text "", and a paragraph with text ""', () => {
+  render(<App />)
+
+  expect(screen.getByRole('heading', { name: /news from the school/i})).toBeInTheDocument();
+  expect(screen.getByText(/Holberton School news goes here/i)).toBeInTheDocument()
 });

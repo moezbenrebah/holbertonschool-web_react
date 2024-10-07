@@ -2,6 +2,21 @@ import React from 'react'
 import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
 
+const mockBodySection = jest.fn();
+jest.mock("../BodySection/BodySection", () => {
+  const MockBodySection = (props) => {
+    mockBodySection(props);
+    return (
+      <div>
+        <h2>{props.title}</h2>
+        {props.children}
+      </div>
+    );
+  };
+  MockBodySection.displayName = 'MockBodySection';
+  return MockBodySection;
+});
+
 beforeEach(() => {
   jest.spyOn(document, 'addEventListener');
   jest.spyOn(document, 'removeEventListener');
@@ -72,9 +87,21 @@ test('it should add the title of "Log in to continue" above the Login component 
   expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
 });
 
+test('should render BodySection as a child component', () => {
+  render(<App isLoggedIn={false} />);
+
+  expect(mockBodySection).toHaveBeenCalled();
+});
+
+test('should render BodySection with news when logged in', () => {
+  render(<App isLoggedIn={true} />);
+
+  expect(mockBodySection).toHaveBeenCalled();
+});
+
 test('it should render a heading element with a text "", and a paragraph with text ""', () => {
   render(<App />)
 
   expect(screen.getByRole('heading', { name: /news from the school/i})).toBeInTheDocument();
-  expect(screen.getByText(/Holberton School news goes here/i)).toBeInTheDocument()
+  expect(screen.getByText(/holberton school news goes here/i)).toBeInTheDocument()
 });

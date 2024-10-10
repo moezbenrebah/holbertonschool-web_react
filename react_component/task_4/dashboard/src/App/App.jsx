@@ -3,6 +3,7 @@ import './App.css';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
+// import Login from '../../faultyJSX-component';
 import Login from '../Login/Login';
 import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';

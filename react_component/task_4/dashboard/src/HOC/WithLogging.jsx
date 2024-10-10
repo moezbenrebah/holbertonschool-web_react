@@ -3,19 +3,17 @@ import { Component } from 'react';
 const WithLogging = (WrappedComponent) => {
   class WithLoggingComponent extends Component {
     componentDidMount() {
-      const componentName =  
-        WrappedComponent.displayName ||
-        (WrappedComponent.name === 'default' ? 'Component' : WrappedComponent.name) ||
-        'Component';
+      const componentName = WrappedComponent.name
+        ? WrappedComponent.name
+        : 'Component';
 
       console.log(`Component ${componentName} is mounted`);
     }
 
     componentWillUnmount() {
-      const componentName = 
-        WrappedComponent.displayName ||
-        (WrappedComponent.name === 'default' ? 'Component' : WrappedComponent.name) ||
-        'Component';
+      const componentName = WrappedComponent.name
+        ? WrappedComponent.name
+        : 'Component';
 
       console.log(`Component ${componentName} is going to unmount`);
     }
@@ -25,7 +23,7 @@ const WithLogging = (WrappedComponent) => {
     }
   }
 
-  WithLoggingComponent.displayName = `WithLogging(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  WithLoggingComponent.displayName = `WithLogging(${WrappedComponent.name || 'Component'})`;
 
   return WithLoggingComponent;
 };

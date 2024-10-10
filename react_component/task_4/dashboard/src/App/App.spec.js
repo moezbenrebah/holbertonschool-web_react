@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react';
+import { act, render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
 
 const mockBodySection = jest.fn();
@@ -104,4 +104,49 @@ test('it should render a heading element with a text "", and a paragraph with te
 
   expect(screen.getByRole('heading', { name: /news from the school/i})).toBeInTheDocument();
   expect(screen.getByText(/holberton school news goes here/i)).toBeInTheDocument()
+});
+
+beforeEach(() => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  console.log.mockRestore();
+});
+
+test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop value', () => {
+  const { unmount } = render(<App isLoggedIn={true} />);
+
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component CourseList is mounted|Component Component is mounted/));
+
+  render(<App isLoggedIn={true} />);
+
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component CourseList is mounted|Component Component is mounted/));
+
+  unmount();
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component CourseList is going to unmount/));
+
+  const logCalls = console.log.mock.calls;
+
+  expect(logCalls.filter(call => call[0].includes('Component CourseList is mounted') || call[0].includes('Component Component is mounted')).length).toBe(2);
+  expect(logCalls.filter(call => call[0].includes('Component CourseList is going to unmount') || call[0].includes('Component Component is going to unmount')).length).toBe(1);
+});
+
+test('logs when Login is mounted and unmounted, and handles nameless components', () => {
+  const { unmount } = render(<App isLoggedIn={false} />);
+
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component (Login|Component) is mounted/));
+
+  render(<App isLoggedIn={false} />);
+
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component (Login|Component) is mounted/));
+
+  unmount();
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component (Login|Component) is going to unmount/));
+
+  const logCalls = console.log.mock.calls;
+  console.warn(logCalls)
+
+  expect(logCalls.filter(call => call[0].includes('Component Login is mounted') || call[0].includes('Component Component is mounted')).length).toBe(2);
+  expect(logCalls.filter(call => call[0].includes('Component Login is going to unmount') || call[0].includes('Component Component is going to unmount')).length).toBe(1);
 });

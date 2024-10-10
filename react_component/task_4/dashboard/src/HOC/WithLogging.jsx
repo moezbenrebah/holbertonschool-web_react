@@ -7,6 +7,7 @@ const WithLogging = (WrappedComponent) => {
         WrappedComponent.displayName ||
         (WrappedComponent.name === 'default' ? 'Component' : WrappedComponent.name) ||
         'Component';
+
       console.log(`Component ${componentName} is mounted`);
     }
 
@@ -15,6 +16,7 @@ const WithLogging = (WrappedComponent) => {
         WrappedComponent.displayName ||
         (WrappedComponent.name === 'default' ? 'Component' : WrappedComponent.name) ||
         'Component';
+
       console.log(`Component ${componentName} is going to unmount`);
     }
 

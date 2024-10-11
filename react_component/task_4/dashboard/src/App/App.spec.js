@@ -114,7 +114,7 @@ afterEach(() => {
   console.log.mockRestore();
 });
 
-test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop value', () => {
+test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop value, and handles nameless components', () => {
   const { unmount } = render(<App isLoggedIn={true} />);
 
   expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component CourseList is mounted|Component Component is mounted/));
@@ -132,7 +132,7 @@ test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop v
   expect(logCalls.filter(call => call[0].includes('Component CourseList is going to unmount') || call[0].includes('Component Component is going to unmount')).length).toBe(1);
 });
 
-test('logs when Login is mounted and unmounted, and handles nameless components', () => {
+test('logs when Login is mounted and unmounted based on "isLoggedIn" prop value, and handles nameless components', () => {
   const { unmount } = render(<App isLoggedIn={false} />);
 
   expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Component (Login|Component) is mounted/));

@@ -181,3 +181,41 @@ test('it should rerender when prop values change', () => {
   expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
   expect(screen.getByRole('listitem')).toBeInTheDocument()
 });
+
+test('should rerender when the notifications length changes', () => {
+  const initialNotifications = [
+    { id: 1, type: 'default', value: 'Notification 1' },
+  ];
+
+  const newNotifications = [
+    { id: 1, type: 'default', value: 'Notification 1' },
+    { id: 2, type: 'urgent', value: 'Notification 2' },
+  ];
+
+  const renderSpy = jest.spyOn(Notifications.prototype, 'render');
+
+  const { rerender } = render(<Notifications notifications={initialNotifications} displayDrawer={true} />);
+
+  expect(renderSpy).toHaveBeenCalledTimes(1);
+
+  rerender(<Notifications notifications={newNotifications} displayDrawer={true} />);
+
+  expect(renderSpy).toHaveBeenCalledTimes(2);
+});
+
+test('should not rerender if the notifications length is unchanged', () => {
+  const initialNotifications = [
+    { id: 1, type: 'default', value: 'Notification 1' },
+    { id: 2, type: 'urgent', value: 'Notification 2' },
+  ];
+
+  const renderSpy = jest.spyOn(Notifications.prototype, 'render');
+
+  const { rerender } = render(<Notifications notifications={initialNotifications} displayDrawer={true} />);
+
+  expect(renderSpy).toHaveBeenCalledTimes(1);
+
+  rerender(<Notifications notifications={initialNotifications} displayDrawer={true} />);
+
+  expect(renderSpy).toHaveBeenCalledTimes(1);
+});

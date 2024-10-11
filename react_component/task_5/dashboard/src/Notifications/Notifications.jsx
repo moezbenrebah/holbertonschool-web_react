@@ -12,11 +12,10 @@ class Notifications extends Component {
     console.log(`Notification ${id + 1} has been marked as read`);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (
-      nextProps.notifications.length >
-        this.props.notifications.length ||
-      nextProps.displayDrawer !== this.props.displayDrawer
+      this.props.notifications.length !== nextProps.notifications.length ||
+      this.props.displayDrawer !== nextProps.displayDrawer
     );
   }
 
@@ -41,6 +40,7 @@ class Notifications extends Component {
                   <ul>
                     {notifications.map((notification, index) => (
                       <NotificationItem
+                        id={index}
                         key={notification.id}
                         type={notification.type}
                         value={notification.value}

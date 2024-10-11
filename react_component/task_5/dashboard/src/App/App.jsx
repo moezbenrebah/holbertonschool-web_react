@@ -10,15 +10,15 @@ import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBot
 import BodySection from '../BodySection/BodySection';
 
 const notificationsList = [
-  { id:1, type:'default', value:'New course available' },
-  { id:2, type:'urgent', value:'New resume available' },
-  { id:3, type:'urgent', html:{ __html: getLatestNotification()} }
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  { id: 3, type: 'urgent', html: { __html: getLatestNotification()} }
 ];
 
 const coursesList = [
-  { id:1, name:'ES6', credit:60 },
-  { id:2, name:'Webpack', credit:20 },
-  { id:3, name:'React', credit:40 }
+  { id: 1, name: 'ES6', credit: 60 },
+  { id: 2, name: 'Webpack', credit: 20 },
+  { id: 3, name: 'React', credit: 40 }
 ];
 
 class App extends Component {

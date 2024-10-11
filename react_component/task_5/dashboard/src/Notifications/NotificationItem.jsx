@@ -4,7 +4,7 @@ class NotificationItem extends React.PureComponent {
 
   render() {
     const { type, html, value, markAsRead, id } = this.props;
-    console.log(`Rendering NotificationItem with id: ${id}, type: ${type}, value: ${value}`);
+    // console.log(`Rendering NotificationItem with id: ${id}, type: ${type}, value: ${value}`);
     if (type === 'default') {
       return (
         <li 

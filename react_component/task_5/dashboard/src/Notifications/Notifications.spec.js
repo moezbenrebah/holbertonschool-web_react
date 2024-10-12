@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { getLatestNotification } from '../utils/utils'
 import Notifications from './Notifications';
@@ -201,6 +202,7 @@ test('should rerender when the notifications length changes', () => {
   rerender(<Notifications notifications={newNotifications} displayDrawer={true} />);
 
   expect(renderSpy).toHaveBeenCalledTimes(2);
+  renderSpy.mockRestore();
 });
 
 test('should not rerender if the notifications length is unchanged', () => {
@@ -218,4 +220,16 @@ test('should not rerender if the notifications length is unchanged', () => {
   rerender(<Notifications notifications={initialNotifications} displayDrawer={true} />);
 
   expect(renderSpy).toHaveBeenCalledTimes(1);
+  renderSpy.mockRestore();
 });
+
+test('should return true if the Notifications component is a class component', () => {
+  const props = Object.getOwnPropertyNames(Notifications.prototype);
+  const isClassComponent = Notifications.prototype.__proto__ === React.Component.prototype;
+  const inheritsFromReactComponent = Object.getPrototypeOf(Notifications.prototype) === React.Component.prototype;
+  
+  expect(props).toContain('constructor');
+  expect(isClassComponent).toBe(true);
+  expect(inheritsFromReactComponent).toBe(true);
+})
+

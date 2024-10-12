@@ -1,9 +1,9 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './Notifications.css';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from './NotificationItem';
 
-class Notifications extends Component {
+class Notifications extends React.Component {
   constructor(props) {
     super(props)
   }

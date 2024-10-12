@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
@@ -45,7 +46,6 @@ test('it should log to the console the "Notification id has been marked as read"
 
   expect(mockMarkAsRead).toHaveBeenCalled()
 });
-
 
 describe('NotificationItem - Pure Component behavior', () => {
   const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -109,3 +109,13 @@ describe('NotificationItem - Pure Component behavior', () => {
     expect(mockConsoleLog).toHaveBeenCalledTimes(1);
   });
 });
+
+test('should return true if the NotificationItem component is a class component', () => {
+  const props = Object.getOwnPropertyNames(NotificationItem.prototype);
+  const isClassComponent = NotificationItem.prototype.__proto__ === React.PureComponent.prototype;
+  const inheritsFromReactComponent = Object.getPrototypeOf(NotificationItem.prototype) === React.PureComponent.prototype;
+  
+  expect(props).toContain('constructor');
+  expect(isClassComponent).toBe(true);
+  expect(inheritsFromReactComponent).toBe(true);
+})

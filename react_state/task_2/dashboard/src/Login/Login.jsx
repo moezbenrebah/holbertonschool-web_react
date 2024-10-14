@@ -6,16 +6,16 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoggedIn: this.props.isLoggedIn,
-      email: '',
-      password: '',
+      email: props.email || '',
+      password: props.password || '',
       enableSubmit: false,
     };
   }
 
   handleLoginSubmit = (e) => {
     e.preventDefault();
-    this.setState({ isLoggedIn: true })
+    const { email, password } = this.state;
+    this.props.login(email, password)
   }
 
   validateEmail = (email) => {
@@ -24,39 +24,30 @@ class Login extends React.Component {
   };
 
   handleChangeEmail = (e) => {
+    const email = e.target.value;
     const { password } = this.state;
-    this.setState({ email: e.target.value, enableSubmit: e.target.value !== '' && password.length >= 8 });
-  }
+
+    this.setState({
+      email: email,
+      enableSubmit: this.validateEmail(email) && password.length >= 8,
+    });
+  };
 
   handleChangePassword = (e) => {
+    const password = e.target.value;
     const { email } = this.state;
-    this.setState({ password: e.target.value, enableSubmit: e.target.value !== '' && this.validateEmail(email) });
-  }
-
-  // handleChangeEmail = (e) => {
-  //   const email = e.target.value;
-  //   const { password } = this.state;
-
-  //   this.setState({
-  //     email: email,
-  //     enableSubmit: this.validateEmail(email) && password.length >= 8,
-  //   });
-  // };
-
-  // handleChangePassword = (e) => {
-  //   const password = e.target.value;
-  //   const { email } = this.state;
     
-  //   this.setState({
-  //     password: password,
-  //     enableSubmit: this.validateEmail(email) && password.length >= 8,
-  //   });
-  // };
+    this.setState({
+      password: password,
+      enableSubmit: this.validateEmail(email) && password.length >= 8,
+    });
+  };
 
   render() {
-    const {email, password, enableSubmit } = this.state;
+    const { enableSubmit, email, password } = this.state;
+
     return (
-      <form action="" onSubmit={this.handleLoginSubmit}>
+      <form aria-label="form" onSubmit={this.handleLoginSubmit}>
         <div className="App-body">
           <p>Login to access the full dashboard</p>
           <div className="form">

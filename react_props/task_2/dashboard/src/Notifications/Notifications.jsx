@@ -3,6 +3,7 @@ import closeIcon from '../assets/close-icon.png';
 import NotificationItem from './NotificationItem';
 
 export default function Notifications({ notifications }) {
+  console.log(notifications)
   return (
     <div className='Notifications'>
       <p>Here is the list of notifications</p>

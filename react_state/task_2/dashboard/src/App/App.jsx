@@ -29,7 +29,7 @@ class App extends Component {
     this.state = {
       displayDrawer: true,
       user: { ...newContext.user },
-      logout: newContext.logOut,
+      logout: this.logOut,
     }
   }
 
@@ -82,10 +82,10 @@ class App extends Component {
   };
 
   render() {
-    const { displayDrawer, user, logout } = this.state;
-    console.log('CONTEXT:', {...this.state})
+    const { displayDrawer, user } = this.state;
     const isLoggedIn = user.isLoggedIn;
-    const contextValues = { user, logout };
+    const contextValues = { user, logOut: this.logOut };
+
     return (
       <newContext.Provider value={ contextValues }>
         <Notifications 

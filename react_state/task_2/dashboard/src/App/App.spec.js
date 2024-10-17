@@ -1,7 +1,8 @@
 import React from 'react'
 import { act, render, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import App from './App';
-import { newContext } from '../context/context';
+import { newContext } from '../Context/context';
+
 
 const mockBodySection = jest.fn();
 jest.mock("../BodySection/BodySection", () => {
@@ -79,13 +80,6 @@ describe('test alert window message', () => {
 
 })
 
-// test('it should add the title of "course list" above the CourseList component when the isLoggedIn prop set to true', () => {
-//   render(<App isLoggedIn={true} />)
-
-//   expect(screen.getByRole('heading', { name: /course list/i })).toBeInTheDocument();
-// });
-
-
 test('it should add the title of "Log in to continue" above the Login component when the isLoggedIn prop set to false', () => {
   render(<App isLoggedIn={false} />)
 
@@ -124,7 +118,7 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
   test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop value, and handles nameless components', async () => {
     const appRef = React.createRef();
   
-    const { rerender, unmount, container } = render(<App ref={appRef} />);
+    const { rerender, unmount, container } = render(<App />);
   
     expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
   
@@ -140,7 +134,6 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
     fireEvent.click(submitButton);
   
     await waitFor(() => {
-      console.log('=========isLoggedIn=========:', appRef.current.context.isLoggedIn);
       expect(screen.getByText(/course list/i)).toBeInTheDocument();
   
       const logoutSection = container.querySelector("div#logoutSection");
@@ -183,7 +176,7 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
 })
 
 // =============== CONTEXT =============== //
-// =============== TESTING =============== //
+// =============== TESTING STATE =============== //
 test('should display CourseList and welcome message after successful login and hide them after logout', async () => {
   const appRef = React.createRef();
 
@@ -200,7 +193,9 @@ test('should display CourseList and welcome message after successful login and h
 
   expect(submitButton).not.toBeDisabled();
 
-  fireEvent.click(submitButton);
+  act(() => {
+    fireEvent.click(submitButton);
+  });
 
   await waitFor(() => {
     expect(screen.getByText(/course list/i)).toBeInTheDocument();
@@ -211,7 +206,9 @@ test('should display CourseList and welcome message after successful login and h
   });
 
   if (appRef.current) {
-    appRef.current.logOut();
+    act(() => {
+      appRef.current.logOut();
+    })
   }
 
   await waitFor(() => {
@@ -220,11 +217,9 @@ test('should display CourseList and welcome message after successful login and h
   });
 });
 
-it('should call logIn method with a valid email and password with 8+', () => {
+test('should call logIn method with a valid email and password with 8+', () => {
   const appRef = React.createRef();
   render(<App ref={appRef} />);
-
-  console.log(appRef)
 
   act(() => {
     appRef.current.logIn('email@example.com', 'password123');
@@ -270,10 +265,57 @@ test('should render login page when the user is not logged in and update state o
   expect(within(logoutSection).getByText('email@example.com')).toBeInTheDocument();
   expect(within(logoutSection).getByText(/logout/i)).toBeInTheDocument();
 
-  console.log(appRef.current)
   if (appRef.current) {
     expect(appRef.current.state.user.email).toBe('email@example.com');
     expect(appRef.current.state.user.password).toBe('12345678');
     expect(appRef.current.state.user.isLoggedIn).toBe(true);
   }
+});
+
+// ========== TESTING LOGIN & LOGOUT
+test('logIn updates user state and renders CourseList', () => {
+  render(<App />);
+
+  expect(screen.getByText(/log in to continue/i)).toBeInTheDocument();
+
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+  const submitButton = screen.getByRole('button', { name: 'OK' });
+
+  fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+  fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+  fireEvent.click(submitButton);
+
+  expect(screen.getByText(/course list/i)).toBeInTheDocument();
+});
+
+test('logOut clears user state and renders Login form', async () => {
+  const appRef = React.createRef();
+  render(<App ref={appRef} />);
+
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+  const submitButton = screen.getByRole('button', { name: 'OK' });
+
+  fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+  fireEvent.change(passwordInput, { target: { value: 'password123' } });
+  fireEvent.click(submitButton);
+
+  expect(screen.getByText(/course list/i)).toBeInTheDocument();
+
+  act(() => {
+    fireEvent.click(submitButton);
+  });
+
+  if (appRef.current) {
+    act(() => {
+      appRef.current.logOut();
+    })
+  }
+
+  await waitFor(() => {
+      expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
+      expect(screen.queryByText(/welcome email@example.com/i)).not.toBeInTheDocument();
+    });
 });

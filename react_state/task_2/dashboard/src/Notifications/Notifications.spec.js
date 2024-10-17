@@ -147,7 +147,6 @@ test('it should display a paragraph of "No new notification for now" whenever th
     displayDrawer: true
   }
   render(<Notifications {...props} />)
-  screen.debug()
 
   const notificationsTitle = screen.getByText('No new notification for now');
   

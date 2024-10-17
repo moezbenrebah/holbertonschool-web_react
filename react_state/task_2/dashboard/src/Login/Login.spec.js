@@ -70,3 +70,55 @@ test('submit button is enabled only with a valid email and password of at least 
   fireEvent.change(passwordInput, { target: { value: '12345678' } });
   expect(submitButton).not.toBeDisabled();
 });
+
+// ======== CHECK PASSING VALID EMAIL & PASSWORD =============
+// ======== CHECK LOGIN METOD PROP =============
+
+describe('Login Component Tests', () => {
+  test('should initialize with default email and password', () => {
+    render(<Login />);
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    
+    expect(emailInput.value).toBe('');
+    expect(passwordInput.value).toBe('');
+  });
+
+  test('should call logIn function on form submission', () => {
+    const mockLogin = jest.fn();
+    render(<Login login={mockLogin} email="test@test.com" password="password123" />);
+
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+
+    expect(mockLogin).toHaveBeenCalledWith('test@test.com', 'password123');
+  });
+
+  test('should enable the submit button only with valid email and password', () => {
+    render(<Login />);
+    
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const submitButton = screen.getByDisplayValue('OK');
+    
+    expect(submitButton).toBeDisabled();
+
+    fireEvent.change(emailInput, { target: { value: 'valid@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'validpassword' } });
+
+    expect(submitButton).not.toBeDisabled();
+  });
+
+  test('should update state on email and password input change', () => {
+    render(<Login />);
+    
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+
+    fireEvent.change(emailInput, { target: { value: 'newemail@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'newpassword' } });
+
+    expect(emailInput.value).toBe('newemail@test.com');
+    expect(passwordInput.value).toBe('newpassword');
+  });
+});

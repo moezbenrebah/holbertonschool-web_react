@@ -8,7 +8,7 @@ import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import BodySection from '../BodySection/BodySection';
-import { newContext } from '../context/context';
+import { newContext } from '../Context/context';
 
 const notificationsList = [
   { id: 1, type: 'default', value: 'New course available' },
@@ -29,7 +29,7 @@ class App extends Component {
     this.state = {
       displayDrawer: true,
       user: { ...newContext.user },
-      logout: this.logOut,
+      logout: newContext.logOut,
     }
   }
 
@@ -63,7 +63,8 @@ class App extends Component {
   }
 
   logIn = (email, password) => {
-    this.setState({user: {
+    this.setState({
+      user: {
         email,
         password,
         isLoggedIn: true
@@ -82,12 +83,11 @@ class App extends Component {
   };
 
   render() {
-    const { displayDrawer, user } = this.state;
-    const isLoggedIn = user.isLoggedIn;
-    const contextValues = { user, logOut: this.logOut };
+    const { displayDrawer, user, logout } = this.state;
+    const { isLoggedIn } = user;
 
     return (
-      <newContext.Provider value={ contextValues }>
+      <newContext.Provider value={ { user, logout } }>
         <Notifications 
           notifications={notificationsList}
           handleHideDrawer={this.handleHideDrawer}

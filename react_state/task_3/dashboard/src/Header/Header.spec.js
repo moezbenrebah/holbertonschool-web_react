@@ -70,4 +70,15 @@ describe('Header component', () => {
 
     expect(logOutSpy).toHaveBeenCalled();
   });
+
+  test('displays logoutSection when user is logged in', () => {
+    const { container } = render(
+      <newContext.Provider value={{ user: loggedInUser, logOut: jest.fn() }}>
+        <Header />
+      </newContext.Provider>
+    );
+
+    const logoutSection = container.querySelector("div#logoutSection");
+    expect(logoutSection).toBeInTheDocument()
+  });
 });

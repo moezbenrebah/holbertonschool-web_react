@@ -127,3 +127,11 @@ describe('', () => {
     expect(link).toBeInTheDocument();
   });
 })
+
+test('should confirm Footer is a functional component', () => {
+  const FooterPrototype = Object.getOwnPropertyNames(Footer.prototype);
+
+  expect(FooterPrototype).toEqual(expect.arrayContaining(["constructor"]))
+  expect(FooterPrototype).toHaveLength(1)
+  expect(Footer.prototype.__proto__).toEqual({})
+});

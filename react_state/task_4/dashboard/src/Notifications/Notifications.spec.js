@@ -307,6 +307,7 @@ test('it should rerender when prop values change', () => {
   };
 
   rerender(<Notifications {...updatedProps} />);
+  screen.debug()
 
-  expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+  expect(screen.getAllByRole('listitem')).toHaveLength(1);
 });

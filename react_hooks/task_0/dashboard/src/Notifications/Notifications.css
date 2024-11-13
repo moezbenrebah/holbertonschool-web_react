@@ -1,0 +1,41 @@
+.Notifications {
+  position: relative;
+  border: 3px dotted #e1003c;
+  padding: 5px;
+  font-family: 'Roboto', sans-serif;
+  width: 25%;
+  float: right;
+  margin-top: 20px;
+}
+
+li[data-priority="default"] {
+  color: blue;
+}
+
+li[data-priority="urgent"] {
+  color: rgb(233, 67, 67);
+}
+
+.Notifications p {
+  margin: 0;
+}
+
+.Notifications button {
+  position: absolute;
+  cursor: pointer;
+  right: calc(0% - 480px);
+  top: calc(0% - 480px);
+  background: transparent;
+  transform: scale(0.012);
+  -webkit-transform: scale(0.012);
+  -moz-transform: scale(0.012);
+  -ms-transform: scale(0.012);
+  -o-transform: scale(0.012);
+}
+
+.notification-title {
+  float: right;
+  position: absolute;
+  right: 10px;
+  top: 2px;
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
 import { getCurrentYear, getFooterCopy } from '../utils/utils';
@@ -127,14 +126,41 @@ describe('', () => {
     const link = screen.getByRole('link', { name: /contact us/i });
     expect(link).toBeInTheDocument();
   });
+})
+
+test('should confirm Footer is a functional component', () => {
+  const FooterPrototype = Object.getOwnPropertyNames(Footer.prototype);
+
+  expect(FooterPrototype).toEqual(expect.arrayContaining(["constructor"]))
+  expect(FooterPrototype).toHaveLength(1)
+  expect(Footer.prototype.__proto__).toEqual({})
 });
 
-test('should return true if the Footer component is a class component', () => {
-  const props = Object.getOwnPropertyNames(Footer.prototype);
-  const isClassComponent = Footer.prototype.__proto__ === React.Component.prototype;
-  const inheritsFromReactComponent = Object.getPrototypeOf(Footer.prototype) === React.Component.prototype;
-  
-  expect(props).toContain('constructor');
-  expect(isClassComponent).toBe(true);
-  expect(inheritsFromReactComponent).toBe(true);
+describe('Should not log errors or warnings to browser console', () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const validateLogin = (email, password) => {
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = password.length >= 8;
+    return isValidEmail && isValidPassword;
+  };
+
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  test('No warnings or errors', () => {
+    const mockUserContext = {
+      email: 'test@example.com',
+      password: 'password123', 
+      isLoggedIn: validateLogin('test@example.com', 'password123')
+    };
+    
+    render(
+      <newContext.Provider value={{ user: mockUserContext, logOut: null }}>
+        <Footer />
+      </newContext.Provider>
+    );
+
+    expect(console.error).not.toHaveBeenCalled();
+    expect(console.warn).not.toHaveBeenCalled();
+  });
 });

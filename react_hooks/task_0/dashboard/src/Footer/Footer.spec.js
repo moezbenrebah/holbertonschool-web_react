@@ -17,11 +17,9 @@ test('the link should exists once a user is logged in', () => {
     password: 'password123',
     isLoggedIn: true
   }
-
-  const mockLogout = jest.fn()
   
   render(
-    <newContext.Provider value={{ user: mockUserContext, logOut: mockLogout }}>
+    <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
       <Footer />
     </newContext.Provider>
   );
@@ -39,8 +37,6 @@ describe('', () => {
     return isValidEmail && isValidPassword;
   };
 
-  const mockLogout = jest.fn()
-
   test('the link should not exists once a user is logged out', () => {
     const mockUserContext = {
       email: '',
@@ -49,13 +45,15 @@ describe('', () => {
     }
     
     render(
-      <newContext.Provider value={{ user: mockUserContext, logOut: mockLogout }}>
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
         <Footer />
       </newContext.Provider>
     );
   
     const link = screen.queryByRole('link', { name: /contact us/i });
-  
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
     expect(link).not.toBeInTheDocument()
   });
   
@@ -67,12 +65,15 @@ describe('', () => {
     };
     
     render(
-      <newContext.Provider value={{ user: mockUserContext, logOut: mockLogout }}>
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
         <Footer />
       </newContext.Provider>
     );
   
     const link = screen.queryByRole('link', { name: /contact us/i });
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
     expect(link).not.toBeInTheDocument();
   });
 
@@ -84,12 +85,15 @@ describe('', () => {
     };
     
     render(
-      <newContext.Provider value={{ user: mockUserContext, logOut: mockLogout }}>
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
         <Footer />
       </newContext.Provider>
     );
 
     const link = screen.queryByRole('link', { name: /contact us/i });
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
     expect(link).not.toBeInTheDocument();
   });
 
@@ -101,12 +105,15 @@ describe('', () => {
     };
     
     render(
-      <newContext.Provider value={{ user: mockUserContext, logOut: mockLogout }}>
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
         <Footer />
       </newContext.Provider>
     );
 
     const link = screen.queryByRole('link', { name: /contact us/i });
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
     expect(link).not.toBeInTheDocument();
   });
 
@@ -124,6 +131,9 @@ describe('', () => {
     );
 
     const link = screen.getByRole('link', { name: /contact us/i });
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
     expect(link).toBeInTheDocument();
   });
 })
@@ -155,10 +165,45 @@ describe('Should not log errors or warnings to browser console', () => {
     };
     
     render(
-      <newContext.Provider value={{ user: mockUserContext, logOut: null }}>
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
         <Footer />
       </newContext.Provider>
     );
+
+    expect(console.error).not.toHaveBeenCalled();
+    expect(console.warn).not.toHaveBeenCalled();
+  });
+});
+
+describe('Footer tests', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const validateLogin = (email, password) => {
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = password.length >= 8;
+    return isValidEmail && isValidPassword;
+  };
+
+  test('No DOM property warnings or errors', () => {
+    const mockUserContext = {
+      email: 'test@example.com',
+      password: 'password123', 
+      isLoggedIn: validateLogin('test@example.com', 'password123')
+    };
+    
+    render(
+      <newContext.Provider value={{ user: mockUserContext, logOut: jest.fn() }}>
+        <Footer />
+      </newContext.Provider>
+    );
+
+    const link = screen.getByRole('link', { name: /contact us/i });
+    const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
+
+    expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
+    expect(link).toBeInTheDocument();
 
     expect(console.error).not.toHaveBeenCalled();
     expect(console.warn).not.toHaveBeenCalled();

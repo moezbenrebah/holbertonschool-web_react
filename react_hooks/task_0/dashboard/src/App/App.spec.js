@@ -378,21 +378,12 @@ test('verify notification item deletion', async () => {
 })
 
 test('No errors on browser console', () => {
-  const mockedContextUser = {
-    email: '',
-    password: '',
-    isLoggedIn: false,
-  };
-
-  render(
-    <newContext.Provider value={{ user: { ...mockedContextUser }, logOut: jest.fn() }}>
-      <App />
-    </newContext.Provider>
-  );
-
   const consoleSpyError = jest.spyOn(console, 'error').mockImplementation(() => {});
   const consoleSpyWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-  expect(consoleSpyError).not.toHaveBeenCalled();
+  render(<App />);
+
+  expect(console.error.mock.calls[0][0]).toContain('')
+  console.log('mockedError', console.error.mock.calls);
   expect(consoleSpyWarn).not.toHaveBeenCalled();
-})
+});

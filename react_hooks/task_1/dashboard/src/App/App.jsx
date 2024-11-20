@@ -96,8 +96,7 @@ class App extends Component {
 
     return (
       <newContext.Provider value={ { user, logout } }>
-      {console.log('user:', user)}
-        <Notifications 
+        <Notifications
           notifications={notifications}
           handleHideDrawer={this.handleHideDrawer}
           handleDisplayDrawer={this.handleDisplayDrawer}

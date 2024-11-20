@@ -1,6 +1,26 @@
+console.log('File start');
+const originalError = console.error;
+const originalWarn = console.warn;
+
+// Store console output
+let consoleOutput = [];
+
+// Override console methods
+console.error = (...args) => {
+  // Store the original message without trying to format it
+  console.log('Console.error called:', args);
+  consoleOutput.push(['error', args[0]]);
+};
+
+console.warn = (...args) => {
+  consoleOutput.push(['warn', args[0]]);
+};
+
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+console.log('After RTL import');
 import userEvent from '@testing-library/user-event';
 import Login from './Login';
+console.log('After Login import');
 import fs from 'fs';
 import path from 'path';
 
@@ -14,10 +34,19 @@ describe('Login component tests', () => {
 
   beforeEach(() => {
     loginMock = jest.fn();
+    consoleOutput = []; // Clear console output before each test
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    
+    // Check for console errors/warnings
+    if (consoleOutput.length > 0) {
+      throw new Error(
+        'Test failed: Console warnings or errors detected:\n' +
+        consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
+      );
+    }
   });
 
   describe('Form Elements', () => {
@@ -132,4 +161,10 @@ describe('Login component tests', () => {
       expect(noClassImplementation).toBe(true);
     });
   });
+});
+
+// Cleanup at the end of the file
+afterAll(() => {
+  console.error = originalError;
+  console.warn = originalWarn;
 });

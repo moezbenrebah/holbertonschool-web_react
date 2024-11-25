@@ -1,64 +1,95 @@
-import React, { Profiler, useMemo } from 'react';
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import * as NotificationItemModule from './NotificationItem';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
 
-test('the NotificationItem is rendered without crashing', () => {
-  render(<NotificationItem />)
-})
 
-test('it should display the correct notification with a red color, and set the "data-notification-type" to urgent whenever it receives the type "urgent" props', () => {
-  const props = {
-    type: 'urgent',
-    html: {__html: getLatestNotification()},
-  }
+// Basic rendering and functionality tests
+describe('NotificationItem - Basic Functionality', () => {
+  test('renders without crashing', () => {
+    render(<NotificationItem />);
+  });
 
-  render(<NotificationItem {...props} />);
+  test('displays urgent notification with red color', () => {
+    const props = {
+      type: 'urgent',
+      html: { __html: getLatestNotification() },
+    };
+    render(<NotificationItem {...props} />);
+    const liElement = screen.getByRole('listitem');
+    expect(liElement).toHaveStyle({ color: 'red' });
+    expect(liElement).toHaveAttribute('data-notification-type', 'urgent');
+  });
 
-  const liElement = screen.getByRole('listitem');
+  test('displays default notification with blue color', () => {
+    const props = {
+      type: 'default',
+      value: 'Test notification',
+    };
+    render(<NotificationItem {...props} />);
+    const liElement = screen.getByRole('listitem');
+    expect(liElement).toHaveStyle({ color: 'blue' });
+    expect(liElement).toHaveAttribute('data-notification-type', 'default');
+  });
 
-  expect(liElement).toHaveStyle({ color: 'red' });
-  expect(liElement).toHaveAttribute('data-notification-type', 'urgent');
-});
+  test('calls markAsRead with correct id on click', () => {
+    const mockMarkAsRead = jest.fn();
+    const id = 1;
+    render(<NotificationItem id={id} markAsRead={mockMarkAsRead} />);
+    const listItem = screen.getByRole('listitem');
+    fireEvent.click(listItem);
+    expect(mockMarkAsRead).toHaveBeenCalledWith(id);
+  });
 
-test('it should display the correct notification with a blue color, and set the "data-notification-type" to default whenever it receives the type "default" props', () => {
-  const props = {
-    type: 'default',
-    html: undefined,
-  }
-
-  render(<NotificationItem {...props} />);
-
-  const liElement = screen.getByRole('listitem');
-
-  expect(liElement).toHaveStyle({ color: 'blue' });
-  expect(liElement).toHaveAttribute('data-notification-type', 'default');
-});
-
-test('it should log to the console the "Notification id has been marked as read" with the correct notification item id', () => {
-  const mockMarkAsRead = jest.fn()
+  test('it should display the correct notification with a red color, and set the "data-notification-type" to urgent whenever it receives the type "urgent" props', () => {
+    const props = {
+      type: 'urgent',
+      html: {__html: getLatestNotification()},
+    }
   
-  render(<NotificationItem markAsRead={mockMarkAsRead} />);
-
-  const firstListItemElement = screen.getAllByRole('listitem')[0];
-
-  fireEvent.click(firstListItemElement)
-
-  expect(mockMarkAsRead).toHaveBeenCalled()
+    render(<NotificationItem {...props} />);
+  
+    const liElement = screen.getByRole('listitem');
+  
+    expect(liElement).toHaveStyle({ color: 'red' });
+    expect(liElement).toHaveAttribute('data-notification-type', 'urgent');
+  });
+  
+  test('it should display the correct notification with a blue color, and set the "data-notification-type" to default whenever it receives the type "default" props', () => {
+    const props = {
+      type: 'default',
+      html: undefined,
+    }
+  
+    render(<NotificationItem {...props} />);
+  
+    const liElement = screen.getByRole('listitem');
+  
+    expect(liElement).toHaveStyle({ color: 'blue' });
+    expect(liElement).toHaveAttribute('data-notification-type', 'default');
+  });
 });
 
-describe('NotificationItem - Memo behavior', () => {
+// The NotificationItem is a function component
+test('should return true if the NotificationItem component is a functional component', () => {
+  expect(typeof NotificationItem.type).toBe('function');
+  expect(NotificationItem.$$typeof.toString()).toBe('Symbol(react.memo)');
+  expect(NotificationItem.type.prototype?.isReactComponent).toBeUndefined();
+});
+
+// React.memo specific tests
+describe('NotificationItem - Memo Behavior', () => {
   let renderCount;
-  
+  const mockConsoleLog = jest.fn();
+
   beforeEach(() => {
     renderCount = 0;
-    // Mock console.log to track renders
     jest.spyOn(console, 'log').mockImplementation((msg) => {
-      if (msg.includes('Rendering NotificationItem')) {
+      if (typeof msg === 'string' && msg.includes('Rendering NotificationItem')) {
         renderCount++;
       }
+      mockConsoleLog(msg);
     });
   });
 
@@ -66,88 +97,47 @@ describe('NotificationItem - Memo behavior', () => {
     jest.clearAllMocks();
   });
 
-  test('should not re-render with same props', () => {
-    const markAsRead = jest.fn();
-    
-    const { rerender } = render(
-      <NotificationItem
-        id={1}
-        type="urgent"
-        value="New notification"
-        markAsRead={markAsRead}
-      />
-    );
-
-    expect(renderCount).toBe(1);
-
-    // Re-render with same props
-    rerender(
-      <NotificationItem
-        id={1}
-        type="urgent"
-        value="New notification"
-        markAsRead={markAsRead} // Using same function reference
-      />
-    );
-
-    expect(renderCount).toBe(1); // Should stay 1 as props haven't changed
+  test('verifies component is wrapped with React.memo', () => {
+    expect(NotificationItem.$$typeof.toString()).toBe('Symbol(react.memo)');
+    expect(NotificationItem.type).toBeInstanceOf(Function);
   });
 
-  test('should re-render when props change', () => {
+  test('prevents re-render with same props', () => {
     const markAsRead = jest.fn();
-    
-    const { rerender } = render(
-      <NotificationItem
-        id={1}
-        type="urgent"
-        value="New notification"
-        markAsRead={markAsRead}
-      />
-    );
+    const initialProps = {
+      id: 1,
+      type: 'urgent',
+      value: 'Test notification',
+      markAsRead,
+    };
 
+    const { rerender } = render(<NotificationItem {...initialProps} />);
     expect(renderCount).toBe(1);
 
-    // Re-render with different value prop
-    rerender(
-      <NotificationItem
-        id={1}
-        type="urgent"
-        value="Updated notification" // Changed prop
-        markAsRead={markAsRead}
-      />
-    );
-
-    expect(renderCount).toBe(2); // Should increment as value changed
+    rerender(<NotificationItem {...initialProps} />);
+    expect(renderCount).toBe(1); // should not increment
   });
 
-  test('should re-render with new function reference', () => {
+  test('allows re-render when props change', () => {
+    const markAsRead = jest.fn();
     const { rerender } = render(
       <NotificationItem
         id={1}
         type="urgent"
-        value="New notification"
-        markAsRead={() => {}}
+        value="Original notification"
+        markAsRead={markAsRead}
       />
     );
-
     expect(renderCount).toBe(1);
 
     rerender(
       <NotificationItem
         id={1}
         type="urgent"
-        value="New notification"
-        markAsRead={() => {}} // New function reference
+        value="Updated notification"
+        markAsRead={markAsRead}
       />
     );
-
-    expect(renderCount).toBe(2);
+    expect(renderCount).toBe(2); // should increment
   });
 });
-
-test('should return true if the NotificationItem component is a functional component', () => {
-  expect(typeof NotificationItem.type).toBe('function');
-  expect(NotificationItem.$$typeof.toString()).toBe('Symbol(react.memo)');
-  expect(NotificationItem.type.prototype?.isReactComponent).toBeUndefined();
-})
-

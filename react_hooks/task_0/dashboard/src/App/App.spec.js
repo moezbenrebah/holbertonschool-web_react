@@ -378,7 +378,6 @@ test('verify notification item deletion', async () => {
 })
 
 test('No errors on browser console', () => {
-  const consoleSpyError = jest.spyOn(console, 'error').mockImplementation(() => {});
   const consoleSpyWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
   render(<App />);

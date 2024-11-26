@@ -83,11 +83,11 @@
 // export default LoginWithLogging;
 
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import WithLogging from '../HOC/WithLogging';
 import './Login.css';
 
-function Login({ login, email: initialEmail = '', password: initialPassword = '' }) {
+const Login = ({ login, email: initialEmail = '', password: initialPassword = '' }) => {
   const [formData, setFormData] = useState({
     email: initialEmail,
     password: initialPassword,

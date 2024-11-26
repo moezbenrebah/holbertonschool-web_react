@@ -1,3 +1,17 @@
+const originalError = console.error;
+const originalWarn = console.warn;
+
+let consoleOutput = [];
+
+console.error = (...args) => {
+  consoleOutput.push(['error', args[0]]);
+};
+
+console.warn = (...args) => {
+  consoleOutput.push(['warn', args[0]]);
+};
+
+
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -142,3 +156,151 @@ describe('NotificationItem - Memo Behavior', () => {
   });
 });
 
+
+
+// import { render, screen } from '@testing-library/react';
+// import '@testing-library/jest-dom';
+// import NotificationItem from './NotificationItem';
+
+describe('NotificationItem - React.memo Usage', () => {
+  let mockMemo;
+  let originalMemo;
+  let NotificationItem;
+  let consoleLogSpy;
+
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+
+    originalMemo = React.memo;
+    mockMemo = jest.fn((component) => {
+      const memoizedComponent = (props) => component(props);
+      memoizedComponent.isMemoized = true;
+      return memoizedComponent;
+    });
+
+    React.memo = mockMemo;
+
+    NotificationItem = require('./NotificationItem').default;
+  });
+
+  afterEach(() => {
+    React.memo = originalMemo;
+    consoleLogSpy.mockRestore();
+    jest.clearAllMocks();
+  });
+
+  test('Component should memoize and prevent unnecessary re-renders', () => {
+    const props = {
+      type: 'default',
+      value: 'test',
+      id: 1,
+      markAsRead: jest.fn()
+    };
+
+    // First render
+    const { rerender } = render(<NotificationItem {...props} />);
+    
+    // Re-render with same props
+    rerender(<NotificationItem {...props} />);
+
+    // Check if the internal component was only rendered once
+    // This assumes you have the console.log in your component
+    const renderLogs = jest.spyOn(console, 'log')
+      .mock.calls
+      .filter(call => call[0].includes('Rendering NotificationItem'));
+    
+    expect(renderLogs.length).toBe(1);
+  });
+
+  test('Component should re-render with different props', () => {
+    const markAsRead = jest.fn();
+    
+    // Initial render
+    const { rerender } = render(
+      <NotificationItem
+        type="default"
+        value="test"
+        id={1}
+        markAsRead={markAsRead}
+      />
+    );
+
+    // Re-render with different props
+    rerender(
+      <NotificationItem
+        type="urgent"
+        value="updated"
+        id={1}
+        markAsRead={markAsRead}
+      />
+    );
+
+    const renderLogs = jest.spyOn(console, 'log')
+      .mock.calls
+      .filter(call => call[0].includes('Rendering NotificationItem'));
+    
+    expect(renderLogs.length).toBe(2);
+  });
+
+  test('Component should be a functional component wrapped with memo', () => {
+    // Check if it's a memo wrapped component
+    expect(NotificationItem.$$typeof.toString()).toBe('Symbol(react.memo)');
+    
+    // Check if the wrapped component is a function
+    expect(typeof NotificationItem.type).toBe('function');
+    
+    // Ensure it's not a class component
+    expect(NotificationItem.type.prototype?.isReactComponent).toBeUndefined();
+  });
+
+  test('Should handle undefined props correctly', () => {
+    // This should not throw an error
+    expect(() => render(<NotificationItem />)).not.toThrow();
+  });
+});
+
+describe('Check console errors & warns', () => {
+  beforeEach(() => {
+    consoleOutput = [];
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+
+    if (consoleOutput.length > 0) {
+      throw new Error(
+        'Test failed: Console warnings or errors detected:\n' +
+        consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
+      );
+    }
+  });
+
+  test('No console errors & warns', () => {
+    const props = {
+      type: 'default',
+      value: 'test',
+      id: 1,
+      markAsRead: jest.fn()
+    };
+
+    // first render
+    const { rerender } = render(<NotificationItem {...props} />);
+    
+    // re-render with same props
+    const renderLogs = jest.spyOn(console, 'log')
+      .mock.calls
+      .filter(call => call[0].includes('Rendering NotificationItem'));
+
+    rerender(<NotificationItem {...props} />);
+    
+    expect(renderLogs.length).toBe(1);
+  });
+});
+
+afterAll(() => {
+  console.error = originalError;
+  console.warn = originalWarn;
+});

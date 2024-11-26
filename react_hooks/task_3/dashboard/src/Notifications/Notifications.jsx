@@ -44,10 +44,6 @@ const Notifications = memo(function Notifications({
     </>
   );
 }, (prevProps, nextProps) => {
-  if (prevProps.displayDrawer !== nextProps.displayDrawer) {
-    return false; // re-render if drawer state changed
-  }
-
   // Compare notifications array
   const DidNotificationsUpdated = 
     prevProps.notifications.length === nextProps.notifications.length &&

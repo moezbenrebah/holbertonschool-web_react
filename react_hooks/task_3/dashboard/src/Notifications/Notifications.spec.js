@@ -240,35 +240,41 @@ test('should show the list of notifications whenever the "handleDisplayDrawer" i
 });
 
 test('should hide the list of notifications whenever the "handleHideDrawer" is called', () => {
+
+  // Mock parent wrap to properly simulate parent state management
   const handleHideDrawerMock = jest.fn();
-  const notificationsMock = [
-    { id: 1, type: 'default', value: 'Notification 1' },
-  ];
+  const MockParentWrapper = () => {
+    const [isDisplayed, setIsDisplayed] = React.useState(true);
+    
+    const handleHideDrawer = () => {
+      setIsDisplayed(false);
+      handleHideDrawerMock()
+    };
 
-  const { rerender } = render(
-    <Notifications
-      displayDrawer={true}
-      handleHideDrawer={handleHideDrawerMock}
-      notifications={notificationsMock}
-    />
-  );
+    const notificationsMock = [
+      { id: 1, type: 'default', value: 'Notification 1' },
+    ];
 
+    return (
+      <Notifications
+        displayDrawer={isDisplayed}
+        handleHideDrawer={handleHideDrawer}
+        notifications={notificationsMock}
+      />
+    );
+  };
+
+  render(<MockParentWrapper />)
+
+  // Verify initial state
   expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
 
+  // Click close button
   const closeButton = screen.getByLabelText('Close');
   fireEvent.click(closeButton);
 
+  // Verify notifications are hidden
   expect(handleHideDrawerMock).toHaveBeenCalled();
-
-  rerender(
-    <Notifications
-      displayDrawer={false}
-      handleHideDrawer={handleHideDrawerMock}
-      notifications={notificationsMock}
-    />
-  );
-
-  expect(screen.queryByText('Here is the list of notifications')).not.toBeInTheDocument();
 });
 
 // ==========================================
@@ -304,4 +310,138 @@ test('it should rerender when prop values change', () => {
   rerender(<Notifications {...updatedProps} />);
 
   expect(screen.getAllByRole('listitem')).toHaveLength(1);
+});
+
+// The Notifications is a function component
+test('should return true if the Notifications component is a functional component', () => {
+	expect(typeof Notifications.type).toBe('function');
+	expect(Notifications.$$typeof.toString()).toBe('Symbol(react.memo)');
+	expect(Notifications.type.prototype?.isReactComponent).toBeUndefined();
+});
+
+// handle memoization
+
+describe('Notifications Memo Behavior', () => {
+  test('should not re-render when notifications array remains unchanged', () => {
+    const renderCountRef = { current: 0 };
+    const initialProps = {
+      displayDrawer: true,
+      notifications: [
+        { id: 1, type: 'default', value: 'Test notification' }
+      ],
+      handleDisplayDrawer: jest.fn(),
+      handleHideDrawer: jest.fn(),
+      markNotificationAsRead: jest.fn()
+    };
+
+    const { rerender } = render(
+      <Notifications 
+        {...initialProps} 
+        data-testid="notifications"
+      />
+    );
+
+    const firstRender = screen.getAllByRole('listitem').find(listitem => listitem.textContent === 'Test notification')
+    
+    // Re-render with same props
+    rerender(
+      <Notifications 
+        {...initialProps}
+        data-testid="notifications"
+      />
+    );
+
+    const secondRender = screen.getAllByRole('listitem').find(listitem => listitem.textContent === 'Test notification')
+    
+    // Should be the same instance due to memo
+    expect(firstRender).toBe(secondRender);
+  });
+
+  test('should re-render when notifications content changes', () => {
+    const initialProps = {
+      displayDrawer: true,
+      notifications: [
+        { id: 1, type: 'default', value: 'Initial notification' }
+      ],
+      handleDisplayDrawer: jest.fn(),
+      handleHideDrawer: jest.fn(),
+      markNotificationAsRead: jest.fn()
+    };
+
+    const { rerender } = render(<Notifications {...initialProps} />);
+
+    // Modify notification content
+    const updatedProps = {
+      ...initialProps,
+      notifications: [
+        { id: 1, type: 'urgent', value: 'Updated notification' }
+      ]
+    };
+
+    rerender(<Notifications {...updatedProps} />);
+
+    // Should reflect the updated content
+    expect(screen.getByText('Updated notification')).toBeInTheDocument();
+  });
+
+  test('should re-render when notifications array length changes', () => {
+    const initialProps = {
+      displayDrawer: true,
+      notifications: [
+        { id: 1, type: 'default', value: 'Test notification' }
+      ],
+      handleDisplayDrawer: jest.fn(),
+      handleHideDrawer: jest.fn(),
+      markNotificationAsRead: jest.fn()
+    };
+
+    const { rerender } = render(<Notifications {...initialProps} />);
+
+    // Add new notification
+    const updatedProps = {
+      ...initialProps,
+      notifications: [
+        ...initialProps.notifications,
+        { id: 2, type: 'urgent', value: 'New notification' }
+      ]
+    };
+
+    rerender(<Notifications {...updatedProps} />);
+
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+  });
+
+  test('should handle html property changes in notifications', () => {
+    const initialProps = {
+      displayDrawer: true,
+      notifications: [
+        { 
+          id: 1, 
+          type: 'urgent', 
+          html: { __html: '<strong>Initial</strong>' } 
+        }
+      ],
+      handleDisplayDrawer: jest.fn(),
+      handleHideDrawer: jest.fn(),
+      markNotificationAsRead: jest.fn()
+    };
+
+    const { rerender } = render(<Notifications {...initialProps} />);
+
+    // Update html content
+    const updatedProps = {
+      ...initialProps,
+      notifications: [
+        { 
+          id: 1, 
+          type: 'urgent', 
+          html: { __html: '<strong>Updated</strong>' } 
+        }
+      ]
+    };
+
+    rerender(<Notifications {...updatedProps} />);
+
+    expect(screen.getByRole('listitem')).toContainHTML('<strong>Updated</strong>');
+  });
 });

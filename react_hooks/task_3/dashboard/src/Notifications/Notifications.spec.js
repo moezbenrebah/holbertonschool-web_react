@@ -351,7 +351,6 @@ test('should return true if the Notifications component is a functional componen
 
 describe('Notifications Memo Behavior', () => {
   test('should not re-render when notifications array remains unchanged', () => {
-    const renderCountRef = { current: 0 };
     const initialProps = {
       displayDrawer: true,
       notifications: [

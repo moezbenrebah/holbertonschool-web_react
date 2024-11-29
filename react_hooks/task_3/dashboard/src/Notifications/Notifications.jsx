@@ -13,7 +13,7 @@ const Notifications = memo(function Notifications({
 }) {
   return (
     <>
-      <div class="notification-title" onClick={handleDisplayDrawer}>
+      <div className="notification-title" onClick={handleDisplayDrawer}>
         Your notifications
       </div>
       {displayDrawer && (

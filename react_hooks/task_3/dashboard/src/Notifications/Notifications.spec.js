@@ -336,8 +336,7 @@ describe('Notifications Memo Behavior', () => {
 
     const { rerender } = render(
       <Notifications 
-        {...initialProps} 
-        data-testid="notifications"
+        {...initialProps}
       />
     );
 
@@ -347,7 +346,6 @@ describe('Notifications Memo Behavior', () => {
     rerender(
       <Notifications 
         {...initialProps}
-        data-testid="notifications"
       />
     );
 

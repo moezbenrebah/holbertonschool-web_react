@@ -1,3 +1,31 @@
+const originalError = console.error;
+const originalWarn = console.warn;
+
+let consoleOutput = [];
+
+console.error = (...args) => {
+  consoleOutput.push(['error', args[0]]);
+};
+
+console.warn = (...args) => {
+  consoleOutput.push(['warn', args[0]]);
+};
+
+beforeEach(() => {
+  consoleOutput = [];
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+
+  if (consoleOutput.length > 0) {
+    throw new Error(
+      'Test failed: Console warnings or errors detected:\n' +
+      consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
+    );
+  }
+});
+
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { getLatestNotification } from '../utils/utils'
@@ -442,4 +470,9 @@ describe('Notifications Memo Behavior', () => {
 
     expect(screen.getByRole('listitem')).toContainHTML('<strong>Updated</strong>');
   });
+});
+
+afterAll(() => {
+  console.error = originalError;
+  console.warn = originalWarn;
 });

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import './App.css';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
@@ -22,22 +22,10 @@ const coursesList = [
   { id: 3, name: 'React', credit: 40 }
 ];
 
-function App() {
+export default function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({ ...newContext.user });
   const [notifications, setNotifications] = useState(notificationsList);
-
-  useEffect(() => {
-    const handleKeydown = (e) => {
-      if (e.ctrlKey && e.key === "h") {
-        alert("Logging you out");
-        logOut();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeydown);
-    return () => document.removeEventListener('keydown', handleKeydown);
-  }, []);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -47,13 +35,13 @@ function App() {
     setDisplayDrawer(false);
   }, []);
 
-  const logIn = useCallback((email, password) => {
+  const logIn = (email, password) => {
     setUser({
       email,
       password,
       isLoggedIn: true
     });
-  }, []);
+  };
 
   const logOut = useCallback(() => {
     setUser({
@@ -71,7 +59,7 @@ function App() {
   }, []);
 
   return (
-    <newContext.Provider value={{ user, logout: logOut }}>
+    <newContext.Provider value={{ user, logOut }}>
       <Notifications
         notifications={notifications}
         handleHideDrawer={handleHideDrawer}
@@ -102,5 +90,3 @@ function App() {
     </newContext.Provider>
   );
 }
-
-export default App;

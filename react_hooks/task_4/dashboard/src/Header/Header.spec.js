@@ -79,6 +79,12 @@ describe('Header component', () => {
 
   test('calls logOut function when logout link is clicked', () => {
     const logOutSpy = jest.fn();
+    const loggedInUser = {
+      isLoggedIn: true,
+      email: 'test@test.com',
+      password: '12345678'
+    };
+
     render(
       <newContext.Provider value={{ user: loggedInUser, logOut: logOutSpy }}>
         <Header />
@@ -87,7 +93,6 @@ describe('Header component', () => {
 
     const logoutLink = screen.getByText(/logout/i);
     fireEvent.click(logoutLink);
-
     expect(logOutSpy).toHaveBeenCalled();
   });
 
@@ -129,12 +134,12 @@ describe('Header Component', () => {
       renderWithContext(contextValue);
     });
 
-    it('renders basic header elements', () => {
+    test('renders basic header elements', () => {
       expect(screen.getByRole('img')).toHaveAttribute('src', 'mocked-path.jpg');
       expect(screen.getByRole('heading')).toHaveTextContent('School Dashboard');
     });
 
-    it('does not render logout section', () => {
+    test('does not render logout section', () => {
       expect(screen.queryByTestId('logoutSection')).not.toBeInTheDocument();
     });
   });
@@ -155,21 +160,21 @@ describe('Header Component', () => {
       renderWithContext(contextValue);
     });
 
-    it('renders welcome message with user email', () => {
+    test('renders welcome message with user email', () => {
       expect(screen.getByText('Welcome')).toBeInTheDocument();
       expect(screen.getByText('test@test.com')).toBeInTheDocument();
     });
 
-    it('renders logout link', () => {
+    test('renders logout link', () => {
       expect(screen.getByText('(logout)')).toBeInTheDocument();
     });
 
-    it('calls logOut function when logout link is clicked', () => {
+    test('calls logOut function when logout link is clicked', () => {
       fireEvent.click(screen.getByText('(logout)'));
       expect(mockLogOut).toHaveBeenCalledTimes(1);
     });
 
-    it('prevents default behavior on logout link click', () => {
+    test('prevents default behavior on logout link click', () => {
       const logoutLink = screen.getByText('(logout)');
       fireEvent.click(logoutLink);
       expect(mockLogOut).toHaveBeenCalled();

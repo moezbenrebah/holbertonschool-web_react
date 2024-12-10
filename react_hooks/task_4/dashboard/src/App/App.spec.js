@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { act, render, fireEvent, renderHook,screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { newContext } from '../Context/context';
@@ -637,5 +637,34 @@ describe('App Component Hooks', () => {
       rerender();
       expect(result.current.markNotificationAsRead).toBe(firstReference);
     });
+  });
+});
+
+describe('App Component Type Tests', () => {
+  test('should verify that App is a functional component', () => {
+    // Helper function to determine component type
+    function getComponentType(component) {
+      if (typeof component !== 'function') {
+        return
+      }
+      
+      if (component.prototype?.isReactComponent) {
+        return 'class component';
+      }
+      
+      return 'functional component';
+    }
+
+    expect(typeof App).toBe('function');
+      
+    expect(App.prototype?.isReactComponent).toBeUndefined();
+
+    const componentType = getComponentType(App);
+    expect(componentType).toBe('functional component');
+
+    expect(() => {
+      const element = React.createElement(App);
+      expect(React.isValidElement(element)).toBe(true);
+    }).not.toThrow();
   });
 });

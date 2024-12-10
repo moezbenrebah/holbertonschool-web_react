@@ -11,6 +11,21 @@ console.warn = (...args) => {
   consoleOutput.push(['warn', args[0]]);
 };
 
+beforeEach(() => {
+  consoleOutput = [];
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+
+  if (consoleOutput.length > 0) {
+    throw new Error(
+      'Test failed: Console warnings or errors detected:\n' +
+      consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
+    );
+  }
+});
+
 
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -260,47 +275,4 @@ describe('NotificationItem - React.memo Usage', () => {
     // This should not throw an error
     expect(() => render(<NotificationItem />)).not.toThrow();
   });
-});
-
-describe('Check console errors & warns', () => {
-  beforeEach(() => {
-    consoleOutput = [];
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-
-    if (consoleOutput.length > 0) {
-      throw new Error(
-        'Test failed: Console warnings or errors detected:\n' +
-        consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
-      );
-    }
-  });
-
-  test('No console errors & warns', () => {
-    const props = {
-      type: 'default',
-      value: 'test',
-      id: 1,
-      markAsRead: jest.fn()
-    };
-
-    // first render
-    const { rerender } = render(<NotificationItem {...props} />);
-    
-    // re-render with same props
-    const renderLogs = jest.spyOn(console, 'log')
-      .mock.calls
-      .filter(call => call[0].includes('Rendering NotificationItem'));
-
-    rerender(<NotificationItem {...props} />);
-    
-    expect(renderLogs.length).toBe(1);
-  });
-});
-
-afterAll(() => {
-  console.error = originalError;
-  console.warn = originalWarn;
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import WithLogging from '../HOC/WithLogging';
 import './Login.css';
 

@@ -462,7 +462,7 @@ describe('App Component State Management', () => {
   describe('Notifications State Tests', () => {
     test('notifications state management and interactions', async () => {
       const user = userEvent.setup();
-      const { container } = renderAppWithContext();
+      renderAppWithContext();
 
       expect(screen.getByText('New course available')).toBeInTheDocument();
       expect(screen.getByText('New resume available')).toBeInTheDocument();
@@ -513,7 +513,7 @@ describe('App Component Hooks', () => {
         const handleDisplayDrawer = useCallback(() => {
           setDisplayDrawer(true);
         }, []);
-        return { handleDisplayDrawer };
+        return { displayDrawer, handleDisplayDrawer };
       });
 
       const firstReference = result.current.handleDisplayDrawer;
@@ -604,7 +604,7 @@ describe('App Component Hooks', () => {
             prev.filter(notification => notification.id !== id)
           );
         }, []);
-        return { markNotificationAsRead };
+        return { notifications, markNotificationAsRead };
       });
 
       const firstReference = result.current.markNotificationAsRead;

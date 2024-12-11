@@ -43,13 +43,13 @@ export default function App() {
     });
   };
 
-  const logOut = useCallback(() => {
+  const logOut = () => {
     setUser({
       email: '',
       password: '',
       isLoggedIn: false,
     });
-  }, []);
+  };
 
   const markNotificationAsRead = useCallback((id) => {
     setNotifications(prev => 

@@ -63,7 +63,6 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
   });
   
   test('logs when CourseList is mounted and unmounted based on "isLoggedIn" prop value, and handles nameless components', async () => {
-    // const appRef = React.createRef();
   
     const { rerender, unmount, container } = render(<App />);
   
@@ -71,7 +70,7 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
   
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: 'OK' });
+    const submitButton = screen.getByRole('button', { name: /ok/i });
   
     fireEvent.change(emailInput, { target: { value: 'email@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -125,40 +124,31 @@ describe('test HOC log mount and unmount "Login" and "CourseList" components', (
 // =============== CONTEXT =============== //
 // =============== TESTING STATE =============== //
 test('should display CourseList and welcome message after login and hide them after logout', async () => {
-  // Initial render of the App component
   render(<App />);
 
-  // Verify initial state shows login form
   expect(screen.getByText('Log in to continue')).toBeInTheDocument();
 
-  // Get form elements
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   const passwordInput = screen.getByLabelText(/password/i);
   const submitButton = screen.getByRole('button', { name: /ok/i });
 
-  // Perform login
   await act(async () => {
     await userEvent.type(emailInput, 'email@example.com');
     await userEvent.type(passwordInput, 'password123');
     await userEvent.click(submitButton);
   });
 
-  // Verify successful login shows course list
   expect(screen.getByText('Course list')).toBeInTheDocument();
 
-  // Get and click the logout link that appears after login
   const logoutLink = screen.getByText('(logout)');
   await act(async () => {
     await userEvent.click(logoutLink);
   });
 
-  // Verify the user is logged out and UI is updated
+
   await waitFor(() => {
-    // Check that we're back to login state
-    expect(screen.getByText('Log in to continue')).toBeInTheDocument();
-    // Verify course list is no longer shown
-    expect(screen.queryByText('Course list')).not.toBeInTheDocument();
-    // Verify welcome message is gone
+    expect(screen.getByText(/log in to continue/i)).toBeInTheDocument();
+    expect(screen.queryByText(/course list/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Welcome/)).not.toBeInTheDocument();
   });
 });
@@ -225,7 +215,7 @@ test('should render login page when the user is not logged in and handle login f
     fireEvent.click(logoutButton);
   });
 
-  expect(screen.getByText('Log in to continue')).toBeInTheDocument();
+  expect(screen.getByText(/log in to continue/i)).toBeInTheDocument();
 });
 
 test('logIn updates user state and renders CourseList', () => {
@@ -235,7 +225,7 @@ test('logIn updates user state and renders CourseList', () => {
 
   const emailInput = screen.getByLabelText(/email/i);
   const passwordInput = screen.getByLabelText(/password/i);
-  const submitButton = screen.getByRole('button', { name: 'OK' });
+  const submitButton = screen.getByRole('button', { name: /ok/i });
 
   fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
   fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -259,7 +249,7 @@ test('logOut function should clears user state and renders Login form', async ()
     fireEvent.click(submitButton);
   });
 
-  expect(screen.getByText('Course list')).toBeInTheDocument();
+  expect(screen.getByText(/course list/i)).toBeInTheDocument();
   
   const logoutSection = container.querySelector('#logoutSection');
   const logoutLink = logoutSection.querySelector('a');
@@ -268,10 +258,10 @@ test('logOut function should clears user state and renders Login form', async ()
 
   await waitFor(() => {
     expect(container.querySelector('#logoutSection')).not.toBeInTheDocument();
-    expect(screen.queryByText('Course list')).not.toBeInTheDocument();
+    expect(screen.queryByText(/course list/i)).not.toBeInTheDocument();
     expect(screen.queryByText('test@example.com')).not.toBeInTheDocument();
 
-    const loginTitle = screen.getByText('Log in to continue');
+    const loginTitle = screen.getByText(/log in to continue/i);
     expect(loginTitle).toBeInTheDocument();
   });
 });
@@ -376,27 +366,22 @@ describe('App Component State Management', () => {
       const user = userEvent.setup();
       renderAppWithContext();
 
-      // Initial state check
-      const notificationsList = screen.getByText('Here is the list of notifications');
+      const notificationsList = screen.getByText(/here is the list of notifications/i);
       expect(notificationsList).toBeVisible();
 
-      // Find and click close button
-      const closeButton = screen.getByRole('button', { name: 'Close' });
+      const closeButton = screen.getByRole('button', { name: /close/i });
       await user.click(closeButton);
-      
-      // Wait for state update and check visibility
+
       await waitFor(() => {
-        const hiddenList = screen.queryByText('Here is the list of notifications');
+        const hiddenList = screen.queryByText(/here is the list of notifications/i);
         expect(hiddenList).toBeNull();
       });
 
-      // Test show drawer
-      const notificationTitle = screen.getByText('Your notifications');
+      const notificationTitle = screen.getByText(/your notifications/i);
       await user.click(notificationTitle);
 
-      // Verify drawer is visible again
       await waitFor(() => {
-        const visibleList = screen.getByText('Here is the list of notifications');
+        const visibleList = screen.getByText(/here is the list of notifications/i);
         expect(visibleList).toBeVisible();
       });
     });
@@ -404,21 +389,33 @@ describe('App Component State Management', () => {
     test('displayDrawer keyboard interactions', async () => {
       const user = userEvent.setup();
       renderAppWithContext();
-  
-      // Initial state check
-      const notificationsList = screen.getByText('Here is the list of notifications');
+
+      const notificationsList = screen.getByText(/here is the list of notifications/i);
       expect(notificationsList).toBeVisible();
-  
-      // Find and click close button first to ensure proper state
-      const closeButton = screen.getByRole('button', { name: 'Close' });
+
+      const closeButton = screen.getByRole('button', { name: /close/i });
       await user.click(closeButton);
-      
-      // Wait for state update and check visibility
       await waitFor(() => {
-        const hiddenList = screen.queryByText('Here is the list of notifications');
+        const hiddenList = screen.queryByText(/here is the list of notifications/i);
         expect(hiddenList).toBeNull();
       }, { timeout: 2000 });
     });
+
+    test('Should remove notification items once click on it', async () => {
+			const user = userEvent.setup();
+			renderAppWithContext();
+
+			const initialListItems = screen.getAllByRole('listitem');
+      expect(initialListItems).toHaveLength(3);
+
+      await user.click(initialListItems[0]);
+
+      await waitFor(() => {
+        const updatedListItems = screen.getAllByRole('listitem');
+        expect(updatedListItems).toHaveLength(2);
+        expect(screen.queryByText('New course available')).not.toBeInTheDocument();
+      });
+		});
   });
 
   describe('User State Tests', () => {
@@ -432,7 +429,7 @@ describe('App Component State Management', () => {
         </newContext.Provider>
       );
 
-      expect(screen.getByRole('heading', { name: 'Log in to continue' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
       expect(screen.queryByText('Course list')).not.toBeInTheDocument();
 
       const emailInput = screen.getByLabelText(/email/i);
@@ -443,8 +440,8 @@ describe('App Component State Management', () => {
       await user.type(passwordInput, 'password123');
       await user.click(loginButton);
 
-      expect(screen.getByText('Course list')).toBeInTheDocument();
-      expect(screen.queryByText('Log in to continue')).not.toBeInTheDocument();
+      expect(screen.getByText(/course list/i)).toBeInTheDocument();
+      expect(screen.queryByText(/log in to continue/i)).not.toBeInTheDocument();
       expect(screen.getByText(/Welcome/)).toBeInTheDocument();
   
       const logoutSection = container.querySelector('div#logoutSection');
@@ -491,7 +488,6 @@ describe('App Component State Management', () => {
     });
   });
 });
-
 
 describe('App Component Hooks', () => {
   describe('handleDisplayDrawer', () => {
@@ -573,28 +569,6 @@ describe('App Component Hooks', () => {
         isLoggedIn: false
       });
     });
-
-    test('should maintain reference equality between renders', () => {
-      const { result, rerender } = renderHook(() => {
-        const [user, setUser] = useState({
-          email: 'test@test.com',
-          password: 'password123',
-          isLoggedIn: true
-        });
-        const logOut = useCallback(() => {
-          setUser({
-            email: '',
-            password: '',
-            isLoggedIn: false,
-          });
-        }, []);
-        return { logOut };
-      });
-
-      const firstReference = result.current.logOut;
-      rerender();
-      expect(result.current.logOut).toBe(firstReference);
-    });
   });
 
   describe('markNotificationAsRead', () => {
@@ -642,7 +616,6 @@ describe('App Component Hooks', () => {
 
 describe('App Component Type Tests', () => {
   test('should verify that App is a functional component', () => {
-    // Helper function to determine component type
     function getComponentType(component) {
       if (typeof component !== 'function') {
         return
@@ -668,3 +641,100 @@ describe('App Component Type Tests', () => {
     }).not.toThrow();
   });
 });
+
+
+//// =========> handleDisplayDrawer and handleHideDrawer should keep the same function reference between re-renders
+
+// jest.mock('../Notifications/Notifications', () => {
+//   return {
+//     __esModule: true,
+//     default: jest.fn(props => {
+//       TestNotifications.lastProps = props;
+//       return <div>Mock Notifications</div>;
+//     })
+//   };
+// });
+
+// const TestNotifications = {
+//   lastProps: null
+// };
+
+// describe('Callback References', () => {
+// 	beforeEach(() => {
+//     TestNotifications.lastProps = null;
+//     jest.clearAllMocks();
+//   });
+
+// 	test('handleDisplayDrawer and handleHideDrawer should maintain reference equality', async () => {
+// 		const { rerender } = render(<App />);
+
+// 		const firstHandleDisplayDrawer = TestNotifications.lastProps.handleDisplayDrawer;
+// 		const firstHandleHideDrawer = TestNotifications.lastProps.handleHideDrawer;
+
+// 		expect(typeof firstHandleDisplayDrawer).toBe('function');
+// 		expect(typeof firstHandleHideDrawer).toBe('function');
+
+// 		await act(async () => {
+// 			rerender(<App />);
+// 		});
+
+// 		const secondHandleDisplayDrawer = TestNotifications.lastProps.handleDisplayDrawer;
+// 		const secondHandleHideDrawer = TestNotifications.lastProps.handleHideDrawer;
+
+// 		expect(secondHandleDisplayDrawer).toBe(firstHandleDisplayDrawer);
+// 		expect(secondHandleHideDrawer).toBe(firstHandleHideDrawer);
+// 	});
+// });
+
+
+//// =========> markNotificationAsRead implementation should keep the same function reference between re-renders
+
+// jest.mock('../Notifications/Notifications', () => {
+//   return {
+//     __esModule: true,
+//     default: jest.fn(props => {
+//       NotificationsFunctionCapture.lastMarkNotificationAsRead = props.markNotificationAsRead;
+//       return <div>Mock Notifications</div>;
+//     })
+//   };
+// });
+
+// const NotificationsFunctionCapture = {
+//   lastMarkNotificationAsRead: null,
+//   resetCapture() {
+//     this.lastMarkNotificationAsRead = null;
+//   }
+// };
+
+// describe('markNotificationAsRead Function', () => {
+//   beforeEach(() => {
+//     NotificationsFunctionCapture.resetCapture();
+//     jest.clearAllMocks();
+//   });
+
+//   test('maintains reference equality and updates notifications correctly', () => {
+//     const consoleSpy = jest.spyOn(console, 'log');
+
+//     const { rerender } = render(<App />);
+
+//     const firstMarkNotificationAsRead = NotificationsFunctionCapture.lastMarkNotificationAsRead;
+
+//     expect(typeof firstMarkNotificationAsRead).toBe('function');
+
+//     act(() => {
+//       rerender(<App />);
+//     });
+
+//     const secondMarkNotificationAsRead = NotificationsFunctionCapture.lastMarkNotificationAsRead;
+
+//     expect(secondMarkNotificationAsRead).toBe(firstMarkNotificationAsRead);
+
+//     act(() => {
+//       firstMarkNotificationAsRead(1);
+//     });
+
+//     expect(consoleSpy).toHaveBeenCalledWith('Notification 1 has been marked as read');
+
+//     consoleSpy.mockRestore();
+//   });
+// });

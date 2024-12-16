@@ -2,7 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { act, render, fireEvent, renderHook,screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { newContext } from '../Context/context';
-import App from './App';
+import App from "./App";
+import Notifications from '../Notifications/Notifications';
+import NotificationItem from '../Notifications/NotificationItem';
 
 
 const mockBodySection = jest.fn();
@@ -639,6 +641,133 @@ describe('App Component Type Tests', () => {
       const element = React.createElement(App);
       expect(React.isValidElement(element)).toBe(true);
     }).not.toThrow();
+  });
+});
+
+
+// ========== TEST useCallback HOOK ==========
+describe('App Component Performance with useCallback', () => {
+  let renderCounts;
+  let originalConsoleLog;
+
+  beforeEach(() => {
+    renderCounts = {
+      notifications: 0,
+      notificationItems: new Map()
+    };
+
+    originalConsoleLog = console.log;
+    console.log = (message) => {
+      if (message.includes('Rendering NotificationItem with id:')) {
+        const idMatch = message.match(/id: (\d+)/);
+        if (idMatch) {
+          const id = parseInt(idMatch[1]);
+          renderCounts.notificationItems.set(
+            id, 
+            (renderCounts.notificationItems.get(id) || 0) + 1
+          );
+        }
+      }
+      originalConsoleLog(message);
+    };
+  });
+
+  afterEach(() => {
+    console.log = originalConsoleLog;
+    jest.clearAllMocks();
+    renderCounts.notificationItems.clear();
+  });
+
+  test('handleDisplayDrawer should maintain referential equality', () => {
+    const useCallbackSpy = jest.spyOn(React, 'useCallback');
+    const { rerender } = render(<App />);
+
+    const initialCalls = useCallbackSpy.mock.calls;
+    const displayDrawerCall = initialCalls.find(
+      call => call[0].toString().includes('setDisplayDrawer(true)')
+    );
+    
+    if (!displayDrawerCall) {
+      throw new Error('handleDisplayDrawer is not using useCallback');
+    }
+    
+    const initialHandler = displayDrawerCall[0];
+
+    rerender(<App />);
+
+    const laterCalls = useCallbackSpy.mock.calls;
+    const laterDisplayDrawerCall = laterCalls.find(
+      call => call[0].toString().includes('setDisplayDrawer(true)')
+    );
+
+    expect(initialHandler).toBe(laterDisplayDrawerCall[0]);
+  });
+
+  test('handleHideDrawer should maintain referential equality', () => {
+    const useCallbackSpy = jest.spyOn(React, 'useCallback');
+    const { rerender } = render(<App />);
+
+    const initialCalls = useCallbackSpy.mock.calls;
+    const hideDrawerCall = initialCalls.find(
+      call => call[0].toString().includes('setDisplayDrawer(false)')
+    );
+    
+    if (!hideDrawerCall) {
+      throw new Error('handleHideDrawer is not using useCallback');
+    }
+    
+    const initialHandler = hideDrawerCall[0];
+
+    rerender(<App />);
+
+    const laterCalls = useCallbackSpy.mock.calls;
+    const laterHideDrawerCall = laterCalls.find(
+      call => call[0].toString().includes('setDisplayDrawer(false)')
+    );
+
+    expect(initialHandler).toBe(laterHideDrawerCall[0]);
+  });
+
+  test('markNotificationAsRead should maintain referential equality', () => {
+    const useCallbackSpy = jest.spyOn(React, 'useCallback');
+    const { rerender } = render(<App />);
+
+    const initialCalls = useCallbackSpy.mock.calls;
+    const markAsReadCall = initialCalls.find(
+      call => call[0].toString().includes('setNotifications')
+    );
+    
+    if (!markAsReadCall) {
+      throw new Error('markNotificationAsRead is not using useCallback');
+    }
+    
+    const initialHandler = markAsReadCall[0];
+
+    rerender(<App />);
+
+    const laterCalls = useCallbackSpy.mock.calls;
+    const laterMarkAsReadCall = laterCalls.find(
+      call => call[0].toString().includes('setNotifications')
+    );
+
+    expect(initialHandler).toBe(laterMarkAsReadCall[0]);
+  });
+
+  test('handlers should maintain functionality', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Your notifications'));
+    expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('Close'));
+
+    fireEvent.click(screen.getByText('Your notifications'));
+    const notificationItems = screen.getAllByRole('listitem');
+    const initialCount = notificationItems.length;
+    
+    fireEvent.click(notificationItems[0]);
+    const remainingItems = screen.getAllByRole('listitem');
+    expect(remainingItems.length).toBe(initialCount - 1);
   });
 });
 

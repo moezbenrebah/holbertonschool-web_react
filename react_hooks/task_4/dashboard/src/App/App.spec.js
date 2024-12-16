@@ -3,8 +3,6 @@ import { act, render, fireEvent, renderHook,screen, waitFor, within } from '@tes
 import userEvent from '@testing-library/user-event';
 import { newContext } from '../Context/context';
 import App from "./App";
-import Notifications from '../Notifications/Notifications';
-import NotificationItem from '../Notifications/NotificationItem';
 
 
 const mockBodySection = jest.fn();
@@ -646,6 +644,7 @@ describe('App Component Type Tests', () => {
 
 
 // ========== TEST useCallback HOOK ==========
+
 describe('App Component Performance with useCallback', () => {
   let renderCounts;
   let originalConsoleLog;

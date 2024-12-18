@@ -65,7 +65,7 @@ const Notifications = memo(function Notifications({
   displayDrawer,
   handleDisplayDrawer,
   handleHideDrawer,
-  notifications,
+  notifications = [],
   markNotificationAsRead
 }) {
   return (

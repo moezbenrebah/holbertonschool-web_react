@@ -317,26 +317,22 @@ describe('App Component Tests', () => {
 
   test('verify notification item deletion', async () => {
     const user = userEvent.setup();
-    
-    // Set up mock responses for both API calls
+
     mockAxios.get.mockImplementationOnce(() => Promise.resolve(mockNotificationsResponse));
     
     render(<App />);
 
-    // Wait for notifications to load and verify initial state
     await waitFor(() => {
       const listItems = screen.getAllByRole('listitem');
       expect(listItems).toHaveLength(3);
     });
 
-    // Verify initial content
     expect(screen.getByText('New course available')).toBeInTheDocument();
     expect(screen.getByText('New resume available')).toBeInTheDocument();
     expect(screen.getByText((content, element) => {
       return element.textContent === 'Urgent requirement - complete by EOD';
     })).toBeInTheDocument();
 
-    // Test deletion
     await user.click(screen.getByText('New course available'));
     
     await waitFor(() => {
@@ -344,7 +340,6 @@ describe('App Component Tests', () => {
       expect(screen.getAllByRole('listitem')).toHaveLength(2);
     });
 
-    // Verify the API calls were made with the correct URLs
     expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
   });
 });
@@ -374,9 +369,7 @@ describe('App component when user is logged in', () => {
   test('The App component should fetch courses data successfully whenever user is logged in', async () => {
     const user = userEvent.setup();
 
-    // Single mock implementation for both endpoints
     mockAxios.get.mockImplementation((url) => {
-      // Return appropriate response based on the URL
       if (url.includes('notifications')) {
         return Promise.resolve(mockEmptyNotificationsResponse);
       }
@@ -391,12 +384,10 @@ describe('App component when user is logged in', () => {
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /ok/i });
 
-    // Login process
     await user.type(emailInput, 'test@example.com');
     await user.type(passwordInput, 'password123');
     await user.click(submitButton);
 
-    // Wait for courses to load
     await waitFor(() => {
       expect(screen.getByText('ES6')).toBeInTheDocument();
       expect(screen.getByText('Webpack')).toBeInTheDocument();
@@ -454,8 +445,7 @@ describe('App Component State Management', () => {
   describe('DisplayDrawer State Tests', () => {
     test('displayDrawer state management and notification visibility', async () => {
       const user = userEvent.setup();
-    
-      // Mock notifications endpoint with implementation that counts calls
+ 
       let callCount = 0;
       mockAxios.get.mockImplementation((url) => {
         if (url.includes('notifications')) {
@@ -465,30 +455,25 @@ describe('App Component State Management', () => {
       });
     
       renderAppWithContext();
-    
-      // Wait for initial notifications load
+
       await waitFor(async () => {
         const notifications = await screen.findAllByRole('listitem');
         expect(notifications).toHaveLength(3);
       });
-    
-      // Test visibility toggling
+
       expect(screen.getByText(/here is the list of notifications/i)).toBeVisible();
       await user.click(screen.getByRole('button', { name: /close/i }));
-    
-      // Verify hiding
+
       await waitFor(() => {
         const hiddenList = screen.queryByText(/here is the list of notifications/i);
         expect(hiddenList).toBeNull();
       });
-    
-      // Test showing again
+
       await user.click(screen.getByText(/your notifications/i));
       await waitFor(() => {
         expect(screen.getByText(/here is the list of notifications/i)).toBeVisible();
       });
-    
-      // Verify API was called only once
+
       expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
       expect(callCount).toBe(1);
     });
@@ -545,7 +530,6 @@ describe('App Component State Management', () => {
       const user = userEvent.setup();
       const mockLogOut = jest.fn();
 
-      // Set up mock implementation for both APIs
       mockAxios.get.mockImplementation((url) => {
         if (url.includes('notifications')) {
           return Promise.resolve(mockNotificationsResponse);
@@ -562,37 +546,30 @@ describe('App Component State Management', () => {
         </newContext.Provider>
       );
 
-      // Wait for initial data load
       await waitFor(() => {
         expect(screen.getAllByRole('listitem')).toBeTruthy();
       });
 
-      // Initial state checks
       expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
       expect(screen.queryByText('Course list')).not.toBeInTheDocument();
 
-      // Login process
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
       const loginButton = screen.getByRole('button', { name: /ok/i });
 
-      // User interactions
       await user.type(emailInput, 'test@example.com');
       await user.type(passwordInput, 'password123');
       await user.click(loginButton);
 
-      // Verify logged in state
       await waitFor(() => {
         expect(screen.getByText(/course list/i)).toBeInTheDocument();
         expect(screen.queryByText(/log in to continue/i)).not.toBeInTheDocument();
         expect(screen.getByText(/Welcome/)).toBeInTheDocument();
       });
 
-      // Logout process
       const logoutButton = screen.getByText(/logout/i);
       await user.click(logoutButton);
 
-      // Verify logged out state
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: /log in to continue/i })).toBeInTheDocument();
         expect(screen.queryByText(/course list/i)).not.toBeInTheDocument();
@@ -935,7 +912,6 @@ describe('App Component Performance with useCallback', () => {
   
     render(<App />);
 
-    // here
     user.click(screen.getByText(/your notifications/i));
 
     await waitFor( async () => {

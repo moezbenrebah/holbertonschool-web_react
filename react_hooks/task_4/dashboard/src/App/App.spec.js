@@ -341,6 +341,7 @@ describe('App Component Tests', () => {
     });
 
     expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
+    expect(mockAxios.get).toHaveBeenCalledTimes(1);
   });
 });
 

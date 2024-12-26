@@ -10,7 +10,7 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', "react-hooks"],
   rules: {
     'react-refresh/only-export-components': [
       'off',
@@ -18,5 +18,7 @@ module.exports = {
     ],
     'react/jsx-no-target-blank': 'off',
     'react/prop-types': 'off',
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn"
   },
 }

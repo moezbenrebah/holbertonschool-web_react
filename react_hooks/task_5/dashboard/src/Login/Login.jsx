@@ -7,14 +7,15 @@ function Login({ login }) {
     email,
     password,
     enableSubmit,
-    handleChange,
-    handleSubmit
+    handleChangeEmail,
+    handleChangePassword,
+    handleLoginSubmit
   } = useLogin({
     onLogin: login
   });
 
   return (
-    <form aria-label="form" onSubmit={handleSubmit}>
+    <form aria-label="form" onSubmit={handleLoginSubmit}>
       <div className="App-body">
         <p>Login to access the full dashboard</p>
         <div className="form">
@@ -24,7 +25,7 @@ function Login({ login }) {
             name="email"
             id="email"
             value={email}
-            onChange={handleChange}
+            onChange={handleChangeEmail}
           />
           <label htmlFor="password">Password</label>
           <input
@@ -32,7 +33,7 @@ function Login({ login }) {
             name="password"
             id="password"
             value={password}
-            onChange={handleChange}
+            onChange={handleChangePassword}
           />
           <input
             type="submit"

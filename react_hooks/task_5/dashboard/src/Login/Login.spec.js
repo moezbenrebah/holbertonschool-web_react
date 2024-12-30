@@ -56,9 +56,9 @@ test('submit button is disabled by default', () => {
 test('submit button is enabled only with a valid email and password of at least 8 characters', () => {
   render(<Login isLoggedIn={false} />);
   
-  const emailInput = screen.getByLabelText('Email');
-  const passwordInput = screen.getByLabelText('Password');
-  const submitButton = screen.getByText('OK');
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+  const submitButton = screen.getByText(/ok/i);
 
   expect(submitButton).toBeDisabled();
 
@@ -91,7 +91,13 @@ describe('Login Component Tests', () => {
 
   test('should call logIn function on form submission', () => {
     const mockLogin = jest.fn();
-    render(<Login login={mockLogin} email="test@test.com" password="password123" />);
+    render(<Login login={mockLogin} />);
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+  
+    fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
 
     const form = screen.getByRole('form');
     fireEvent.submit(form);

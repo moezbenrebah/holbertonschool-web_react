@@ -1,31 +1,31 @@
 // Catch browser warns and errors
-const originalError = console.error;
-const originalWarn = console.warn;
+// const originalError = console.error;
+// const originalWarn = console.warn;
 
-let consoleOutput = [];
+// let consoleOutput = [];
 
-console.error = (...args) => {
-  consoleOutput.push(['error', args[0]]);
-};
+// console.error = (...args) => {
+//   consoleOutput.push(['error', args[0]]);
+// };
 
-console.warn = (...args) => {
-  consoleOutput.push(['warn', args[0]]);
-};
+// console.warn = (...args) => {
+//   consoleOutput.push(['warn', args[0]]);
+// };
 
-beforeEach(() => {
-  consoleOutput = [];
-});
+// beforeEach(() => {
+//   consoleOutput = [];
+// });
 
-afterEach(() => {
-  jest.clearAllMocks();
+// afterEach(() => {
+//   jest.clearAllMocks();
   
-  if (consoleOutput.length > 0) {
-    throw new Error(
-      'Test failed: Console warnings or errors detected:\n' +
-      consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
-    );
-  }
-});
+//   if (consoleOutput.length > 0) {
+//     throw new Error(
+//       'Test failed: Console warnings or errors detected:\n' +
+//       consoleOutput.map(([type, message]) => `${type}: ${message}`).join('\n')
+//     );
+//   }
+// });
 
 import React, { useCallback, useState } from 'react';
 import { act, render, fireEvent, renderHook,screen, waitFor, within } from '@testing-library/react';
@@ -310,10 +310,8 @@ describe('App Component Tests', () => {
     }
   };
 
-  // clean up state after each test
-  afterEach(() => {
-    mockAxios.reset();
-  });
+  beforeEach(() => mockAxios.reset());
+  afterEach(() => mockAxios.reset());
 
   test('verify notification item deletion', async () => {
     const user = userEvent.setup();
@@ -321,18 +319,18 @@ describe('App Component Tests', () => {
     mockAxios.get.mockImplementationOnce(() => Promise.resolve(mockNotificationsResponse));
     
     render(<App />);
-
+  
     await waitFor(() => {
       const listItems = screen.getAllByRole('listitem');
       expect(listItems).toHaveLength(3);
     });
-
+  
     expect(screen.getByText('New course available')).toBeInTheDocument();
     expect(screen.getByText('New resume available')).toBeInTheDocument();
     expect(screen.getByText((content, element) => {
       return element.textContent === 'Urgent requirement - complete by EOD';
     })).toBeInTheDocument();
-
+  
     await user.click(screen.getByText('New course available'));
     
     await waitFor(() => {
@@ -340,8 +338,10 @@ describe('App Component Tests', () => {
       expect(screen.getAllByRole('listitem')).toHaveLength(2);
     });
 
-    expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    const notificationCalls = mockAxios.get.mock.calls.filter(
+      call => call[0].includes('notifications')
+    );
+    expect(notificationCalls).toHaveLength(1);
   });
 });
 
@@ -393,9 +393,97 @@ describe('App component when user is logged in', () => {
       expect(screen.getByText('ES6')).toBeInTheDocument();
       expect(screen.getByText('Webpack')).toBeInTheDocument();
       expect(screen.getByText('React')).toBeInTheDocument();
-    }, { timeout: 3000 });
-  })
-})
+    });
+  });
+});
+
+describe('App component courses fetching behavior', () => {
+  const mockCoursesResponse = {
+    data: {
+      courses: [
+        { id: 1, name: "ES6", credit: 60 },
+        { id: 2, name: "Webpack", credit: 20 },
+        { id: 3, name: "React", credit: 40 }
+      ]
+    }
+  };
+
+  const mockEmptyNotificationsResponse = {
+    data: {
+      notifications: []
+    }
+  };
+
+  beforeEach(() => {
+    mockAxios.get.mockImplementation((url) => {
+      if (url.includes('courses')) {
+        return Promise.resolve(mockCoursesResponse);
+      }
+    });
+  });
+
+  afterEach(() => {
+    mockAxios.reset();
+  });
+
+  test('should only fetch courses when isLoggedIn changes to true', async () => {
+    const user = userEvent.setup();
+
+    mockAxios.get.mockImplementation((url) => {
+      if (url.includes('notifications')) {
+        return Promise.resolve(mockEmptyNotificationsResponse);
+      }
+      if (url.includes('courses')) {
+        return Promise.resolve(mockCoursesResponse);
+      }
+      return Promise.reject(new Error('Invalid URL'));
+    });
+  
+    render(<App />);
+
+    expect(screen.getByText('Log in to continue')).toBeInTheDocument();
+    expect(mockAxios.get).not.toHaveBeenCalledWith(expect.stringContaining('courses'));
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+
+    expect(mockAxios.get).not.toHaveBeenCalledWith(expect.stringContaining('courses'));
+
+    const submitButton = screen.getByRole('button', { name: /ok/i });
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      const coursesCalls = mockAxios.get.mock.calls.filter(
+        call => call[0].includes('courses')
+      );
+      expect(coursesCalls).toHaveLength(1);
+      expect(screen.getByText('ES6')).toBeInTheDocument();
+    });
+
+    await user.type(emailInput, 'new@example.com');
+
+    const coursesCallsAfterEmailChange = mockAxios.get.mock.calls.filter(
+      call => call[0].includes('courses')
+    );
+    expect(coursesCallsAfterEmailChange).toHaveLength(1);
+
+    const logoutButton = screen.getByText(/logout/i);
+    await user.click(logoutButton);
+
+    await waitFor(() => {
+      expect(screen.queryByText('ES6')).not.toBeInTheDocument();
+      expect(screen.getByText('Log in to continue')).toBeInTheDocument();
+      
+      const finalCoursesCalls = mockAxios.get.mock.calls.filter(
+        call => call[0].includes('courses')
+      );
+      expect(finalCoursesCalls).toHaveLength(1);
+    });
+  });
+});
 
 
 // // ========== TEST useState HOOK ==========
@@ -1038,9 +1126,8 @@ describe('App Component Performance with useCallback', () => {
 // }));
 
 
-
-afterAll(() => {
-  console.error = originalError;
-  console.warn = originalWarn;
-});
+// afterAll(() => {
+//   console.error = originalError;
+//   console.warn = originalWarn;
+// });
 

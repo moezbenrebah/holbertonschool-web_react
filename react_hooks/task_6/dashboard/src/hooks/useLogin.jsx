@@ -1,55 +1,50 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
-export default function useLogin({ initialEmail = '', initialPassword = '', onLogin }) {
-  const [formData, setFormData] = useState({
-    email: initialEmail,
-    password: initialPassword
-  });
-
+export default function useLogin({ onLogin }) {
   const [enableSubmit, setEnableSubmit] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validateForm = useCallback((email, password) => {
-    return validateEmail(email) && password.length >= 8;
-  }, []);
+  const handleChangeEmail = (e) => {
+    const newEmail = e.target.value;
+    const { password } = formData;
+    
+    setFormData(prev => ({
+      ...prev,
+      email: newEmail
+    }));
+    setEnableSubmit(validateEmail(newEmail) && password.length >= 8);
+  };
 
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFormData(prev => {
-      const newData = { ...prev, [name]: value };
-      setEnableSubmit(validateForm(
-        name === 'email' ? value : newData.email,
-        name === 'password' ? value : newData.password
-      ));
-      return newData;
-    });
-  }, [validateForm]);
+  const handleChangePassword = (e) => {
+    const newPassword = e.target.value;
+    const { email } = formData;
+    
+    setFormData(prev => ({
+      ...prev,
+      password: newPassword
+    }));
+    setEnableSubmit(validateEmail(email) && newPassword.length >= 8);
+  };
 
-  const handleSubmit = useCallback((e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (enableSubmit && onLogin) {
-      onLogin(formData.email, formData.password);
-    }
-  }, [enableSubmit, formData, onLogin]);
-
-  const reset = useCallback(() => {
-    setFormData({
-      email: initialEmail,
-      password: initialPassword
-    });
-    setEnableSubmit(false);
-  }, [initialEmail, initialPassword]);
+    onLogin(formData.email, formData.password);
+  };
 
   return {
     email: formData.email,
     password: formData.password,
     enableSubmit,
-    handleChange,
-    handleSubmit,
-    reset
+    handleChangeEmail,
+    handleChangePassword,
+    handleLoginSubmit
   };
 }

@@ -1,71 +1,21 @@
 import WithLogging from '../HOC/WithLogging';
-import './Login.css';
 import useLogin from '../hooks/useLogin';
+import './Login.css';
 
 function Login({ login }) {
   const {
     email,
     password,
     enableSubmit,
-    handleChange,
-    handleSubmit
+    handleChangeEmail,
+    handleChangePassword,
+    handleLoginSubmit
   } = useLogin({
     onLogin: login
   });
 
-  // const validateEmail = (email) => {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailRegex.test(email);
-  // };
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData(prev => {
-  //     const newData = { ...prev, [name]: value };
-  //     return {
-  //       ...newData,
-  //       enableSubmit: validateEmail(newData.email) && newData.password.length >= 8
-  //     };
-  //   });
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   login(formData.email, formData.password);
-  // };
-
-  // return (
-  //   <form aria-label="form" onSubmit={handleSubmit}>
-  //     <div className="App-body">
-  //       <p>Login to access the full dashboard</p>
-  //       <div className="form">
-  //         <label htmlFor="email">Email</label>
-  //         <input
-  //           type="email"
-  //           name="email"
-  //           id="email"
-  //           value={formData.email}
-  //           onChange={handleChange}
-  //         />
-  //         <label htmlFor="password">Password</label>
-  //         <input
-  //           type="text"
-  //           name="password"
-  //           id="password"
-  //           value={formData.password}
-  //           onChange={handleChange}
-  //         />
-  //         <input
-  //           value="OK"
-  //           type="submit"
-  //           disabled={!formData.enableSubmit}
-  //         />
-  //       </div>
-  //     </div>
-  //   </form>
-  // );
   return (
-    <form aria-label="form" onSubmit={handleSubmit}>
+    <form aria-label="form" onSubmit={handleLoginSubmit}>
       <div className="App-body">
         <p>Login to access the full dashboard</p>
         <div className="form">
@@ -75,7 +25,7 @@ function Login({ login }) {
             name="email"
             id="email"
             value={email}
-            onChange={handleChange}
+            onChange={handleChangeEmail}
           />
           <label htmlFor="password">Password</label>
           <input
@@ -83,7 +33,7 @@ function Login({ login }) {
             name="password"
             id="password"
             value={password}
-            onChange={handleChange}
+            onChange={handleChangePassword}
           />
           <input
             type="submit"

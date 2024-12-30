@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
 
+
 test('the NotificationItem is rendered without crashing', () => {
   render(<NotificationItem />)
 })

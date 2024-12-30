@@ -9,7 +9,7 @@ import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import BodySection from '../BodySection/BodySection';
-import appReducer, { APP_ACTIONS, initialState } from './AppReducer';
+import appReducer, { APP_ACTIONS, initialState } from './appReducer';
 
 const API_BASE_URL = 'http://localhost:5173';
 const ENDPOINTS = {

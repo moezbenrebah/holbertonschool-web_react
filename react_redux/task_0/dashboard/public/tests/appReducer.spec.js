@@ -1,4 +1,4 @@
-import { appReducer, APP_ACTIONS, initialState } from '../appReducer';
+import { appReducer, APP_ACTIONS, initialState } from '../../src/appReducer';
 
 describe('test appReducer', () => {
   describe('basic reducer behavior', () => {

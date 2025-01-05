@@ -5,15 +5,19 @@ import Login from './Login';
 test('testing signin form elements', () => {
   render(<Login />);
 
-  const inputElements = screen.getAllByRole('textbox')
-  const emailLabelElement = screen.getByLabelText(/email/i);
-  const passwordLabelElement = screen.getByLabelText(/password/i);
-  const buttonElementText = screen.getByRole('button', { name: 'OK' })
+  const emailInput = screen.getByRole('textbox');
+  const passwordInput = screen.getByLabelText(/password/i);
+  const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  expect(inputElements).toHaveLength(2)
-  expect(emailLabelElement).toBeInTheDocument()
-  expect(passwordLabelElement).toBeInTheDocument()
-  expect(buttonElementText).toBeInTheDocument()
+  expect(emailInput).toBeInTheDocument();
+  expect(emailInput).toHaveAttribute('type', 'email');
+  expect(screen.getByLabelText(/email/i)).toBe(emailInput);
+
+  expect(passwordInput).toBeInTheDocument();
+  expect(passwordInput).toHaveAttribute('type', 'password');
+
+  expect(submitButton).toBeInTheDocument();
+  expect(submitButton).toBeDisabled();
 });
 
 test('it should check that the email input element will be focused whenever the associated label is clicked', async () => {

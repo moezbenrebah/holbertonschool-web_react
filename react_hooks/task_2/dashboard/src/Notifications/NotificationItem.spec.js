@@ -279,24 +279,22 @@ describe('Check console errors & warns', () => {
   });
 
   test('No console errors & warns', () => {
+    const consoleSpy = jest.spyOn(console, 'log');
     const props = {
       type: 'default',
       value: 'test',
       id: 1,
       markAsRead: jest.fn()
     };
-
-    // first render
-    const { rerender } = render(<NotificationItem {...props} />);
     
-    // re-render with same props
-    const renderLogs = jest.spyOn(console, 'log')
-      .mock.calls
-      .filter(call => call[0].includes('Rendering NotificationItem'));
-
+    const { rerender } = render(<NotificationItem {...props} />);
     rerender(<NotificationItem {...props} />);
     
+    const renderLogs = consoleSpy.mock.calls
+      .filter(call => call[0].includes('Rendering NotificationItem'));
+      
     expect(renderLogs.length).toBe(1);
+    consoleSpy.mockRestore();
   });
 });
 

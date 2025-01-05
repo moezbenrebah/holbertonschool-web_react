@@ -1,7 +1,5 @@
-import React, { Profiler, useMemo } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import * as NotificationItemModule from './NotificationItem';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
 

@@ -44,22 +44,6 @@ const Notifications = memo(function Notifications({
       )}
     </>
   );
-}, (prevProps, nextProps) => {
-  // Compare notifications array
-  const DidNotificationsUpdated = 
-    prevProps.notifications.length === nextProps.notifications.length &&
-    prevProps.notifications.every((notification, index) => {
-      const prevNotif = prevProps.notifications[index];
-      const nextNotif = nextProps.notifications[index];
-      return (
-        prevNotif.id === nextNotif.id &&
-        prevNotif.type === nextNotif.type &&
-        prevNotif.value === nextNotif.value &&
-        prevNotif.html === nextNotif.html
-      );
-    });
-
-  return DidNotificationsUpdated;
-});
+})
 
 export default Notifications;

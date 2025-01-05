@@ -87,11 +87,11 @@ import { useState } from 'react';
 import WithLogging from '../HOC/WithLogging';
 import './Login.css';
 
-const Login = ({ login, email: initialEmail = '', password: initialPassword = '' }) => {
+const Login = ({ login, email = '', password = '' }) => {
+  const [enableSubmit, setEnableSubmit] = useState(false);
   const [formData, setFormData] = useState({
-    email: initialEmail,
-    password: initialPassword,
-    enableSubmit: false
+    email,
+    password
   });
 
   const validateEmail = (email) => {
@@ -99,24 +99,35 @@ const Login = ({ login, email: initialEmail = '', password: initialPassword = ''
     return emailRegex.test(email);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => {
-      const newData = { ...prev, [name]: value };
-      return {
-        ...newData,
-        enableSubmit: validateEmail(newData.email) && newData.password.length >= 8
-      };
-    });
+  const handleChangeEmail = (e) => {
+    const newEmail = e.target.value;
+    const { password } = formData;
+    
+    setFormData(prev => ({
+      ...prev,
+      email: newEmail
+    }));
+    setEnableSubmit(validateEmail(newEmail) && password.length >= 8);
   };
 
-  const handleSubmit = (e) => {
+  const handleChangePassword = (e) => {
+    const newPassword = e.target.value;
+    const { email } = formData;
+    
+    setFormData(prev => ({
+      ...prev,
+      password: newPassword
+    }));
+    setEnableSubmit(validateEmail(email) && newPassword.length >= 8);
+  };
+
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
     login(formData.email, formData.password);
   };
 
   return (
-    <form aria-label="form" onSubmit={handleSubmit}>
+    <form aria-label="form" onSubmit={handleLoginSubmit}>
       <div className="App-body">
         <p>Login to access the full dashboard</p>
         <div className="form">
@@ -126,20 +137,20 @@ const Login = ({ login, email: initialEmail = '', password: initialPassword = ''
             name="email"
             id="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleChangeEmail}
           />
           <label htmlFor="password">Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={handleChangePassword}
           />
           <input
             value="OK"
             type="submit"
-            disabled={!formData.enableSubmit}
+            disabled={!enableSubmit}
           />
         </div>
       </div>

@@ -1,10 +1,11 @@
-import appReducer, { APP_ACTIONS, initialState } from './appReducer';
+import { appReducer, APP_ACTIONS, initialState } from './appReducer';
 
 describe('test appReducer', () => {
   describe('basic reducer behavior', () => {
     test('should return initial state when no state is provided', () => {
 			
       const newState = appReducer(undefined, { type: 'INITIAL' });
+      console.log(`STATE===> ${newState}`)
       expect(newState).toEqual(initialState);
     });
 

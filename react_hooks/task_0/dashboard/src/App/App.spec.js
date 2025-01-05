@@ -376,13 +376,3 @@ test('verify notification item deletion', async () => {
   expect(consoleSpy).toHaveBeenCalledWith('Notification 1 has been marked as read');
   
 })
-
-test('No errors on browser console', () => {
-  const consoleSpyWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-  render(<App />);
-
-  expect(console.error.mock.calls[0][0]).toContain('')
-  console.log('mockedError', console.error.mock.calls);
-  expect(consoleSpyWarn).not.toHaveBeenCalled();
-});

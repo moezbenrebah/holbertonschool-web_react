@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { logout } from '../auth/authSlice';
+
+const initialState = {
+  courses: [],
+};
+
 
 const API_BASE_URL = 'http://localhost:5173';
 const ENDPOINTS = {
@@ -17,13 +23,15 @@ export const fetchCourses = createAsyncThunk(
 
 const coursesSlice = createSlice({
   name: 'courses',
-  initialState: {
-    courses: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCourses.fulfilled, (state, action) => {
       state.courses = action.payload;
+    })
+    // Listen for the logout action and reset the courses state
+    .addCase(logout, (state) => {
+      state.courses = initialState.courses;
     });
   },
 });

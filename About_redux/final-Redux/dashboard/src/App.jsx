@@ -11,25 +11,29 @@ import Notifications from './components/Notifications/Notifications';
 import BodySection from './components/BodySection/BodySection';
 import BodySectionWithMarginBottom from './components/BodySection/BodySectionWithMarginBottom';
 
-export default function App () {
+export default function App() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Only extract isLoggedIn
   const { courses } = useSelector((state) => state.courses);
 
+  // Fetch notifications on mount
   useEffect(() => {
     dispatch(fetchNotifications());
   }, [dispatch]);
 
+  // Fetch courses only if the user is logged in
   useEffect(() => {
-    if (user.isLoggedIn) {
+    if (isLoggedIn) {
       dispatch(fetchCourses());
     }
-  }, [user.isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch]);
 
+  // Login handler
   const handleLogin = (email, password) => {
-    dispatch(login({ email, password }));
+    dispatch(login({ email, password })); // Pass user details as payload
   };
 
+  // Logout handler
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -38,7 +42,7 @@ export default function App () {
     <div>
       <Notifications />
       <Header />
-      {user.isLoggedIn ? (
+      {isLoggedIn ? (
         <BodySectionWithMarginBottom title="Course list">
           <CourseList courses={courses} />
         </BodySectionWithMarginBottom>
@@ -50,4 +54,4 @@ export default function App () {
       <Footer />
     </div>
   );
-};
+}

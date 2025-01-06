@@ -349,7 +349,6 @@ describe('App component when user is logged in', () => {
     }
   };
 
-  // clean up state after each test
   afterEach(() => {
     mockAxios.reset();
   });

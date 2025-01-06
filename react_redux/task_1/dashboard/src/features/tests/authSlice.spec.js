@@ -1,4 +1,4 @@
-import authReducer, { login, logout } from "/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_redux/task_1/dashboard/faulty-authSlice-seq1.js";
+import authReducer, { login, logout } from '../auth/authSlice';
 
 describe('authSlice', () => {
   const initialState = {

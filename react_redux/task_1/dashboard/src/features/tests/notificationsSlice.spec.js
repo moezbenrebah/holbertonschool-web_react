@@ -3,16 +3,7 @@ import notificationsSlice, {
   showDrawer,
   hideDrawer,
   fetchNotifications,
-} from '/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_redux/task_1/dashboard/faulty-notificationsSlice.js';
-
-
-
-
-
-
-
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
+} from '../notifications/notificationsSlice';
 
 const mock = new MockAdapter(axios);
 

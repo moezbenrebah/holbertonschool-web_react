@@ -4,6 +4,8 @@ import notificationsSlice, {
   hideDrawer,
   fetchNotifications,
 } from '../notifications/notificationsSlice';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 const mock = new MockAdapter(axios);
 

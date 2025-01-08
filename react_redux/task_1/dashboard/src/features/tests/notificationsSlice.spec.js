@@ -1,9 +1,10 @@
-import notificationsSlice, {
+import {
   markNotificationAsRead,
   showDrawer,
   hideDrawer,
   fetchNotifications,
-} from '../notifications/notificationsSlice';
+} from './src/features/notifications/notificationsSlice';
+import notificationsSlice from './src/features/notifications/notificationsSlice';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -15,13 +16,13 @@ describe('notificationsSlice', () => {
     displayDrawer: true,
   };
 
-  it('should return the initial state', () => {
+  test('should return the initial state', () => {
     expect(notificationsSlice(undefined, { type: 'unknown' })).toEqual(
       initialState
     );
   });
 
-  it('should handle markNotificationAsRead', () => {
+  test('should handle markNotificationAsRead', () => {
     const stateWithNotifications = {
       ...initialState,
       notifications: [
@@ -39,7 +40,7 @@ describe('notificationsSlice', () => {
     );
   });
 
-  it('should handle showDrawer', () => {
+  test('should handle showDrawer', () => {
     const action = showDrawer();
     const expectedState = {
       ...initialState,
@@ -48,7 +49,7 @@ describe('notificationsSlice', () => {
     expect(notificationsSlice(initialState, action)).toEqual(expectedState);
   });
 
-  it('should handle hideDrawer', () => {
+  test('should handle hideDrawer', () => {
     const stateWithDrawerClosed = {
       ...initialState,
       displayDrawer: false,
@@ -60,7 +61,7 @@ describe('notificationsSlice', () => {
   });
 
   describe('fetchNotifications async thunk', () => {
-    it('should handle fetchNotifications.pending', () => {
+    test('should handle fetchNotifications.pending', () => {
       const action = { type: fetchNotifications.pending.type };
       const state = notificationsSlice(initialState, action);
       expect(state).toEqual({
@@ -68,23 +69,7 @@ describe('notificationsSlice', () => {
       });
     });
 
-    it('should handle fetchNotifications.fulfilled', () => {
-      const notifications = [
-        { id: 1, message: 'Notification 1' },
-        { id: 2, message: 'Notification 2' },
-      ];
-      const action = {
-        type: fetchNotifications.fulfilled.type,
-        payload: notifications,
-      };
-      const state = notificationsSlice(initialState, action);
-      expect(state).toEqual({
-        ...initialState,
-        notifications,
-      });
-    });
-
-    it('should handle fetchNotifications.rejected', () => {
+    test('should handle fetchNotifications.rejected', () => {
       const action = {
         type: fetchNotifications.rejected.type,
       };
@@ -93,5 +78,61 @@ describe('notificationsSlice', () => {
         ...initialState,
       });
     });
-  });
+
+    test('should handle fetchNotifications.rejected when base URL or port is incorrect', async () => {
+      const incorrectBaseURL = 'http://loclhost:5173'; // Typo in "localhost"
+      mock.onGet(`${incorrectBaseURL}/notifications.json`).networkError();
+
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+
+      await fetchNotifications()(dispatch, getState, null);
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: fetchNotifications.rejected.type,
+        })
+      );
+    });
+
+    test('should handle fetchNotifications.rejected when endpoint is incorrect', async () => {
+      const incorrectEndpoint = 'http://localhost:5173/notifictions.json'; // Typo in "notifications"
+      mock.onGet(incorrectEndpoint).reply(404);
+
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+
+      await fetchNotifications()(dispatch, getState, null);
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: fetchNotifications.rejected.type,
+        })
+      );
+    });
+
+    test('should handle fetchNotifications.fulfilled when API request is successful', async () => {
+      const notifications = [
+        { id: 1, message: 'Notification 1' },
+        { id: 2, message: 'Notification 2' },
+        { html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' }, id: 3, type: 'urgent' },
+      ];
+      mock.onGet('http://localhost:5173/notifications.json').reply(200, {
+        notifications,
+      });
+    
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+    
+      await fetchNotifications()(dispatch, getState, null);
+
+      
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: fetchNotifications.fulfilled.type,
+          payload: notifications,
+        })
+      );
+    });
+  })
 });

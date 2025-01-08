@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { getLatestNotification } from '../../utils/utils';
+import { getLatestNotification } from './src/utils/utils';
 
+// incorrect initial state
 const initialState = {
   notifications: [],
   displayDrawer: true,
 };
-
 
 const API_BASE_URL = 'http://localhost:5173';
 const ENDPOINTS = {

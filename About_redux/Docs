@@ -386,6 +386,118 @@ const App = () => {
 
 export default App;
 
+=======================================================================
+
+⭐️ notificationsSlice.spec.js
+import notificationsReducer, {
+  markNotificationAsRead,
+  showDrawer,
+  hideDrawer,
+  fetchNotifications,
+} from './notificationsSlice';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+const mock = new MockAdapter(axios);
+
+describe('notificationsSlice', () => {
+  const initialState = {
+    notifications: [],
+    displayDrawer: false,
+    loading: false,
+    error: null,
+  };
+
+  it('should return the initial state', () => {
+    expect(notificationsReducer(undefined, { type: 'unknown' })).toEqual(
+      initialState
+    );
+  });
+
+  it('should handle markNotificationAsRead', () => {
+    const stateWithNotifications = {
+      ...initialState,
+      notifications: [
+        { id: 1, message: 'Notification 1' },
+        { id: 2, message: 'Notification 2' },
+      ],
+    };
+    const action = markNotificationAsRead(1);
+    const expectedState = {
+      ...stateWithNotifications,
+      notifications: [{ id: 2, message: 'Notification 2' }],
+    };
+    expect(notificationsReducer(stateWithNotifications, action)).toEqual(
+      expectedState
+    );
+  });
+
+  it('should handle showDrawer', () => {
+    const action = showDrawer();
+    const expectedState = {
+      ...initialState,
+      displayDrawer: true,
+    };
+    expect(notificationsReducer(initialState, action)).toEqual(expectedState);
+  });
+
+  it('should handle hideDrawer', () => {
+    const stateWithDrawerOpen = {
+      ...initialState,
+      displayDrawer: true,
+    };
+    const action = hideDrawer();
+    expect(notificationsReducer(stateWithDrawerOpen, action)).toEqual(
+      initialState
+    );
+  });
+
+  describe('fetchNotifications async thunk', () => {
+    it('should handle fetchNotifications.pending', () => {
+      const action = { type: fetchNotifications.pending.type };
+      const state = notificationsReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: true,
+        error: null,
+      });
+    });
+
+    it('should handle fetchNotifications.fulfilled', () => {
+      const notifications = [
+        { id: 1, message: 'Notification 1' },
+        { id: 2, message: 'Notification 2' },
+      ];
+      const action = {
+        type: fetchNotifications.fulfilled.type,
+        payload: notifications,
+      };
+      const state = notificationsReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: false,
+        notifications,
+      });
+    });
+
+    it('should handle fetchNotifications.rejected', () => {
+      const error = 'Failed to fetch notifications';
+      const action = {
+        type: fetchNotifications.rejected.type,
+        error: { message: error },
+      };
+      const state = notificationsReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: false,
+        error,
+      });
+    });
+  });
+});
+
+
+⭐️ coursesSlice.spec.js
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -403,6 +515,66 @@ root.render(
 );
 
 
+import coursesReducer, { fetchCourses } from './coursesSlice';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+const mock = new MockAdapter(axios);
+
+describe('coursesSlice', () => {
+  const initialState = {
+    courses: [],
+    loading: false,
+    error: null,
+  };
+
+  it('should return the initial state', () => {
+    expect(coursesReducer(undefined, { type: 'unknown' })).toEqual(initialState);
+  });
+
+  describe('fetchCourses async thunk', () => {
+    it('should handle fetchCourses.pending', () => {
+      const action = { type: fetchCourses.pending.type };
+      const state = coursesReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: true,
+        error: null,
+      });
+    });
+
+    it('should handle fetchCourses.fulfilled', () => {
+      const courses = [
+        { id: 1, title: 'Course 1' },
+        { id: 2, title: 'Course 2' },
+      ];
+      const action = {
+        type: fetchCourses.fulfilled.type,
+        payload: courses,
+      };
+      const state = coursesReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: false,
+        courses,
+      });
+    });
+
+    it('should handle fetchCourses.rejected', () => {
+      const error = 'Failed to fetch courses';
+      const action = {
+        type: fetchCourses.rejected.type,
+        error: { message: error },
+      };
+      const state = coursesReducer(initialState, action);
+      expect(state).toEqual({
+        ...initialState,
+        loading: false,
+        error,
+      });
+    });
+  });
+});
 
 
 

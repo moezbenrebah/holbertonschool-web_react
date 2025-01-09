@@ -78,8 +78,9 @@ describe('notificationsSlice', () => {
       });
     });
 
+     // typo in "localhost"
     test('should handle fetchNotifications.rejected when base URL or port is incorrect', async () => {
-      const incorrectBaseURL = 'http://loclhost:5173'; // Typo in "localhost"
+      const incorrectBaseURL = 'http://loclhost:5173';
       mock.onGet(`${incorrectBaseURL}/notifications.json`).networkError();
 
       const dispatch = jest.fn();
@@ -94,6 +95,7 @@ describe('notificationsSlice', () => {
       );
     });
 
+    // typo in "notifications"
     test('should handle fetchNotifications.rejected when endpoint is incorrect', async () => {
       const incorrectEndpoint = 'http://localhost:5173/notifictions.json'; // Typo in "notifications"
       mock.onGet(incorrectEndpoint).reply(404);

@@ -28,3 +28,4 @@ testRunner.js
 testtRunner.js
 faulty-authSlice-seq1.js
 faulty-notificationsSlice.js
+faulty-coursesSlice.js

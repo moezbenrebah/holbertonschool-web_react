@@ -1,7 +1,5 @@
-import coursesSlice, { fetchCourses } from '/home/moez/Documents/React_New_Version/vite_react/ForLocalTest/holbertonschool-web_react/react_redux/task_1/dashboard/faulty-coursesSlice.js';
-  import { logout } from '../auth/authSlice';
-
-
+import coursesSlice, { fetchCourses } from '../courses/coursesSlice';
+import { logout } from '../auth/authSlice';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 

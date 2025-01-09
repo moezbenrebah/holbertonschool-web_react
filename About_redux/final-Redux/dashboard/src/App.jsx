@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from './features/auth/authSlice';
+import { login } from './features/auth/authSlice';
 import { fetchNotifications } from './features/notifications/notificationsSlice';
 import { fetchCourses } from './features/courses/coursesSlice';
 import Header from './components/Header/Header';
@@ -13,29 +13,21 @@ import BodySectionWithMarginBottom from './components/BodySection/BodySectionWit
 
 export default function App() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Only extract isLoggedIn
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const { courses } = useSelector((state) => state.courses);
 
-  // Fetch notifications on mount
   useEffect(() => {
     dispatch(fetchNotifications());
   }, [dispatch]);
 
-  // Fetch courses only if the user is logged in
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCourses());
     }
   }, [isLoggedIn, dispatch]);
 
-  // Login handler
   const handleLogin = (email, password) => {
-    dispatch(login({ email, password })); // Pass user details as payload
-  };
-
-  // Logout handler
-  const handleLogout = () => {
-    dispatch(logout());
+    dispatch(login({ email, password }));
   };
 
   return (

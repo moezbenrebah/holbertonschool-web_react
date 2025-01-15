@@ -58,16 +58,16 @@
 
 import { memo } from 'react';
 import './Notifications.css';
-import closeIcon from '../assets/close-icon.png';
-import NotificationItem from './NotificationItem';
+import closeIcon from '../../assets/close-icon.png';
+import NotificationItem from '../NotificationItem/NotificationItem';
 
-const Notifications = ({
+const Notifications = memo(function Notifications({
   displayDrawer,
   handleDisplayDrawer,
   handleHideDrawer,
   notifications = [],
   markNotificationAsRead
-}) => {
+}) {
   return (
     <>
       <div className="notification-title" onClick={handleDisplayDrawer}>
@@ -101,6 +101,6 @@ const Notifications = ({
       )}
     </>
   );
-};
+});
 
 export default Notifications;

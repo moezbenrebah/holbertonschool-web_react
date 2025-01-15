@@ -1,11 +1,10 @@
-import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { markNotificationAsRead, showDrawer, hideDrawer } from '../../features/notifications/notificationsSlice';
 import NotificationItem from './NotificationItem';
 import './Notifications.css';
 import closeIcon from '../../assets/close-icon.png';
 
-const Notifications = memo(() => {
+const Notifications = () => {
   const dispatch = useDispatch();
   const { notifications, displayDrawer } = useSelector((state) => state.notifications);
 
@@ -54,6 +53,6 @@ const Notifications = memo(() => {
       )}
     </>
   );
-});
+};
 
 export default Notifications;

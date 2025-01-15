@@ -47,6 +47,7 @@ const notificationsSlice = createSlice({
       state.notifications = state.notifications.filter(
         (notification) => notification.id !== notificationId
       );
+      console.log(`Notification ${notificationId} has been marked as read`);
     },
     showDrawer: (state) => {
       state.displayDrawer = true;

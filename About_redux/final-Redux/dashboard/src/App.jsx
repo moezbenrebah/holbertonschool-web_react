@@ -14,36 +14,35 @@ import BodySectionWithMarginBottom from './components/BodySection/BodySectionWit
 export default function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const { courses } = useSelector((state) => state.courses);
 
   useEffect(() => {
     dispatch(fetchNotifications());
   }, [dispatch]);
 
+  // Fetch courses when the user logs in
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCourses());
     }
-  }, [isLoggedIn, dispatch]);
-
-  const handleLogin = (email, password) => {
-    dispatch(login({ email, password }));
-  };
+  }, [dispatch, isLoggedIn]);
 
   return (
-    <div>
+    <>
       <Notifications />
       <Header />
-      {isLoggedIn ? (
-        <BodySectionWithMarginBottom title="Course list">
-          <CourseList courses={courses} />
+      {!isLoggedIn ? (
+        <BodySectionWithMarginBottom title="Log in to continue">
+          <Login />
         </BodySectionWithMarginBottom>
       ) : (
-        <BodySection title="Log in to continue">
-          <Login login={handleLogin} />
-        </BodySection>
+        <BodySectionWithMarginBottom title="Course list">
+          <CourseList />
+        </BodySectionWithMarginBottom>
       )}
+      <BodySection title="News from the School">
+        <p>Holberton School news goes here</p>
+      </BodySection>
       <Footer />
-    </div>
+    </>
   );
 }

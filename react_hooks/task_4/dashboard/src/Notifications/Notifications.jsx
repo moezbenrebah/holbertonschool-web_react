@@ -61,13 +61,13 @@ import './Notifications.css';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from './NotificationItem';
 
-const Notifications = memo(function Notifications({
+const Notifications = ({
   displayDrawer,
   handleDisplayDrawer,
   handleHideDrawer,
   notifications = [],
   markNotificationAsRead
-}) {
+}) => {
   return (
     <>
       <div className="notification-title" onClick={handleDisplayDrawer}>
@@ -101,6 +101,6 @@ const Notifications = memo(function Notifications({
       )}
     </>
   );
-});
+};
 
 export default Notifications;

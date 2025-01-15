@@ -72,13 +72,13 @@ export default function App() {
     fetchCourses();
   }, [user.isLoggedIn]);
 
-  const handleDisplayDrawer = useCallback(() => {
+  const handleDisplayDrawer = () => {
     setDisplayDrawer(true);
-  }, []);
+  };
 
-  const handleHideDrawer = useCallback(() => {
+  const handleHideDrawer = () => {
     setDisplayDrawer(false);
-  }, []);
+  };
 
   const logIn = (email, password) => {
     setUser({
@@ -96,12 +96,12 @@ export default function App() {
     });
   };
 
-  const markNotificationAsRead = useCallback((id) => {
+  const markNotificationAsRead = (id) => {
     setNotifications(prev => 
       prev.filter(notification => notification.id !== id)
     );
     console.log(`Notification ${id} has been marked as read`);
-  }, []);
+  };
 
   return (
     <newContext.Provider value={{ user, logOut }}>

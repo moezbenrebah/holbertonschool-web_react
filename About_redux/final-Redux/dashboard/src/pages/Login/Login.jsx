@@ -1,8 +1,11 @@
 import WithLogging from '../../components/HOC/WithLogging';
 import useLogin from '../../hooks/useLogin';
 import './Login.css';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/auth/authSlice';
 
-function Login({ login }) {
+function Login() {
+  const dispatch = useDispatch();
   const {
     email,
     password,
@@ -11,7 +14,7 @@ function Login({ login }) {
     handleChangePassword,
     handleLoginSubmit
   } = useLogin({
-    onLogin: login
+    onLogin: (email, password) => dispatch(login({ email, password }))
   });
 
   return (

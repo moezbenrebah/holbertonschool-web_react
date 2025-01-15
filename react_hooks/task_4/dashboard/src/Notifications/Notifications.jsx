@@ -59,7 +59,7 @@
 import { memo } from 'react';
 import './Notifications.css';
 import closeIcon from '../../assets/close-icon.png';
-import NotificationItem from '../NotificationItem/NotificationItem';
+import NotificationItem from './NotificationItem';
 
 const Notifications = memo(function Notifications({
   displayDrawer,

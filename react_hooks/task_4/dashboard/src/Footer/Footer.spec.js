@@ -8,7 +8,7 @@ test('it should rendered without crashing', () => {
 
   const footerParagraph = screen.getByText(`Copyright ${getCurrentYear()} - ${getFooterCopy(true)}`);
 
-  expect(footerParagraph).toHaveTextContent(/copyright 2024 - holberton School/i)
+  expect(footerParagraph).toHaveTextContent(/copyright 2025 - holberton School/i)
 })
 
 test('the link should exists once a user is logged in', () => {

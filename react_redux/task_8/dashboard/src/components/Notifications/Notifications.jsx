@@ -10,7 +10,6 @@ const Notifications = memo(function Notifications () {
   const dispatch = useDispatch();
   const { notifications, displayDrawer } = useSelector((state) => state.notifications);
 
-  console.log('Notifications re render')
   const handleDisplayDrawer = useCallback(() => {
     dispatch(showDrawer());
   }, [dispatch]);

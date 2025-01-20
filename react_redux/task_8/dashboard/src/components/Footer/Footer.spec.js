@@ -17,12 +17,18 @@ describe('Footer', () => {
   });
 
   test('renders without crashing', () => {
+    const currentYear = new Date().getFullYear();
+
+    const expectedText = `Copyright ${currentYear} - Holberton School`;
+
     render(
       <Provider store={store}>
         <Footer />
       </Provider>
     );
-    expect(screen.getByText(/Copyright/)).toBeInTheDocument();
+
+    const footerText = screen.getByText(expectedText);
+    expect(footerText).toBeTruthy();
   });
 
   test('displays "Contact us" link when logged in', () => {
@@ -32,7 +38,11 @@ describe('Footer', () => {
         <Footer />
       </Provider>
     );
-    expect(screen.getByText(/contact us/i)).toBeInTheDocument();
+
+    const contactUsLink = screen.getByText(/contact us/i);
+    expect(contactUsLink).toBeInTheDocument();
+    expect(contactUsLink).toBeInstanceOf(HTMLAnchorElement);
+    expect(contactUsLink).toHaveAttribute('href');
   });
 
   test('does not display "Contact us" link when logged out', () => {

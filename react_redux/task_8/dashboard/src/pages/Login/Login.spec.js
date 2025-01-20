@@ -25,6 +25,7 @@ describe('Login', () => {
     expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect((screen.getByText(/ok/i)));
   });
 
   test('dispatches login action on form submission', () => {
@@ -42,6 +43,8 @@ describe('Login', () => {
     expect(state.isLoggedIn).toBe(true);
 
     expect(state.user.email).toBe('test@example.com');
+    expect(state.user.password).toBe('password123');
+    expect(screen.getByText(/ok/i)).not.toBeDisabled();
   });
 
   test("doesn't dispatches login action on form submission", () => {
@@ -60,5 +63,6 @@ describe('Login', () => {
 
     expect(state.user.email).toBe('');
     expect(state.user.password).toBe('');
+    expect(screen.getByText(/ok/i)).toBeDisabled();
   });
 });

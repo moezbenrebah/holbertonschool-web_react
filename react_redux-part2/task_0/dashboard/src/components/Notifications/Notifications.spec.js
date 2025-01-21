@@ -175,7 +175,6 @@ describe('Notifications', () => {
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
-    // Dispatch a dummy action that doesn't change notifications
     store.dispatch({ type: 'dummy' });
     rerender(
       <Provider store={store}>

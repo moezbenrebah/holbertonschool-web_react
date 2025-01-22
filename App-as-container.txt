@@ -1,0 +1,26 @@
+Looking at both components and their relationship, let me explain the best approach for handling the courses API call and why.
+Currently, the App component is responsible for:
+
+Managing user authentication state
+Fetching and managing notifications
+Fetching and managing courses data
+Handling drawer display logic
+Coordinating the overall layout and conditional rendering
+
+Meanwhile, the CourseList component is purely presentational - it only displays the courses data it receives through props. 
+This follows what's known as the "Container/Presentational" pattern, where:
+
+App acts as a container component (handling data fetching and state)
+CourseList acts as a presentational component (handling only display logic)
+
+In this case, keeping the courses API call in the App component is actually the better approach. Here's why:
+
+1) Data Flow Control: 
+The App component already manages the user's login state, which determines whether courses should be displayed.
+By keeping the courses fetch here, we maintain a clear relationship between authentication and data access.
+
+2) State Management: 
+The courses data might be needed by other components in the future. Having it at the App level makes it easier to share this data without refetching.
+
+3) Testing: 
+The current structure makes it easier to test both components - CourseList can be tested with mock data, while App can be tested for data fetching logic.

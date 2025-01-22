@@ -1,0 +1,476 @@
+Redux PART 2
+
+
+⚾️ 17. Connect notifications: New Action Creator
+
+We now know how to connect a simple component to a reducer. Let’s work on connecting a more complex component to the the entire API.
+
+Add the following three action creators to notificationActionCreators.js
+
+    setLoadingState whose parameter is a boolean. It will send the SET_LOADING_STATE action and the boolean.
+    setNotifications whose parameter is an array. It will send the FETCH_NOTIFICATIONS_SUCCESS action with the data.
+    fetchNotifications (which does not have a parameter). Calling it will dispatch setLoadingState with the boolean set to true
+        It fetches /notifications.json
+        Once the fetch is realized, it will dispatch setNotifications with the data
+        At the end of the query it sets the loading state to false again
+
+
+
+⚾️ 18. Connect notifications: Improve reducer
+
+In the function notificationReducer within notificationReducer.js:
+
+    Make sure to add a loading attribute to the initial state.
+    Modify the notifications object to have the right initial state when merging the data coming from the API
+    Create a SET_LOADING_STATE case and update the state accordingly
+    Modify the FETCH_NOTIFICATIONS_SUCCESS case to perform a mergeDeep with the data
+    
+    
+
+⚾️ 22. Selectors
+
+To improve performance in your connector, you should always use selectors when you can. Let’s modify the Notifications connector to reuse the selector we built in the previous project:
+
+    Update Notifications.js to use getUnreadNotifications
+    Map the markAsAread action creator to the component, and use it for markNotificationAsRead
+
+Tips:
+
+    At this point, when you load the page, you should be able to see the list of notifications. Clicking on one notification should make it disappear from the list
+
+Requirements:
+
+    Make sure to update the selector to use the same valueSeq you created previously
+    Make sure to update the tests to work as expected
+    Make sure to create the new actions that the action creators are using
+
+
+    
+
+⚾️ 25. Connect the courses component
+Level: 0 Manual review
+
+In CourseList.js, connect the component to:
+
+    The three action creators: fetchCourses, selectCourse, and unSelectCourse
+    Connect the data to the list of courses using getListCourses selector
+    When the component mount, call the action fetchCourses
+
+Create a new function onChangeRow:
+
+    It will take two arguments: id (string), checked (boolean)
+    When checked is true, call the action selectCourse with the id
+    When checked is false, call the action unSelectCourse with the id
+
+Modify CourseListRow:
+
+    Pass a new prop, isChecked, to the component that will pass the isSelected attribute coming from the state of the reducer
+    Pass the onChangeRow function to the component
+    Modify the component to not use its local state anymore
+
+In the file CourseList.test.js, create two new tests:
+
+    Verify that the action is dispatched when the component is mounted
+    Verify that the two actions are correctly dispatched when the onChangeRow function is called
+
+Tips:
+
+    At this point, when you load the page and you log in, you should be able to see the list of courses. Make sure that everything is working correctly using the developer tools or using the Redux tool
+    When checking or unchecking a row, you should see the state in the Redux tool updated. You should also see the change on the UI
+    Be careful that the API is sending Strings instead of Number for the IDs. You will probably need to adapt your reducers and tests
+    Delete the CourseShape file now
+
+Requirements:
+
+    Make sure to update the tests to work as expected
+
+
+
+
+
+⚾️ 26. Memoized selectors: Redux Reselect
+
+Our current selectors are useful but they are not really performant. Imagine a very long list of notifications with multiple filters on the type and on the read status. This would require a lot of resources to compute. Memoized selectors are very powerful in this sense.
+
+Install Redux Reselect and create a new selector named getUnreadNotificationsByType in notificationSelector.js:
+
+    This selector should combine the state of the filter, and the list of notifications
+    When the filter is set to default, it should return all the unread notifications
+    When the filter is set to urgent, it should return all the unread and urgent notifications
+    Delete getUnreadNotifications
+
+
+
+
+⚾️ 27. Memoized selectors: update the UI
+Level: 0 Manual review
+
+In the Notifications component:
+
+    Update the component to use the new selector you just created
+    Map the component to the Action setNotificationFilter
+    Add two buttons under the text Here is the list of notifications. The first one contains ‼️. On click, it set the filters of notifications to URGENT. The second one contains ?. On click, it sets the filter of notifications to DEFAULT
+
+
+
+
+⚾️ 28. Memoized selectors: update the test suite
+Level: 0 Manual review
+
+In Notifications.test.js, add two new tests:
+
+    Clicking on the first button should call setNotificationFilter with URGENT
+    Clicking on the second button should call setNotificationFilter with DEFAULT
+
+In notificationSelector.test.js:
+
+    Update the previous tests to work correctly
+    Create a new test to verify that the selector returns unread urgent notifications when the filter is set
+
+Tips:
+
+    At this point, you should be able to load the notifications panel, filter the list using the two new buttons, and mark items as read
+
+Requirements:
+
+    Make sure to update the tests to work as expected
+
+
+
+
+⚾️ 29. Container/Component
+Level: 0 Manual review
+
+Our components can become very verbose when we start adding connectors and actions. It is also becoming harder to tests what is supposed to be our React component, and the interations of the application. To simplify our architecture, we can use the concept of containers and components:
+
+    Create a new file NotificationsContainer.js. This component will take care of connecting to the state, and fetching the notifications on mount
+    The component should render the Notifications components and pass the required props to it
+    Modify the file Notifications.js. It should now become a functional component
+    Create a new test file for NotificationsContainer.js. It should make sure the fetching is happening on mount
+    Modify Notifications.test.js file to only support the new behavior of the file
+
+Tips:
+
+    No need to repeat every single prop, you can use the spread operator
+
+🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️🤖️
+
+✅️ Order to modernization:
+Add new features first (selectors, loading states)
+
+Implement container components alongside existing
+
+Migrate API calls to RTK Query gradually
+
+Finally deprecate old patterns after full validation
+
+
+
+⭐️⭐️ Phase 1: Courses Component Modernization (Task 25):
+// coursesSlice.js
+const coursesSlice = createSlice({
+  name: 'courses',
+  initialState,
+  reducers: {
+    selectCourse: (state, { payload }) => {
+      const course = state.courses.find(c => c.id === payload);
+      if (course) course.isSelected = true;
+    },
+    unSelectCourse: (state, { payload }) => {
+      const course = state.courses.find(c => c.id === payload);
+      if (course) course.isSelected = false;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCourses.fulfilled, (state, { payload }) => {
+        state.courses = payload.map(course => ({
+          ...course,
+          // Convert ID to number if needed
+          id: typeof course.id === 'string' ? parseInt(course.id, 10) : course.id,
+          isSelected: false
+        }));
+      })
+      .addCase(logout, (state) => {
+        state.courses = initialState.courses;
+      });
+  }
+});
+
+export const { selectCourse, unSelectCourse } = coursesSlice.actions;
+
+----------------------------------------------------------------------------
+
+// Selectors
+export const getListCourses = state => state.courses.courses;
+
+// CourseList.jsx
+function CourseList() {
+  const courses = useSelector(getListCourses);
+  const dispatch = useDispatch();
+
+  const onChangeRow = (id, checked) => {
+    const action = checked ? selectCourse : unSelectCourse;
+    dispatch(action(id));
+  };
+
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, [dispatch]);
+
+  return (
+    <div className="courses">
+      <table id="CourseList">
+        {/* ... existing headers ... */}
+        <tbody>
+          {courses.map((course) => (
+            <CourseListRow
+              key={course.id}
+              textFirstCell={course.name}
+              textSecondCell={course.credit}
+              isChecked={course.isSelected}
+              onChangeRow={onChangeRow}
+              id={course.id}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+-------------------------------------------------------------------------
+// coursesSlice.test.js
+describe('coursesSlice', () => {
+  test('selectCourse sets isSelected to true', () => {
+    const initialState = {
+      courses: [{ id: 1, name: 'ES6', isSelected: false }]
+    };
+    const nextState = coursesSlice.reducer(initialState, selectCourse(1));
+    expect(nextState.courses[0].isSelected).toBe(true);
+  });
+
+  test('fetchCourses.fulfilled converts IDs to numbers', () => {
+    const mockCourses = [{ id: '1', name: 'React' }];
+    const action = fetchCourses.fulfilled(mockCourses);
+    const state = coursesSlice.reducer(undefined, action);
+    expect(state.courses[0].id).toBe(1);
+  });
+});
+
+// CourseList.test.js
+test('dispatches fetchCourses on mount', () => {
+  const mockDispatch = jest.fn();
+  jest.mock('react-redux', () => ({
+    useDispatch: () => mockDispatch
+  }));
+  
+  const { container } = render(<CourseList />);
+  expect(mockDispatch).toHaveBeenCalledWith(fetchCourses());
+});
+
+// CourseListRow.test.js
+test('calls onChangeRow when checkbox changes', () => {
+  const mockOnChange = jest.fn();
+  const { getByRole } = render(
+    <CourseListRow 
+      isChecked={false} 
+      onChangeRow={mockOnChange} 
+      id={1}
+    />
+  );
+  
+  fireEvent.click(getByRole('checkbox'));
+  expect(mockOnChange).toHaveBeenCalledWith(1, true);
+});
+
+
+⭐️⭐️⭐️ Phase 2: Memoized Selectors (Tasks 26-28)
+// notificationsSlice.js
+const initialState = {
+  notifications: [],
+  displayDrawer: true,
+  filter: 'DEFAULT' // Add filter state
+};
+
+const notificationsSlice = createSlice({
+  name: 'notifications',
+  initialState,
+  reducers: {
+    // ... existing reducers ...
+    setNotificationFilter: (state, { payload }) => {
+      state.filter = payload;
+    }
+  }
+});
+
+// notificationsSelectors.js
+import { createSelector } from '@reduxjs/toolkit';
+
+export const getUnreadNotifications = state => 
+  state.notifications.notifications.filter(n => !n.isRead);
+
+export const getNotificationFilter = state => 
+  state.notifications.filter;
+
+export const getUnreadNotificationsByType = createSelector(
+  [getUnreadNotifications, getNotificationFilter],
+  (notifications, filter) => {
+    switch(filter) {
+      case 'URGENT':
+        return notifications.filter(n => n.type === 'urgent');
+      default:
+        return notifications;
+    }
+  }
+);
+
+-------------------------------------------------------------------------------
+// Notifications.jsx
+function Notifications() {
+  const notifications = useSelector(getUnreadNotificationsByType);
+  const dispatch = useDispatch();
+  
+  return (
+    <>
+      <div className="notification-filter">
+        <button onClick={() => dispatch(setNotificationFilter('URGENT'))}>
+          ‼️ Urgent
+        </button>
+        <button onClick={() => dispatch(setNotificationFilter('DEFAULT'))}>
+          ? Default
+        </button>
+      </div>
+      {/* ... existing notification rendering ... */}
+    </>
+  );
+}
+
+----------------------------------------------------------------------------------
+// notificationsSelectors.test.js
+describe('getUnreadNotificationsByType', () => {
+  const state = {
+    notifications: {
+      notifications: [
+        { id: 1, type: 'urgent', isRead: false },
+        { id: 2, type: 'default', isRead: false },
+        { id: 3, type: 'urgent', isRead: true }
+      ],
+      filter: 'DEFAULT'
+    }
+  };
+
+  test('filters urgent notifications', () => {
+    state.notifications.filter = 'URGENT';
+    const result = getUnreadNotificationsByType(state);
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe(1);
+  });
+
+  test('returns all unread when filter is DEFAULT', () => {
+    state.notifications.filter = 'DEFAULT';
+    const result = getUnreadNotificationsByType(state);
+    expect(result).toHaveLength(2);
+  });
+});
+
+// Notifications.test.js
+test('filter buttons dispatch correct actions', () => {
+  const mockDispatch = jest.fn();
+  jest.mock('react-redux', () => ({
+    useDispatch: () => mockDispatch
+  }));
+  
+  const { getByText } = render(<Notifications />);
+  fireEvent.click(getByText('‼️ Urgent'));
+  expect(mockDispatch).toHaveBeenCalledWith(setNotificationFilter('URGENT'));
+});
+
+
+
+⭐️ Phase 3: Loading States (Tasks 17-18)
+// notificationsSlice.js
+const initialState = {
+  notifications: [],
+  displayDrawer: true,
+  filter: 'DEFAULT',
+  loading: false
+};
+
+export const fetchNotifications = createAsyncThunk(
+  'notifications/fetchNotifications',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(ENDPOINTS.notifications);
+      return processNotifications(response.data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+extraReducers: (builder) => {
+  builder
+    .addCase(fetchNotifications.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchNotifications.fulfilled, (state, action) => {
+      state.loading = false;
+      state.notifications = action.payload;
+    })
+    .addCase(fetchNotifications.rejected, (state) => {
+      state.loading = false;
+    });
+}
+
+-----------------------------------------------------------------
+// notificationsSlice.test.js
+describe('fetchNotifications', () => {
+  test('sets loading state during fetch', () => {
+    const pendingAction = fetchNotifications.pending();
+    const state = notificationsSlice.reducer(undefined, pendingAction);
+    expect(state.loading).toBe(true);
+  });
+
+  test('updates notifications on success', () => {
+    const mockData = [{ id: 1, type: 'urgent' }];
+    const fulfilledAction = fetchNotifications.fulfilled(mockData);
+    const state = notificationsSlice.reducer(undefined, fulfilledAction);
+    expect(state.notifications).toEqual(mockData);
+    expect(state.loading).toBe(false);
+  });
+});
+    
+    
+    
+    
+
+
+====================================================================================================================================================================
+21. Connect notifications: update the test suites
+Level: 0 Manual review
+
+Modify the test suites to pass the tests:
+
+    Update notificationReducer.test.js to support the new attributes and default state
+    Clean up App.test.js for the function you just removed
+    Modify Notifications.js and Notifications.test.js to make sure that every tests pass correctly
+
+Add new tests:
+
+    Add a test in Notifications.test.js to verify that the function fetchNotifications is called when the component is mounted
+    Add a test for setLoadingState, setNotifications, and fetchNotifications to verify that they each create the right actions
+    Add a test for SET_LOADING_STATE to verify that it updates the reducer correctly
+
+Tips:
+
+    At this point, when you load the page, you should be able to see the list of notifications coming from the API using the developer tools or when clicking on the notifications toggle
+    Use some CSS to make the notifications panel readable
+    Look at valueSeq from Immutable to iterate on your list of notifications without having to use toJS()
+
+Requirements:
+
+    Make sure to update the different Proptypes so you don’t have any errors in the console
+    Make sure to create the new actions that the action creators are using
+
+

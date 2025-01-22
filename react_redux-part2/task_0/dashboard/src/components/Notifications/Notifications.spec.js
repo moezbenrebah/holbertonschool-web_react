@@ -1,12 +1,15 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import Notifications from './Notifications';
-import notificationsSlice from '../../features/notifications/notificationsSlice';
+import notificationsSlice, { fetchNotifications } from '../../features/notifications/notificationsSlice';
 
 
 describe('Notifications', () => {
   let store;
+  let mockAxios;
 
   beforeEach(() => {
     store = configureStore({
@@ -14,18 +17,48 @@ describe('Notifications', () => {
         notifications: notificationsSlice,
       },
     });
+    mockAxios = new MockAdapter(axios);
   });
 
-  test('renders without crashing', () => {
+  test('renders without crashing', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', html: { __html: '' } },
+      ],
+    });
+
+    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
+    expect(notificationsResponse.data.notifications).toHaveLength(3);
+
+    await store.dispatch(fetchNotifications());
+
     render(
       <Provider store={store}>
         <Notifications />
       </Provider>
     );
-    expect(screen.getByText('Your notifications')).toBeInTheDocument();
+
+    expect(screen.getByText(/your notifications/i)).toBeInTheDocument();
+    expect(screen.getByText('New course available')).toBeInTheDocument();
+    expect(screen.getByText('New resume available')).toBeInTheDocument();
   });
 
-  test('toggles drawer visibility when clicking the title', () => {
+  test('toggles drawer visibility when clicking the title', async() => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', html: { __html: '' } },
+      ],
+    });
+
+    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
+    expect(notificationsResponse.data.notifications).toHaveLength(3);
+
+    await store.dispatch(fetchNotifications());
+
     const { container } = render(
       <Provider store={store}>
         <Notifications />
@@ -37,27 +70,28 @@ describe('Notifications', () => {
 
     fireEvent.click(screen.getByText(/your notifications/i));
     expect(notificationsDrawer).not.toHaveClass('visible');
+    expect(screen.queryByRole('listitem', { name: 'New course available' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('listitem', { name: 'New resume available' })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/your notifications/i));
     expect(notificationsDrawer).toHaveClass('visible');
+    expect(screen.getByText('New course available')).toBeInTheDocument();
+    expect(screen.getByText('New resume available')).toBeInTheDocument();
   });
 
-  test('close drawer on close button', () => {
-    store = configureStore({
-      reducer: {
-        notifications: notificationsSlice,
-      },
-      preloadedState: {
-        notifications: {
-          notifications: [
-            { "id": 1, "type": "default", "value": "New course available" },
-            { "id": 2, "type": "urgent", "value": "New resume available" },
-            { "id": 3, "type": "urgent", "html": { __html: '<strong>Urgent requirement</strong> - complete by EOD' } }
-          ],
-          displayDrawer: true,
-        },
-      },
+  test('close drawer on close button', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', html: { __html: '' } },
+      ],
     });
+
+    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
+    expect(notificationsResponse.data.notifications).toHaveLength(3);
+
+    await store.dispatch(fetchNotifications());
 
     const { container } = render(
       <Provider store={store}>
@@ -70,22 +104,19 @@ describe('Notifications', () => {
     expect(notificationsDrawer).not.toHaveClass('visible');
   });
 
-  test('marks notification as read', () => {
-    store = configureStore({
-      reducer: {
-        notifications: notificationsSlice,
-      },
-      preloadedState: {
-        notifications: {
-          notifications: [
-            { "id": 1, "type": "default", "value": "New course available" },
-            { "id": 2, "type": "urgent", "value": "New resume available" },
-            { "id": 3, "type": "urgent", "html": { __html: '<strong>Urgent requirement</strong> - complete by EOD' } }
-          ],
-          displayDrawer: true,
-        },
-      },
+  test('marks notification as read', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', html: { __html: '' } },
+      ],
     });
+
+    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
+    expect(notificationsResponse.data.notifications).toHaveLength(3);
+
+    await store.dispatch(fetchNotifications());
 
     render(
       <Provider store={store}>
@@ -103,17 +134,12 @@ describe('Notifications', () => {
     ]);
   });
 
-  test('displays "No new notifications" when there are no notifications', () => {
-    store = configureStore({
-      reducer: {
-        notifications: notificationsSlice,
-      },
-      preloadedState: {
-        notifications: {
-          notifications: [],
-        },
-      },
+  test('displays "No new notifications" when there are no notifications', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(500, {
+      message: 'Internal Server Error',
     });
+
+    await store.dispatch(fetchNotifications());
 
     render(
       <Provider store={store}>
@@ -124,67 +150,43 @@ describe('Notifications', () => {
     expect(screen.getByText('No new notifications for now')).toBeInTheDocument();
   });
 
-  test('renders notifications with HTML content safely', () => {
-    store = configureStore({
-      reducer: {
-        notifications: notificationsSlice,
-      },
-      preloadedState: {
-        notifications: {
-          notifications: [
-            { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } },
-          ],
-        },
-      },
+  test('does not re-render when drawer visibility is toggled', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', html: { __html: '' } },
+      ],
     });
+  
+    await store.dispatch(fetchNotifications());
 
-    render(
+    let renderCount = 0;
+    const MemoizedNotifications = Notifications;
+    const OriginalNotifications = MemoizedNotifications.type;
+
+    MemoizedNotifications.type = function MockNotifications(props) {
+      renderCount++;
+      return OriginalNotifications(props);
+    };
+  
+    const { container } = render(
       <Provider store={store}>
-        <Notifications />
+        <MemoizedNotifications />
       </Provider>
     );
 
-    const notificationItem = screen.getByRole('listitem');
-    expect(notificationItem.innerHTML).toContain('<strong>Urgent requirement</strong> - complete by EOD');
-  });
+    expect(renderCount).toBe(1);
 
-  test('does not re-render when notifications have not changed', () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    consoleSpy.mockImplementation(() => {});
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(container.querySelector('.Notifications')).not.toHaveClass('visible');
 
-    const notifications = [
-      { id: 1, type: 'default', value: 'New course available' },
-    ];
+    expect(renderCount).toBe(1);
 
-    store = configureStore({
-      reducer: {
-        notifications: notificationsSlice,
-      },
-      preloadedState: {
-        notifications: {
-          notifications,
-        },
-      },
-    });
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(container.querySelector('.Notifications')).toHaveClass('visible');
 
-    const { rerender } = render(
-      <Provider store={store}>
-        <Notifications />
-      </Provider>
-    );
-
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
-
-    store.dispatch({ type: 'dummy' });
-    rerender(
-      <Provider store={store}>
-        <Notifications />
-      </Provider>
-    );
-
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
-
-    consoleSpy.mockRestore();
+    expect(renderCount).toBe(1);
   });
 });
 

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import CourseListRow from './CourseListRow';
+import CourseListRow from "./CourseListRow";
 
 
 describe('CourseListRow', () => {

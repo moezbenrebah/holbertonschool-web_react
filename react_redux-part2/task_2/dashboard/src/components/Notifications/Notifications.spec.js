@@ -1,4 +1,4 @@
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -6,13 +6,6 @@ import MockAdapter from 'axios-mock-adapter';
 import Notifications from './Notifications';
 import notificationsSlice, { fetchNotifications } from '../../features/notifications/notificationsSlice';
 
-
-const flushPromises = () => new Promise(jest.requireActual('timers').setImmediate);
-
-async function advanceTimersAndFlush(ms) {
-  jest.advanceTimersByTime(ms);
-  await flushPromises();
-}
 
 describe('Notifications', () => {
   let store;
@@ -199,11 +192,8 @@ describe('Notifications', () => {
   test('displays loading indicator with fake timers', async () => {
     jest.useFakeTimers();
 
-    let resolveApi;
-
     mockAxios.onGet('http://localhost:5173/notifications.json').reply(() => 
       new Promise(resolve => {
-        resolveApi = resolve;
         setTimeout(() => resolve([200, { notifications: [] }]), 1000);
       })
     );

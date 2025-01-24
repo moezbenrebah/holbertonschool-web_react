@@ -104,9 +104,10 @@ describe('CourseListRow', () => {
 
       expect(checkbox).toBeChecked();
     });
-  })
+  });
 
   test('renders a checked checkbox when isSelected is true', () => {
+    const mockOnChangeRow = jest.fn();
     render(
       <CourseListRow
         isHeader={false}
@@ -114,12 +115,19 @@ describe('CourseListRow', () => {
         textSecondCell="60"
         id={1}
         isSelected={true}
-        onChangeRow={() => {}}
+        onChangeRow={mockOnChangeRow}
       />
     );
 
     const checkbox = screen.getByRole('checkbox');
 
     expect(checkbox).toBeChecked();
+
+    expect(mockOnChangeRow).not.toHaveBeenCalled();
+
+    fireEvent.click(checkbox);
+
+    expect(mockOnChangeRow).toHaveBeenCalledTimes(1);
+    expect(mockOnChangeRow).toHaveBeenCalledWith(1, false); 
   });
 });

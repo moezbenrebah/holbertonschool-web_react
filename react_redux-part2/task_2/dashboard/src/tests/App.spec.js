@@ -84,9 +84,9 @@ describe('App Component Integration Tests', () => {
 
     await waitFor(() => {
       expect(store.getState().courses.courses).toEqual([
-          { id: 1, name: 'ES6', credit: 60 },
-          { id: 2, name: 'Webpack', credit: 20 },
-          { id: 3, name: 'React', credit: 40 },
+          { id: 1, name: 'ES6', credit: 60, isSelected: false },
+          { id: 2, name: 'Webpack', credit: 20, isSelected: false },
+          { id: 3, name: 'React', credit: 40, isSelected: false },
         ],
       );
       expect(store.getState().notifications.notifications).toEqual([
@@ -102,13 +102,14 @@ describe('App Component Integration Tests', () => {
       email: 'test@example.com', 
       password: 'password123' 
     }));
+
     renderWithStore();
 
     await waitFor(() => {
       expect(store.getState().courses.courses).toEqual([
-          { id: 1, name: 'ES6', credit: 60 },
-          { id: 2, name: 'Webpack', credit: 20 },
-          { id: 3, name: 'React', credit: 40 },
+          { id: 1, name: 'ES6', credit: 60, isSelected: false },
+          { id: 2, name: 'Webpack', credit: 20, isSelected: false },
+          { id: 3, name: 'React', credit: 40, isSelected: false },
         ],
       );
     });

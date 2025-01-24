@@ -48,4 +48,3 @@ const coursesSlice = createSlice({
 
 export const { selectCourse, unSelectCourse } = coursesSlice.actions;
 export default coursesSlice.reducer;
- 

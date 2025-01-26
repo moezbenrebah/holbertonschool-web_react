@@ -98,7 +98,7 @@ describe('Header Component', () => {
   test('does not display logoutSection when user is not logged in', () => {
     render(<Header user={defaultUser} logOut={jest.fn()} />);
 
-    const logoutSection = screen.getByRole('link', { name: /logout/i });
+    const logoutSection = screen.queryByRole('link', { name: /logout/i });
     expect(logoutSection).not.toBeInTheDocument();
   });
 

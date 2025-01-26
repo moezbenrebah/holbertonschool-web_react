@@ -8,7 +8,7 @@ export default function Header({ user, logOut }) {
       <h1>School Dashboard</h1>
       {user.isLoggedIn ? (
         <div id="logoutSection">
-          Welcome <b>{user.email}</b> <a href="#" onClick={logOut}>(logout)</a>
+          Welcome <b>{user.email}</b> <a href="#" onClick={logOut}>logout</a>
         </div>
       ) : null}
     </div>

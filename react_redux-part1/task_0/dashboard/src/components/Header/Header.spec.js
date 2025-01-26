@@ -85,7 +85,7 @@ describe('Header Component', () => {
     });
 
     test('renders logout link', () => {
-      expect(screen.getByText('(logout)')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /logout/i })).toBeInTheDocument();
     });
 
     test('calls logOut function when logout link is clicked', () => {
@@ -98,14 +98,14 @@ describe('Header Component', () => {
   test('does not display logoutSection when user is not logged in', () => {
     render(<Header user={defaultUser} logOut={jest.fn()} />);
 
-    const logoutSection = screen.queryByText(/logout/i);
+    const logoutSection = screen.getByRole('link', { name: /logout/i });
     expect(logoutSection).not.toBeInTheDocument();
   });
 
   test('displays logoutSection when user is logged in', () => {
     render(<Header user={loggedInUser} logOut={jest.fn()} />);
 
-    const logoutSection = screen.getByText(/logout/i);
+    const logoutSection = screen.getByRole('link', { name: /logout/i });
     expect(logoutSection).toBeInTheDocument();
     expect(screen.getByText(/user@example.com/i)).toBeInTheDocument();
   });
@@ -114,7 +114,7 @@ describe('Header Component', () => {
     const logOutSpy = jest.fn();
     render(<Header user={loggedInUser} logOut={logOutSpy} />);
 
-    const logoutLink = screen.getByText(/logout/i);
+    const logoutLink = screen.getByRole('link', { name: /logout/i });
     fireEvent.click(logoutLink);
 
     expect(logOutSpy).toHaveBeenCalled();

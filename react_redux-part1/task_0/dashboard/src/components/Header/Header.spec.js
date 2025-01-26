@@ -89,7 +89,7 @@ describe('Header Component', () => {
     });
 
     test('calls logOut function when logout link is clicked', () => {
-      fireEvent.click(screen.getByText('(logout)'));
+      fireEvent.click(screen.getByRole('link', { name: /logout/i }));
       expect(mockLogOut).toHaveBeenCalledTimes(1);
     });
   });

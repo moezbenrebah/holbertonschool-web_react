@@ -16,16 +16,14 @@ export const fetchNotifications = createAsyncThunk(
   async () => {
     const response = await axios.get(ENDPOINTS.notifications);
 
-    return response.data.map(notification => {
-      const baseNotification = {
+    return response.data
+      .filter(notification => notification.context.isRead === false)
+      .map(notification => ({
         id: notification.id,
         type: notification.context.type,
         isRead: notification.context.isRead,
         value: notification.context.value
-      };
-
-      return baseNotification;
-    });
+      }));
   }
 );
 
@@ -48,8 +46,8 @@ const notificationsSlice = createSlice({
       state.loading = true;
     })
     .addCase(fetchNotifications.fulfilled, (state, action) => {
-      state.loading = false;
       state.notifications = action.payload;
+      state.loading = false;
     })
     .addCase(fetchNotifications.rejected, (state) => {
       state.loading = false;

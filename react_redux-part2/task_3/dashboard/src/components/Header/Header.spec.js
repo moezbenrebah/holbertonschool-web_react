@@ -49,7 +49,7 @@ describe('Header', () => {
       </Provider>
     );
 
-    fireEvent.click(screen.getByText('(logout)'));
+    fireEvent.click(screen.getByRole('link', { name: /logout/i }));
 
     const state = store.getState().auth;
 

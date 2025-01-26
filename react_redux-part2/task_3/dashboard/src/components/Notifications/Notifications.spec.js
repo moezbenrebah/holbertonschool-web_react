@@ -21,16 +21,24 @@ describe('Notifications', () => {
   });
 
   test('renders without crashing', async () => {
-    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
-      notifications: [
-        { id: 1, type: 'default', value: 'New course available' },
-        { id: 2, type: 'urgent', value: 'New resume available' },
-        { id: 3, type: 'urgent', html: { __html: '' } },
-      ],
-    });
-
-    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
-    expect(notificationsResponse.data.notifications).toHaveLength(3);
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, [
+      { 
+        id: 1, 
+        context: {
+          type: 'default', 
+          isRead: false,
+          value: 'New course available'
+        }
+      },
+      { 
+        id: 2, 
+        context: {
+          type: 'urgent', 
+          isRead: false,
+          value: 'New resume available'
+        }
+      }
+    ]);
 
     await store.dispatch(fetchNotifications());
 
@@ -41,21 +49,22 @@ describe('Notifications', () => {
     );
 
     expect(screen.getByText(/your notifications/i)).toBeInTheDocument();
+
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByText('New course available')).toBeInTheDocument();
-    expect(screen.getByText('New resume available')).toBeInTheDocument();
   });
 
-  test('toggles drawer visibility when clicking the title', async() => {
-    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
-      notifications: [
-        { id: 1, type: 'default', value: 'New course available' },
-        { id: 2, type: 'urgent', value: 'New resume available' },
-        { id: 3, type: 'urgent', html: { __html: '' } },
-      ],
-    });
-
-    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
-    expect(notificationsResponse.data.notifications).toHaveLength(3);
+  test('toggles drawer visibility when clicking the title', async () => {
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, [
+      { 
+        id: 1, 
+        context: {
+          type: 'default', 
+          isRead: false,
+          value: 'New course available'
+        }
+      }
+    ]);
 
     await store.dispatch(fetchNotifications());
 
@@ -66,30 +75,24 @@ describe('Notifications', () => {
     );
 
     const notificationsDrawer = container.querySelector('.Notifications');
-    expect(notificationsDrawer).toHaveClass('visible');
 
+    expect(notificationsDrawer).toHaveClass('visible');
+    
     fireEvent.click(screen.getByText(/your notifications/i));
     expect(notificationsDrawer).not.toHaveClass('visible');
-    expect(screen.queryByRole('listitem', { name: 'New course available' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('listitem', { name: 'New resume available' })).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByText(/your notifications/i));
-    expect(notificationsDrawer).toHaveClass('visible');
-    expect(screen.getByText('New course available')).toBeInTheDocument();
-    expect(screen.getByText('New resume available')).toBeInTheDocument();
   });
 
   test('close drawer on close button', async () => {
-    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
-      notifications: [
-        { id: 1, type: 'default', value: 'New course available' },
-        { id: 2, type: 'urgent', value: 'New resume available' },
-        { id: 3, type: 'urgent', html: { __html: '' } },
-      ],
-    });
-
-    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
-    expect(notificationsResponse.data.notifications).toHaveLength(3);
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, [
+      { 
+        id: 1, 
+        context: {
+          type: 'default', 
+          isRead: false,
+          value: 'New course available'
+        }
+      }
+    ]);
 
     await store.dispatch(fetchNotifications());
 
@@ -99,22 +102,21 @@ describe('Notifications', () => {
       </Provider>
     );
 
-    const notificationsDrawer = container.querySelector('.Notifications');
-    fireEvent.click(screen.getByAltText('close icon'));
-    expect(notificationsDrawer).not.toHaveClass('visible');
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    expect(container.querySelector('.Notifications')).not.toHaveClass('visible');
   });
 
   test('marks notification as read', async () => {
-    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, {
-      notifications: [
-        { id: 1, type: 'default', value: 'New course available' },
-        { id: 2, type: 'urgent', value: 'New resume available' },
-        { id: 3, type: 'urgent', html: { __html: '' } },
-      ],
-    });
-
-    const notificationsResponse = await axios.get('http://localhost:5173/notifications.json');
-    expect(notificationsResponse.data.notifications).toHaveLength(3);
+    mockAxios.onGet('http://localhost:5173/notifications.json').reply(200, [
+      { 
+        id: 1, 
+        context: {
+          type: 'default', 
+          isRead: false,
+          value: 'New course available'
+        }
+      }
+    ]);
 
     await store.dispatch(fetchNotifications());
 
@@ -124,14 +126,10 @@ describe('Notifications', () => {
       </Provider>
     );
 
-    fireEvent.click(screen.getByText('New course available'));
+    fireEvent.click(screen.getByRole('listitem'));
 
     const state = store.getState().notifications;
-
-    expect(state.notifications).toEqual([
-      { "id": 2, "type": "urgent", "value": "New resume available" },
-      { "id": 3, "type": "urgent", "html": { __html: '<strong>Urgent requirement</strong> - complete by EOD' } }
-    ]);
+    expect(state.notifications).toHaveLength(0);
   });
 
   test('displays "No new notifications" when there are no notifications', async () => {

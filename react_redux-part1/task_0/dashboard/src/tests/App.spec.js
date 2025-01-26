@@ -172,7 +172,7 @@ test('should display CourseList and welcome message after login and hide them af
 
   expect(screen.getByText('Course list')).toBeInTheDocument();
 
-  const logoutLink = screen.getByText('(logout)');
+  const logoutLink = screen.getByRole('link', { name: /logout/i})
   await act(async () => {
     await userEvent.click(logoutLink);
   });

@@ -2,7 +2,6 @@ import { getFilteredNotifications } from '../selectors/notificationSelector';
 
 
 describe('getFilteredNotifications selector', () => {
-  // Update mock state to reflect what's actually in the store
   const mockState = {
     notifications: {
       notifications: [

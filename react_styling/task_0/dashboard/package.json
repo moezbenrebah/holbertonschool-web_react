@@ -12,6 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.2.5",
     "@tailwindcss/vite": "^4.0.7",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^25.0.0",

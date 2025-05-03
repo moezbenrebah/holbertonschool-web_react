@@ -3,7 +3,7 @@ import WithLogging from '../HOC/WithLogging';
 
 function CourseList({ courses = [] }) {
   return (
-    <div className='courses mx-auto my-32 w-5/6 h-[29vh]'>
+    <div className='courses mx-auto my-32 w-4/5 h-[29vh]'>
       {
         courses.length > 0 ? 
         (
@@ -23,7 +23,7 @@ function CourseList({ courses = [] }) {
               {
                 courses.map(course => (
                   <CourseListRow 
-                    key={course.id} 
+                    key={course.id}
                     textFirstCell={course.name} 
                     textSecondCell={course.credit} 
                   />

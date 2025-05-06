@@ -46,11 +46,11 @@ export default class App extends Component {
     const { isLoggedIn = false, logOut = () => {} } = this.props;
 
     return (
-      <div className="relative px-3 w-[calc(100%-24px)] mx-auto min-h-screen flex flex-col max-[520px]:px-0">
-        <Notifications notifications={notificationsList} />
-        <div className="flex-grow">
+      <div className="relative px-3 w-[calc(100%-24px)] mx-auto min-h-screen flex flex-col justify-between max-[520px]:px-0">
+        <div>
+          <Notifications notifications={notificationsList} />
           <Header />
-          <main className="mb-auto">
+          <main>
             {
               !isLoggedIn ? (
                 <BodySectionWithMarginBottom title='Log in to continue'>

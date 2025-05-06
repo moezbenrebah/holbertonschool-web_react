@@ -19,7 +19,7 @@ export default class Notifications extends React.Component {
   }
 
   render() {
-    const { notifications = [], displayDrawer = true } = this.props;
+    const { notifications = [], displayDrawer = false } = this.props;
 
     return (
       <>

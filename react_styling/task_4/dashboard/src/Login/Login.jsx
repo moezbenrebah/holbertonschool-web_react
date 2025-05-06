@@ -8,9 +8,9 @@ function Login() {
         {/* Desktop layout - unchanged */}
         <div className="max-[768px]:hidden">
           <label htmlFor="email" className="pr-2">Email</label>
-          <input type="email" name="user_email" id="email" className="border rounded" />
+          <input type="email" name="user_email" id="email" className="border rounded pl-1.5" />
           <label htmlFor="password" className="pl-2 pr-2">Password</label>
-          <input type="password" name="user_password" id="password" className="border rounded" />
+          <input type="password" name="user_password" id="password" className="border rounded pl-1.5" />
           <button className="cursor-pointer border px-1 rounded ml-2">OK</button>
         </div>
         
@@ -18,11 +18,11 @@ function Login() {
         <div className="hidden max-[768px]:block">
           <div className="mb-1">
             <div>Email</div>
-            <input type="email" name="user_email_mobile" id="email_mobile" className="border rounded w-60" />
+            <input type="email" name="user_email_mobile" id="email_mobile" className="border rounded w-60 pl-1.5" />
           </div>
           <div className="mb-1">
             <div>Password</div>
-            <input type="password" name="user_password_mobile" id="password_mobile" className="border rounded w-60" />
+            <input type="password" name="user_password_mobile" id="password_mobile" className="border rounded w-60 pl-1.5" />
           </div>
           <button className="cursor-pointer border px-1 rounded mt-1">OK</button>
         </div>

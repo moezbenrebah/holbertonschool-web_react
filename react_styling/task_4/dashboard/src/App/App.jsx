@@ -46,9 +46,9 @@ export default class App extends Component {
     const { isLoggedIn = true, logOut = () => {} } = this.props;
 
     return (
-      <div className="relative px-3 w-[calc(100%-24px)] mx-auto min-h-screen flex flex-col justify-between max-[520px]:px-0 max-[912px]:overflow-y-hidden max-[912px]:h-screen max-[430px]:overflow-y-hidden [430px]:h-screen">
+      <div className="relative px-3 w-[calc(100%-24px)] mx-auto min-h-screen flex flex-col justify-between max-[520px]:px-0 max-[912px]:top-0 max-[912px]:overflow-y-auto [912px]:h-screen">
         <div>
-          <Notifications notifications={notificationsList} />
+          <Notifications notifications={notificationsList}/>
           <Header />
           <main>
             {

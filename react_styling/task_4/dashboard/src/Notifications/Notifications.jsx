@@ -19,7 +19,7 @@ export default class Notifications extends React.Component {
   }
 
   render() {
-    const { notifications = [], displayDrawer = false } = this.props;
+    const { notifications = [], displayDrawer = true } = this.props;
 
     return (
       <>
@@ -37,7 +37,7 @@ export default class Notifications extends React.Component {
                   >
                     <img src={closeIcon} alt='close icon' className="w-3 h-3" />
                   </button>
-                  <ul className='list-[square] pl-5 max-[912px]:p-0 max-[912px]:list-none max-[430px]:overflow-y-hidden max-[430px]:h-screen'>
+                  <ul className='list-[square] pl-5 max-[912px]:p-0 max-[912px]:list-none'>
                     {notifications.map((notification, index) => (
                       <NotificationItem
                         id={index}

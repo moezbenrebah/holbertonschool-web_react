@@ -7,7 +7,7 @@ export default class NotificationItem extends PureComponent {
     if (type === 'default') {
       return (
         <li 
-          className="text-[color:var(--default-notification-item)] pl-1 max-[900px]:text-[20px] max-[900px]:w-full max-[900px]:border-b max-[900px]:border-black max-[900px]:p-[10px_8px]"
+          className="text-[color:var(--default-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
           data-notification-type={type}
           onClick={() => markAsRead(id)}
         >{value}</li>
@@ -15,7 +15,7 @@ export default class NotificationItem extends PureComponent {
     } else if (type === 'urgent' && html !== undefined) {
       return (
         <li 
-          className="text-[color:var(--urgent-notification-item)] pl-1 max-[900px]:text-[20px] max-[900px]:w-full max-[900px]:border-b max-[900px]:border-black max-[900px]:p-[10px_8px]"
+          className="text-[color:var(--urgent-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
           data-notification-type={type} 
           dangerouslySetInnerHTML={html}
           onClick={() => markAsRead(id)}
@@ -24,7 +24,7 @@ export default class NotificationItem extends PureComponent {
     } else {
       return (
         <li 
-          className="text-[color:var(--urgent-notification-item)] pl-1 max-[900px]:text-[20px] max-[900px]:w-full max-[900px]:border-b max-[900px]:border-black max-[900px]:p-[10px_8px]"
+          className="text-[color:var(--urgent-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
           data-notification-type={type}
           onClick={() => markAsRead(id)}
         >{value}</li>

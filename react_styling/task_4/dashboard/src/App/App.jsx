@@ -43,7 +43,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { isLoggedIn = false, logOut = () => {} } = this.props;
+    const { isLoggedIn = true, logOut = () => {} } = this.props;
 
     return (
       <div className="relative px-3 w-[calc(100%-24px)] mx-auto min-h-screen flex flex-col justify-between max-[520px]:px-0">

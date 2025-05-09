@@ -19,14 +19,14 @@ export default class Notifications extends React.Component {
   }
 
   render() {
-    const { notifications = [], displayDrawer = false } = this.props;
+    const { notifications = [], displayDrawer = true } = this.props;
 
     return (
       <>
         <div className="notification-title absolute right-3 top-1">Your notifications</div>
         {
           displayDrawer ? (
-            <div className='Notifications relative border-[3px] border-dotted border-[color:var(--main-color)] p-1.5 w-1/4 float-right mt-7 max-[912px]:w-full max-[912px]:h-full max-[912px]:fixed max-[912px]:inset-0 max-[912px]:z-50 max-[912px]:float-none max-[912px]:m-0 max-[912px]:p-3 max-[912px]:bg-white'>
+            <div className='Notifications relative border-[3px] border-dotted border-[color:var(--main-color)] p-1.5 w-1/4 float-right mt-7 max-[912px]:w-full max-[912px]:h-screen max-[912px]:fixed max-[912px]:top-0 max-[912px]:left-0 max-[912px]:right-0 max-[912px]:bottom-0 max-[912px]:z-100 max-[912px]:float-none max-[912px]:m-0 max-[912px]:overflow-y-hidden max-[912px]:p-3 max-[912px]:bg-white'>
               {notifications.length > 0 ? (
                 <div className='relative'>
                   <p className="m-0 max-[912px]:text-[20px]">Here is the list of notifications</p>

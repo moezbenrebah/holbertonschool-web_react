@@ -1,87 +1,38 @@
-# Travel Buddy
+# Panoptique APP
 
-## Project Overview
-Travel Buddy is a web application that connects travelers with local guides. Users can browse available guides based on location, specialties, and languages, then book personalized tours. Guides can create profiles, publish tour offerings, and manage their bookings.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Author
-Created by: Rayane ELK
+## Creating a project
 
-## Features
-- User registration and authentication
-- Guide profile creation and management
-- Tour publishing and booking system
-- Booking requests with approval workflow
-- User dashboard for tracking bookings and tours
-- Guide dashboard for managing tours and bookings
-- Search functionality for finding guides and tours
+If you're seeing this, you've probably already done this step. Congrats!
 
-## Tech Stack
-- **Frontend**: Angular
-- **Backend**: Node.js with Express
-- **Database**: MySQL with Sequelize ORM
-- **Authentication**: JWT (JSON Web Tokens)
+```bash
+# create a new project in the current directory
+npx sv create
 
-## Project Structure
-- `backend/`: Server-side code, API endpoints, and database models
-- `travel-buddy-frontend/`: Angular frontend application
-- `backend/models/`: Database models using Sequelize
-- `backend/routes/`: API routes for different features
-- `backend/middlewares/`: Custom middleware functions
+# create a new project in my-app
+npx sv create my-app
+```
 
-## Setup and Installation
+## Developing
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MySQL (v8 or higher)
-- Angular CLI
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-### Backend Setup
-1. Navigate to the backend directory:
-   ```
-   cd backend
-   ```
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Create a `.env` file with the following variables:
-   ```
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_NAME=travel_buddy
-   JWT_SECRET=your_jwt_secret
-   JWT_EXPIRES_IN=24h
-   ```
-4. Initialize the database:
-   ```
-   node scripts/add-example-data.js
-   ```
-5. Start the server:
-   ```
-   npm start
-   ```
+```bash
+npm run dev
 
-### Frontend Setup
-1. Navigate to the frontend directory:
-   ```
-   cd travel-buddy-frontend
-   ```
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Start the development server:
-   ```
-   npm start
-   ```
-4. Access the application at `http://localhost:4200`
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-## API Documentation
-The API provides endpoints for users, guides, tours, and bookings. Full documentation can be found in the Postman collection.
+## Building
 
-## Future Improvements
-- Review and rating system for guides and tours
-- Messaging system between travelers and guides
-- Payment integration
-- Mobile application
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

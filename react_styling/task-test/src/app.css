@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin 'flowbite/plugin';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Colors */
+    --color-th-red: #FF4500;
+    --color-th-blue: #003366;
+    --color-th-white: #F0F0F0;
+    --color-th-black: #333333;
+    --color-th-black-light: rgba(51,51,51,0.5);
+
+    /* font */
+    --font-titre : Oswald Bold,sans-serif;
+    --font-titre-sb : Oswald DemiBold,sans-serif ;
+    --font-titre-b : Oswald Bold,sans-serif;
+
+    --font-text : Lato Regular,sans-serif;
+    --font-text-b : Lato Bold,sans-serif;
+}
+
+/* custom class */
+
+/* Text-styles */
+
+.ts-title-1{
+  font-family: var(--font-titre-b);
+  font-size: 2.5rem;
+}
+.ts-title-2{
+  font-family: var(--font-titre-sb);
+  font-size: 2rem;
+}
+
+.ts-text-title{
+  font-family: var(--font-text-b);
+  font-size: 1.5rem;
+}
+
+.ts-text-sub-title{
+  font-family: var(--font-text-b);
+  font-size: 1.2rem;
+}
+
+.ts-text-bold{
+  font-family: var(--font-text-b);
+  font-size: 1rem;
+}
+
+.ts-text{
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+
+/* Font-face */
+
+@font-face {
+    font-family: 'Lato Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/lato/Lato-Regular.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato Bold';
+    font-style: normal;
+    font-weight: 700;
+    src:url('/fonts/lato/Lato-Bold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Oswald Regular';
+    font-style: normal;
+    font-weight: 400;
+    src:url('/fonts/oswald/Oswald-RegularItalic.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Oswald DemiBold';
+    font-style: normal;
+    font-weight: 600;
+    src:url('/fonts/oswald/Oswald-DemiBold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Oswald Bold';
+    font-style: normal;
+    font-weight: 700;
+    src:url('/fonts/oswald/Oswald-Bold.woff') format('woff');
+    font-display: swap;
+}
+
+@source "../node_modules/flowbite-svelte/dist";

@@ -1,0 +1,417 @@
+<div class="tour-detail-container">
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Chargement des détails...</p>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="error-container">
+    <div class="error-card">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h2>{{ error }}</h2>
+      <p>Impossible de charger les détails du tour.</p>
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Retour aux tours
+      </button>
+    </div>
+  </div>
+
+  <!-- Tour Details -->
+  <div *ngIf="!loading && !error && tour" class="tour-content">
+    <!-- Hero Section with Image Gallery -->
+    <div class="tour-hero">
+      <div class="image-gallery">
+        <div class="main-image" [style.backgroundImage]="'url(' + getTourImage() + ')'">
+          <div class="hero-overlay"></div>
+          <div class="back-button" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <div class="gallery-nav">
+            <div class="gallery-dot active"></div>
+            <div class="gallery-dot"></div>
+            <div class="gallery-dot"></div>
+            <div class="gallery-dot"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-content">
+        <div class="container">
+          <div class="tour-badges">
+            <span class="price-badge">{{ tour.price }} € <small>/ personne</small></span>
+            <span class="duration-badge"><i class="far fa-clock"></i> {{ tour.duration }} heures</span>
+          </div>
+          <h1 class="tour-title">{{ tour.title }}</h1>
+          <div class="tour-meta">
+            <div class="tour-meta-item location">
+              <i class="fas fa-map-marker-alt"></i> {{ tour.location }}
+            </div>
+            <div class="tour-meta-item">
+              <i class="fas fa-calendar-alt"></i> {{ tour.date | date:'dd MMMM yyyy' }}
+            </div>
+            <div class="tour-meta-item">
+              <i class="fas fa-users"></i> Max {{ tour.maxParticipants }} personnes
+            </div>
+            <div class="tour-meta-item rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>4.8 (24)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container main-content">
+      <div class="content-wrapper">
+        <!-- Left Column - Tour Information -->
+        <div class="tour-info-section">
+          <!-- Guide Preview Card (Mobile Only) -->
+          <div class="guide-preview-card">
+            <div class="guide-preview-content">
+              <div class="guide-avatar">
+                <img [src]="tour.Guide?.User?.profileImage | profileImage" alt="Guide avatar">
+              </div>
+              <div class="guide-preview-info">
+                <h3>{{ getGuideName() }}</h3>
+                <div class="guide-preview-rating">
+                  <i class="fas fa-star"></i> 4.8 (24 avis)
+                </div>
+              </div>
+            </div>
+            <button class="btn-outline" (click)="contactGuide()">
+              <i class="fas fa-comment-alt"></i> Contacter
+            </button>
+          </div>
+          
+          <!-- Tour Navigation Tabs -->
+          <div class="tour-tabs">
+            <div class="tab-header">
+              <div class="tab-item" [class.active]="activeTab === 'description'" (click)="activeTab = 'description'">
+                <i class="fas fa-info-circle"></i> Description
+              </div>
+              <div class="tab-item" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">
+                <i class="fas fa-list"></i> Détails
+              </div>
+              <div class="tab-item" [class.active]="activeTab === 'location'" (click)="activeTab = 'location'">
+                <i class="fas fa-map-marker-alt"></i> Lieu
+              </div>
+              <div class="tab-item" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
+                <i class="fas fa-star"></i> Avis
+              </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Description Tab -->
+              <div *ngIf="activeTab === 'description'" class="content-section description-section">
+                <h2>À propos de cette expérience</h2>
+                <p class="tour-description">{{ tour.description }}</p>
+                
+                <div class="tour-highlights">
+                  <div class="highlight-item">
+                    <div class="highlight-icon">
+                      <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="highlight-text">
+                      <h3>Sites emblématiques</h3>
+                      <p>Découvrez les monuments les plus iconiques de {{ tour.location }}</p>
+                    </div>
+                  </div>
+                  
+                  <div class="highlight-item">
+                    <div class="highlight-icon">
+                      <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="highlight-text">
+                      <h3>Culture locale</h3>
+                      <p>Immersion dans les traditions et la gastronomie locale</p>
+                    </div>
+                  </div>
+                  
+                  <div class="highlight-item">
+                    <div class="highlight-icon">
+                      <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="highlight-text">
+                      <h3>Photos inoubliables</h3>
+                      <p>Spots parfaits pour des souvenirs mémorables</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Details Tab -->
+              <div *ngIf="activeTab === 'details'" class="content-section details-section">
+                <div class="detail-columns">
+                  <div class="detail-column">
+                    <h2><i class="fas fa-check-circle"></i> Ce qui est inclus</h2>
+                    <div *ngIf="tour.included" class="detail-content">
+                      <p>{{ tour.included }}</p>
+                    </div>
+                    <p *ngIf="!tour.included" class="empty-state">Aucun élément inclus spécifié.</p>
+                  </div>
+                  
+                  <div class="detail-column">
+                    <h2><i class="fas fa-times-circle"></i> Ce qui n'est pas inclus</h2>
+                    <div *ngIf="tour.notIncluded" class="detail-content">
+                      <p>{{ tour.notIncluded }}</p>
+                    </div>
+                    <p *ngIf="!tour.notIncluded" class="empty-state">Aucun élément non inclus spécifié.</p>
+                  </div>
+                </div>
+                
+                <div class="requirements-section">
+                  <h2><i class="fas fa-clipboard-list"></i> Prérequis</h2>
+                  <div *ngIf="tour.requirements" class="detail-content">
+                    <p>{{ tour.requirements }}</p>
+                  </div>
+                  <p *ngIf="!tour.requirements" class="empty-state">Aucun prérequis spécifié.</p>
+                </div>
+              </div>
+              
+              <!-- Location Tab -->
+              <div *ngIf="activeTab === 'location'" class="content-section location-section">
+                <h2><i class="fas fa-map-marker-alt"></i> Point de rendez-vous</h2>
+                <p class="meeting-point">{{ tour.meetingPoint }}</p>
+                
+                <div class="map-container">
+                  <div class="map-placeholder">
+                    <div class="map-overlay">
+                      <i class="fas fa-map-marked-alt"></i>
+                      <p>Carte interactive</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="location-details">
+                  <div class="location-detail-item">
+                    <i class="fas fa-walking"></i>
+                    <div>
+                      <h3>Difficulté de marche</h3>
+                      <p>Facile - Terrain plat</p>
+                    </div>
+                  </div>
+                  
+                  <div class="location-detail-item">
+                    <i class="fas fa-wheelchair"></i>
+                    <div>
+                      <h3>Accessibilité</h3>
+                      <p>Adapté aux personnes à mobilité réduite</p>
+                    </div>
+                  </div>
+                  
+                  <div class="location-detail-item">
+                    <i class="fas fa-bus"></i>
+                    <div>
+                      <h3>Transport public</h3>
+                      <p>Facilement accessible en métro et bus</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Reviews Tab -->
+              <div *ngIf="activeTab === 'reviews'" class="content-section reviews-section">
+                <div class="reviews-header">
+                  <h2><i class="fas fa-star"></i> Avis des voyageurs</h2>
+                  <div class="rating-summary">
+                    <div class="overall-rating">4.8</div>
+                    <div class="star-rating">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="rating-count">24 avis</div>
+                  </div>
+                </div>
+                
+                <div class="review-list">
+                  <div class="review-item">
+                    <div class="reviewer-avatar" style="background-image: url('/assets/images/default-profile.png')"></div>
+                    <div class="review-content">
+                      <div class="reviewer-name">Marie Dubois</div>
+                      <div class="review-date">Avril 2025</div>
+                      <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </div>
+                      <p class="review-text">Une expérience incroyable ! Notre guide était passionné et très connaisseur. J'ai découvert des aspects de la ville que je n'aurais jamais vus par moi-même.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="review-item">
+                    <div class="reviewer-avatar" style="background-image: url('/assets/images/default-profile.png')"></div>
+                    <div class="review-content">
+                      <div class="reviewer-name">Thomas Martin</div>
+                      <div class="review-date">Mars 2025</div>
+                      <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                      <p class="review-text">Très bon tour avec beaucoup d'informations intéressantes. Le seul petit bémol était le rythme un peu rapide, mais sinon parfait !</p>
+                    </div>
+                  </div>
+                  
+                  <div class="review-item">
+                    <div class="reviewer-avatar" style="background-image: url('/assets/images/default-profile.png')"></div>
+                    <div class="review-content">
+                      <div class="reviewer-name">Sophie Leclerc</div>
+                      <div class="review-date">Février 2025</div>
+                      <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                      </div>
+                      <p class="review-text">Une journée mémorable ! Notre guide était non seulement informé mais aussi très drôle. Le tour valait vraiment son prix.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <button class="btn-outline btn-full">
+                  <i class="fas fa-comments"></i> Voir tous les avis
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column - Booking and Guide Info -->
+        <div class="booking-section">
+          <div class="booking-card">
+            <div class="booking-header">
+              <h2>Réserver cette expérience</h2>
+              <div class="booking-price">
+                <span class="price-amount">{{ tour.price }} €</span> 
+                <span class="price-per">par personne</span>
+              </div>
+            </div>
+            
+            <div class="booking-form">
+              <div class="form-group">
+                <label>Date</label>
+                <div class="date-display">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ tour.date | date:'EEEE dd MMMM yyyy' }}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Nombre de participants</label>
+                <div class="participant-selector">
+                  <button class="participant-btn" [disabled]="participantCount <= 1" (click)="participantCount = participantCount - 1">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <div class="participant-count">{{ participantCount }}</div>
+                  <button class="participant-btn" [disabled]="participantCount >= tour.maxParticipants" (click)="participantCount = participantCount + 1">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="price-summary">
+                <div class="price-row">
+                  <span>Prix unitaire</span>
+                  <span>{{ tour.price }} €</span>
+                </div>
+                <div class="price-row">
+                  <span>{{ participantCount }} participant<span *ngIf="participantCount > 1">s</span></span>
+                  <span>x{{ participantCount }}</span>
+                </div>
+                <div class="price-row total">
+                  <span>Total</span>
+                  <span>{{ getTotalPrice() }} €</span>
+                </div>
+              </div>
+              
+              <div class="booking-actions">
+                <button class="btn-primary" (click)="bookTour()">
+                  <i class="fas fa-check-circle"></i> Réserver maintenant
+                </button>
+              </div>
+              
+              <div class="booking-features">
+                <div class="feature-item">
+                  <i class="fas fa-calendar-check"></i>
+                  <span>Disponibilité confirmée</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-ban"></i>
+                  <span>Annulation gratuite (24h avant)</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Paiement sécurisé</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-header">
+              <h2>Votre guide</h2>
+            </div>
+            
+            <div class="guide-profile">
+              <div class="guide-avatar-large">
+                <img [src]="tour.Guide?.User?.profileImage | profileImage" alt="Guide avatar">
+              </div>
+              
+              <div class="guide-info">
+                <h3 class="guide-name">{{ getGuideName() }}</h3>
+                <div class="guide-since">Guide depuis 2023</div>
+                <div class="guide-rating">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                  <span>4.8 (24 avis)</span>
+                </div>
+              </div>
+              
+              <div class="guide-bio">
+                <p>Guide passionné qui vous fera découvrir les meilleurs endroits avec une expérience unique et authentique.</p>
+              </div>
+              
+              <div class="guide-languages">
+                <h4>Langues parlées</h4>
+                <div class="language-tags">
+                  <span class="language-tag">Français</span>
+                  <span class="language-tag">Anglais</span>
+                  <span class="language-tag">Espagnol</span>
+                </div>
+              </div>
+              
+              <div class="guide-actions">
+                <button class="btn-outline btn-full" (click)="contactGuide()">
+                  <i class="fas fa-comment-alt"></i> Contacter le guide
+                </button>
+                <button class="btn-text btn-full">
+                  <i class="fas fa-user"></i> Voir le profil complet
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,180 @@
+<div class="hero-section bg-primary text-white py-5 mb-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold">Découvrez des expériences uniques</h1>
+        <p class="lead mb-4">Explorez des lieux exceptionnels avec nos guides locaux passionnés</p>
+        <div class="d-flex">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-lg" [(ngModel)]="searchLocation" placeholder="Où voulez-vous explorer?" 
+              aria-label="Search location" aria-describedby="search-button">
+            <button class="btn btn-light" type="button" id="search-button" (click)="applyFilters()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="position-relative">
+          <img src="assets/images/paris.jpg" class="img-fluid rounded-3 shadow-lg" alt="Tour destinations" style="max-height: 350px; object-fit: cover;">
+          <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark rounded-3" style="opacity: 0.2;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mb-5">
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <!-- Advanced Filter Section -->
+  <div *ngIf="!loading && !error" class="row mb-5">
+    <div class="col-md-12">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0 fw-bold">Filtres avancés</h5>
+            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
+              <i class="fas fa-sliders-h me-2"></i>Afficher/Masquer
+            </button>
+          </div>
+          
+          <div class="collapse" id="filtersCollapse">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="searchLocation" class="form-label">Destination</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                  <input 
+                    type="text" 
+                    class="form-control bg-light border-0" 
+                    id="searchLocation" 
+                    [(ngModel)]="searchLocation" 
+                    placeholder="Paris, Rome, etc."
+                  >
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="minPrice" class="form-label">Prix minimum (€)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"><i class="fas fa-euro-sign text-primary"></i></span>
+                  <input 
+                    type="number" 
+                    class="form-control bg-light border-0" 
+                    id="minPrice" 
+                    [(ngModel)]="minPrice" 
+                    min="0"
+                  >
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="maxPrice" class="form-label">Prix maximum (€)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"><i class="fas fa-euro-sign text-primary"></i></span>
+                  <input 
+                    type="number" 
+                    class="form-control bg-light border-0" 
+                    id="maxPrice" 
+                    [(ngModel)]="maxPrice" 
+                    min="0"
+                  >
+                </div>
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <div class="d-grid gap-2 w-100">
+                  <button class="btn btn-primary rounded-pill" (click)="applyFilters()">
+                    <i class="fas fa-filter me-2"></i>Filtrer
+                  </button>
+                  <button class="btn btn-outline-secondary rounded-pill" (click)="resetFilters()">
+                    <i class="fas fa-redo-alt me-2"></i>Réinitialiser
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tours Count & Sort Options -->
+  <div *ngIf="!loading && !error && filteredTours.length > 0" class="d-flex justify-content-between align-items-center mb-4">
+    <p class="mb-0">{{ filteredTours.length }} expérience{{ filteredTours.length > 1 ? 's' : '' }} trouvée{{ filteredTours.length > 1 ? 's' : '' }}</p>
+    <div class="d-flex align-items-center">
+      <label for="sortOption" class="me-2 text-nowrap">Trier par:</label>
+      <select id="sortOption" class="form-select form-select-sm" [(ngModel)]="sortOption" (change)="sortTours()">
+        <option value="price-asc">Prix (croissant)</option>
+        <option value="price-desc">Prix (décroissant)</option>
+        <option value="date-asc">Date (croissant)</option>
+        <option value="date-desc">Date (décroissant)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- No Results Message -->
+  <div *ngIf="!loading && !error && filteredTours.length === 0" class="alert alert-info rounded-4 shadow-sm">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-info-circle fa-2x me-3 text-primary"></i>
+      <div>
+        <h5 class="mb-1">Aucun tour disponible</h5>
+        <p class="mb-0">Aucun tour ne correspond aux critères sélectionnés. Essayez de modifier vos filtres ou revenez plus tard.</p>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Tours List with Improved Cards -->
+  <div *ngIf="!loading && !error && filteredTours.length > 0">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let tour of filteredTours">
+        <div class="card h-100 border-0 rounded-4 shadow-sm tour-card">
+          <!-- New subtle badge instead of ribbon -->
+          <span class="new-tour-badge" *ngIf="isNewTour(tour)">
+            NOUVEAU
+          </span>
+          
+          <div class="position-relative">
+            <img [src]="getTourImage(tour)" class="card-img-top rounded-top-4" alt="{{ tour.title }}"
+              style="height: 200px; object-fit: cover;">
+            <span class="position-absolute top-0 end-0 badge bg-primary m-3 fs-6 rounded-pill px-3 py-2 shadow">{{ tour.price }} €</span>
+            <div class="card-img-overlay d-flex align-items-end">
+              <div class="w-100 text-white location-overlay rounded-bottom-4 px-3 py-2">
+                <i class="fas fa-map-marker-alt me-1"></i> {{ tour.location }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body p-4">
+            <h5 class="card-title fw-bold mb-3">{{ tour.title }}</h5>
+            <p class="card-text description-text text-muted">
+              {{ tour.description | slice:0:120 }}{{ tour.description.length > 120 ? '...' : '' }}
+            </p>
+          </div>
+          
+          <div class="card-footer bg-white border-0 p-4 pt-0">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <small class="text-muted">
+                <i class="far fa-calendar me-1"></i> {{ tour.date | date:'dd MMM yyyy' }}
+              </small>
+              <small class="text-muted">
+                <i class="fas fa-users me-1"></i> Max: {{ tour.maxParticipants }} pers.
+              </small>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary rounded-pill py-2 shadow-sm" (click)="viewTourDetails(tour)">
+                <i class="fas fa-info-circle me-2"></i>Découvrir ce tour
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

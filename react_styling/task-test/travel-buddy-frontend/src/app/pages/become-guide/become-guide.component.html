@@ -1,0 +1,103 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Devenir Guide</h2>
+        </div>
+        <div class="card-body">
+          <p class="card-text mb-4">
+            Partagez votre passion pour votre ville et devenez guide pour les voyageurs. Remplissez le formulaire ci-dessous pour créer votre profil de guide.
+          </p>
+
+          <form [formGroup]="guideForm" (ngSubmit)="onSubmit($event)">
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Titre de votre profil*</label>
+              <input type="text" class="form-control" id="title" formControlName="title" 
+                placeholder="Ex: Guide expert de Paris">
+              <div *ngIf="guideForm.get('title')?.invalid && guideForm.get('title')?.touched" class="text-danger">
+                Le titre est requis et doit contenir au moins 3 caractères.
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description*</label>
+              <textarea class="form-control" id="description" formControlName="description" rows="4"
+                placeholder="Parlez de vous, votre expérience, pourquoi vous souhaitez être guide..."></textarea>
+              <div *ngIf="guideForm.get('description')?.invalid && guideForm.get('description')?.touched" class="text-danger">
+                La description est requise et doit contenir au moins 10 caractères.
+              </div>
+            </div>
+            
+            <!-- Location -->
+            <div class="mb-3">
+              <label for="location" class="form-label">Ville/Région*</label>
+              <input type="text" class="form-control" id="location" formControlName="location" 
+                placeholder="Ex: Paris, Lyon, Provence...">
+              <div *ngIf="guideForm.get('location')?.invalid && guideForm.get('location')?.touched" class="text-danger">
+                La ville/région est requise.
+              </div>
+            </div>
+            
+            <!-- Specialties -->
+            <div class="mb-3">
+              <label for="specialites" class="form-label">Spécialités*</label>
+              <input type="text" class="form-control" id="specialites" formControlName="specialites" 
+                placeholder="Ex: Histoire, Gastronomie, Art, Randonnée...">
+              <div *ngIf="guideForm.get('specialites')?.invalid && guideForm.get('specialites')?.touched" class="text-danger">
+                Les spécialités sont requises.
+              </div>
+              <small class="form-text text-muted">Séparez les spécialités par des virgules.</small>
+            </div>
+            
+            <!-- Languages -->
+            <div class="mb-3">
+              <label for="langues" class="form-label">Langues parlées*</label>
+              <input type="text" class="form-control" id="langues" formControlName="langues" 
+                placeholder="Ex: Français, Anglais, Espagnol...">
+              <div *ngIf="guideForm.get('langues')?.invalid && guideForm.get('langues')?.touched" class="text-danger">
+                Les langues sont requises.
+              </div>
+              <small class="form-text text-muted">Séparez les langues par des virgules.</small>
+            </div>
+            
+            <!-- Price -->
+            <div class="mb-3">
+              <label for="price" class="form-label">Tarif horaire (€)*</label>
+              <input type="number" class="form-control" id="price" formControlName="price" min="0">
+              <div *ngIf="guideForm.get('price')?.invalid && guideForm.get('price')?.touched" class="text-danger">
+                Le tarif horaire est requis et doit être un nombre positif.
+              </div>
+            </div>
+            
+            <!-- Phone -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Téléphone</label>
+              <input type="tel" class="form-control" id="phone" formControlName="phone" 
+                placeholder="Ex: 0612345678">
+              <div *ngIf="guideForm.get('phone')?.invalid && guideForm.get('phone')?.touched" class="text-danger">
+                Le numéro de téléphone doit contenir 10 chiffres.
+              </div>
+              <small class="form-text text-muted">Optionnel, mais recommandé pour que les voyageurs puissent vous contacter.</small>
+            </div>
+            
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="guideForm.invalid || isSubmitting">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Devenir Guide
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

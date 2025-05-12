@@ -1,0 +1,149 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Publier un tour</h2>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-3">Vérification de votre profil...</p>
+          </div>
+
+          <!-- Form Content - Only show when not loading -->
+          <div *ngIf="!isLoading">
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="alert alert-success mb-4">
+              {{ successMessage }}
+            </div>
+
+            <p class="card-text mb-4">
+              Créez et publiez un nouveau tour pour les voyageurs. Les détails que vous fournissez permettront aux voyageurs de mieux comprendre ce que vous proposez.
+            </p>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+              {{ errorMessage }}
+            </div>
+
+            <form [formGroup]="tourForm" (ngSubmit)="onSubmit()">
+              <!-- Title -->
+              <div class="mb-3">
+                <label for="title" class="form-label">Titre du tour*</label>
+                <input type="text" class="form-control" id="title" formControlName="title" 
+                  placeholder="Ex: Visite historique du Vieux Paris">
+                <div *ngIf="tourForm.get('title')?.invalid && tourForm.get('title')?.touched" class="text-danger">
+                  Le titre est requis et doit contenir au moins 5 caractères.
+                </div>
+              </div>
+              
+              <!-- Description -->
+              <div class="mb-3">
+                <label for="description" class="form-label">Description détaillée*</label>
+                <textarea class="form-control" id="description" formControlName="description" rows="4"
+                  placeholder="Décrivez l'expérience, les lieux visités, ce que les voyageurs vont découvrir..."></textarea>
+                <div *ngIf="tourForm.get('description')?.invalid && tourForm.get('description')?.touched" class="text-danger">
+                  La description est requise et doit contenir au moins 20 caractères.
+                </div>
+              </div>
+              
+              <!-- Location -->
+              <div class="mb-3">
+                <label for="location" class="form-label">Lieu*</label>
+                <input type="text" class="form-control" id="location" formControlName="location" 
+                  placeholder="Ex: Paris, Montmartre">
+                <div *ngIf="tourForm.get('location')?.invalid && tourForm.get('location')?.touched" class="text-danger">
+                  Le lieu est requis.
+                </div>
+              </div>
+              
+              <div class="row">
+                <!-- Duration -->
+                <div class="col-md-4 mb-3">
+                  <label for="duration" class="form-label">Durée (heures)*</label>
+                  <input type="number" class="form-control" id="duration" formControlName="duration" min="1">
+                  <div *ngIf="tourForm.get('duration')?.invalid && tourForm.get('duration')?.touched" class="text-danger">
+                    La durée est requise et doit être d'au moins 1 heure.
+                  </div>
+                </div>
+                
+                <!-- Price -->
+                <div class="col-md-4 mb-3">
+                  <label for="price" class="form-label">Prix (€)*</label>
+                  <input type="number" class="form-control" id="price" formControlName="price" min="0">
+                  <div *ngIf="tourForm.get('price')?.invalid && tourForm.get('price')?.touched" class="text-danger">
+                    Le prix est requis et doit être un nombre positif.
+                  </div>
+                </div>
+                
+                <!-- Max Participants -->
+                <div class="col-md-4 mb-3">
+                  <label for="maxParticipants" class="form-label">Max. participants*</label>
+                  <input type="number" class="form-control" id="maxParticipants" formControlName="maxParticipants" min="1">
+                  <div *ngIf="tourForm.get('maxParticipants')?.invalid && tourForm.get('maxParticipants')?.touched" class="text-danger">
+                    Le nombre maximum de participants est requis.
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Date -->
+              <div class="mb-3">
+                <label for="date" class="form-label">Date*</label>
+                <input type="date" class="form-control" id="date" formControlName="date">
+                <div *ngIf="tourForm.get('date')?.invalid && tourForm.get('date')?.touched" class="text-danger">
+                  La date est requise.
+                </div>
+              </div>
+              
+              <!-- Meeting Point -->
+              <div class="mb-3">
+                <label for="meetingPoint" class="form-label">Point de rendez-vous*</label>
+                <input type="text" class="form-control" id="meetingPoint" formControlName="meetingPoint" 
+                  placeholder="Ex: Devant la fontaine du Trocadéro">
+                <div *ngIf="tourForm.get('meetingPoint')?.invalid && tourForm.get('meetingPoint')?.touched" class="text-danger">
+                  Le point de rendez-vous est requis.
+                </div>
+              </div>
+              
+              <!-- Included -->
+              <div class="mb-3">
+                <label for="included" class="form-label">Ce qui est inclus</label>
+                <textarea class="form-control" id="included" formControlName="included" rows="2"
+                  placeholder="Ex: Entrée au musée, café de bienvenue, guide audio"></textarea>
+                <small class="form-text text-muted">Listez les éléments inclus dans le prix du tour.</small>
+              </div>
+              
+              <!-- Not Included -->
+              <div class="mb-3">
+                <label for="notIncluded" class="form-label">Ce qui n'est pas inclus</label>
+                <textarea class="form-control" id="notIncluded" formControlName="notIncluded" rows="2"
+                  placeholder="Ex: Déjeuner, transport, souvenirs"></textarea>
+                <small class="form-text text-muted">Listez ce que les voyageurs devront payer en plus.</small>
+              </div>
+              
+              <!-- Requirements -->
+              <div class="mb-3">
+                <label for="requirements" class="form-label">Prérequis</label>
+                <textarea class="form-control" id="requirements" formControlName="requirements" rows="2"
+                  placeholder="Ex: Chaussures confortables, appareil photo, pièce d'identité"></textarea>
+                <small class="form-text text-muted">Indiquez ce que les voyageurs doivent apporter ou savoir avant le tour.</small>
+              </div>
+              
+              <!-- Submit Button -->
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg" [disabled]="isSubmitting">
+                  <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Publier le tour
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

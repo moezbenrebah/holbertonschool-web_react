@@ -1,0 +1,177 @@
+<div class="container my-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Mes Tours</h1>
+      <p class="text-muted">Consultez tous vos tours réservés et leur statut</p>
+    </div>
+  </div>
+
+  <!-- Search and filter controls -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3 mb-md-0">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Rechercher par titre, lieu ou guide..." 
+               [(ngModel)]="searchTerm">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="btn-group w-100">
+        <button type="button" class="btn" [class.btn-primary]="activeView === 'upcoming'" 
+                [class.btn-outline-primary]="activeView !== 'upcoming'" 
+                (click)="changeView('upcoming')">
+          À venir
+        </button>
+        <button type="button" class="btn" [class.btn-primary]="activeView === 'pending'" 
+                [class.btn-outline-primary]="activeView !== 'pending'" 
+                (click)="changeView('pending')">
+          En attente
+        </button>
+        <button type="button" class="btn" [class.btn-primary]="activeView === 'past'" 
+                [class.btn-outline-primary]="activeView !== 'past'" 
+                (click)="changeView('past')">
+          Passés
+        </button>
+        <button type="button" class="btn" [class.btn-primary]="activeView === 'cancelled'" 
+                [class.btn-outline-primary]="activeView !== 'cancelled'" 
+                (click)="changeView('cancelled')">
+          Annulés
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-2">Chargement de vos tours...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="!loading && error" class="alert alert-danger">
+    {{error}}
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!loading && !error && getViewBookings().length === 0" class="text-center my-5">
+    <img src="assets/images/empty-calendar.svg" alt="Aucun tour" class="mb-3" style="max-width: 200px;">
+    <h3>Aucun tour trouvé</h3>
+    <p *ngIf="activeView === 'upcoming'">Vous n'avez pas de tours à venir. Découvrez nos tours disponibles pour votre prochaine aventure !</p>
+    <p *ngIf="activeView === 'pending'">Vous n'avez pas de demandes de réservation en attente.</p>
+    <p *ngIf="activeView === 'past'">Vous n'avez pas encore participé à des tours passés.</p>
+    <p *ngIf="activeView === 'cancelled'">Vous n'avez pas de tours annulés.</p>
+    <a routerLink="/tours" class="btn btn-primary mt-3">Découvrir les tours</a>
+  </div>
+
+  <!-- Search results empty state -->
+  <div *ngIf="!loading && !error && getViewBookings().length > 0 && searchBookings().length === 0" class="text-center my-5">
+    <h3>Aucun résultat pour "{{searchTerm}}"</h3>
+    <p>Essayez avec d'autres termes de recherche ou effacez votre recherche pour voir tous les tours.</p>
+    <button class="btn btn-outline-primary mt-3" (click)="searchTerm = ''">Effacer la recherche</button>
+  </div>
+
+  <!-- Tour list -->
+  <div *ngIf="!loading && !error && searchBookings().length > 0" class="tour-list">
+    <!-- Today's header for upcoming tours -->
+    <div *ngIf="activeView === 'upcoming'" class="date-separator mb-3">
+      <h4>Vos prochains tours</h4>
+      <p>Voici la liste de vos tours à venir. Vous pouvez annuler un tour jusqu'à la date limite fixée par le guide.</p>
+    </div>
+
+    <!-- Tour cards -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col" *ngFor="let booking of searchBookings()">
+        <div class="card h-100 tour-card">
+          <!-- Status badge -->
+          <div class="card-status-badge" [class]="getStatusClass(booking)">
+            {{booking.statusMessage || 'Status inconnu'}}
+          </div>
+          
+          <!-- Tour image if available -->
+          <div class="card-img-container">
+            <img *ngIf="booking.tour?.imageUrl" [src]="booking.tour?.imageUrl" class="card-img-top" alt="{{booking.tour?.title}}">
+            <img *ngIf="!booking.tour?.imageUrl" src="assets/images/paris.jpg" class="card-img-top" alt="Image par défaut">
+            <div class="date-overlay">
+              <span class="date-day">{{getDateDay(booking.booking_date)}}</span>
+              <span class="date-month">{{getDateMonth(booking.booking_date)}}</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Tour info -->
+            <h5 class="card-title">{{booking.tour?.title}}</h5>
+            <p class="card-text location"><i class="bi bi-geo-alt-fill"></i> {{booking.tour?.location}}</p>
+            <p class="card-text date"><i class="bi bi-calendar-event"></i> {{formatDate(booking.booking_date)}}</p>
+            
+            <!-- Tour details -->
+            <div class="tour-details mt-3">
+              <div class="row">
+                <div class="col-6">
+                  <p class="detail-label">Durée</p>
+                  <p class="detail-value">{{booking.tour?.duration}} heures</p>
+                </div>
+                <div class="col-6">
+                  <p class="detail-label">Participants</p>
+                  <p class="detail-value">{{booking.participants}} personne(s)</p>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-6">
+                  <p class="detail-label">Heure</p>
+                  <p class="detail-value">{{booking.booking_time || booking.tour?.startTime || 'Non précisé'}}</p>
+                </div>
+                <div class="col-6">
+                  <p class="detail-label">Prix total</p>
+                  <p class="detail-value">
+                    {{getTotalPrice(booking) | number:'1.2-2'}} €
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Guide info -->
+            <div class="guide-info mt-4" *ngIf="booking.tour?.guide">
+              <p class="detail-label">Guide</p>
+              <div class="d-flex align-items-center">
+                <img [src]="getGuideImage(booking)" 
+                     class="guide-avatar me-2" alt="Photo du guide">
+                <div>
+                  <p class="mb-0 guide-name">{{getGuideName(booking)}}</p>
+                  <p class="text-muted mb-0 small">{{getGuideEmail(booking)}}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special requirements -->
+            <div class="mt-3" *ngIf="booking.special_requirements">
+              <p class="detail-label">Demandes spéciales</p>
+              <p class="card-text">{{booking.special_requirements}}</p>
+            </div>
+
+            <!-- Guide notes (for rejected/approved bookings) -->
+            <div class="mt-3 guide-notes" *ngIf="booking.guide_notes && (booking.approval_status === 'rejected' || booking.approval_status === 'approved')">
+              <p class="detail-label">Message du guide</p>
+              <div class="guide-note-box">
+                <p class="card-text mb-0">{{booking.guide_notes}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center">
+              <a [routerLink]="['/tour', booking.tour_id]" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-info-circle-fill"></i> Détails du tour
+              </a>
+              <button *ngIf="activeView === 'upcoming' || activeView === 'pending'" class="btn btn-danger btn-sm"
+                      (click)="cancelBooking(booking)">
+                <i class="bi bi-x-circle"></i> Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

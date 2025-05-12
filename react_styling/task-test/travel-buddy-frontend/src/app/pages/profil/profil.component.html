@@ -1,0 +1,89 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <div class="profile-image" [style.backgroundImage]="profileImageUrl"></div>
+        <div class="profile-image-overlay">
+          <label for="profileImageUpload" class="upload-icon">
+            <i class="fas fa-camera"></i>
+          </label>
+          <input type="file" id="profileImageUpload" accept="image/*" (change)="onImageSelected($event)" style="display: none;">
+        </div>
+      </div>
+      <h1>My Profile</h1>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prenom">First Name</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user"></i>
+            <input id="prenom" formControlName="prenom" type="text" class="form-control" placeholder="Your first name" />
+          </div>
+          <div *ngIf="profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched" class="error-message">
+            First name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nom">Last Name</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user-tag"></i>
+            <input id="nom" formControlName="nom" type="text" class="form-control" placeholder="Your last name" />
+          </div>
+          <div *ngIf="profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched" class="error-message">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="email">Email Address</label>
+        <div class="input-with-icon">
+          <i class="fas fa-envelope"></i>
+          <input id="email" formControlName="email" type="email" class="form-control" placeholder="Your email address" />
+        </div>
+        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-message">
+          Please enter a valid email
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="profileImage">Profile Image URL</label>
+        <div class="input-with-icon">
+          <i class="fas fa-link"></i>
+          <input id="profileImage" formControlName="profileImage" type="text" class="form-control" placeholder="https://example.com/your-image.jpg" />
+        </div>
+        <p class="helper-text">Enter a URL or use the camera icon above to upload an image</p>
+      </div>
+
+      <div class="profile-actions">
+        <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || !profileForm.dirty">Save Changes</button>
+      </div>
+    </form>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      <i class="fas fa-check-circle"></i> {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+
+    <!-- Admin features section for testing -->
+    <div class="admin-features">
+      <h3>Development Options</h3>
+      <div class="feature-buttons">
+        <button class="btn btn-warning" (click)="becomeAdmin()" *ngIf="currentUser && currentUser.role !== 'admin'">
+          <i class="fas fa-user-shield"></i> Become Admin (Testing Only)
+        </button>
+        <a class="btn btn-primary" routerLink="/admin" *ngIf="currentUser && currentUser.role === 'admin'">
+          <i class="fas fa-tachometer-alt"></i> Go to Admin Dashboard
+        </a>
+      </div>
+      <p class="helper-text">*These options are for development and testing purposes only.</p>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,0 @@
-ALTER TABLE `access_code` ADD `isActive` boolean DEFAULT true;

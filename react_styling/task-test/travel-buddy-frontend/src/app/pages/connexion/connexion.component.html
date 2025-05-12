@@ -1,0 +1,30 @@
+<section class="connexion">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Connexion</h2>
+            
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="form-group mb-3">
+                <label for="email">Email</label>
+                <input id="email" formControlName="email" type="email" class="form-control" />
+              </div>
+              <div class="form-group mb-3">
+                <label for="password">Mot de passe</label>
+                <input id="password" formControlName="password" type="password" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+            </form>
+
+            <div class="text-center mt-3">
+              <p>Pas encore de compte ? <a routerLink="/inscription">Inscrivez-vous</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

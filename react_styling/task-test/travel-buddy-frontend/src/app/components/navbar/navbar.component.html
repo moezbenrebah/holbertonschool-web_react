@@ -1,0 +1,85 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <a routerLink="/">
+        <i class="fas fa-globe-americas"></i>
+        <span>Travel Buddy</span>
+      </a>
+    </div>
+    
+    <button class="navbar-toggler" (click)="toggleMobileMenu()">
+      <i class="fas" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+    </button>
+    
+    <div class="navbar-menu" [ngClass]="{'is-active': isMobileMenuOpen}">
+      <div class="navbar-start">
+        <a class="navbar-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="fas fa-home"></i> <span>Accueil</span>
+        </a>
+        <a class="navbar-item" routerLink="/tours" routerLinkActive="active">
+          <i class="fas fa-map-marked-alt"></i> <span>Tours</span>
+        </a>
+      </div>
+      
+      <div class="navbar-end">
+        <!-- "Become a Guide" button visible to logged in users who are not guides -->
+        <a *ngIf="isLoggedIn && !isGuide" class="navbar-item become-guide" routerLink="/become-guide">
+          <i class="fas fa-user-plus"></i> <span>Devenir Guide</span>
+        </a>
+        
+        <!-- Guide-specific actions -->
+        <div *ngIf="isLoggedIn && isGuide" class="guide-actions">
+          <!-- Booking Requests link with notification badge for guides -->
+          <a class="navbar-item" routerLink="/booking-requests" routerLinkActive="active">
+            <i class="fas fa-bell"></i> 
+            <span>Demandes</span>
+            <span class="notification-badge" *ngIf="pendingRequestsCount > 0">{{ pendingRequestsCount }}</span>
+          </a>
+          
+          <!-- "Publish Tour" button visible only to guides -->
+          <a class="navbar-item publish-tour" routerLink="/publish-tour">
+            <i class="fas fa-plus-circle"></i> <span>Publier un Tour</span>
+          </a>
+        </div>
+        
+        <!-- Authenticated user menu -->
+        <div *ngIf="isLoggedIn" class="navbar-item has-dropdown" [ngClass]="{'is-active': isProfileMenuOpen}">
+          <a class="navbar-link" (click)="toggleProfileMenu($event)">
+            <div class="user-avatar">
+              <img [src]="userAvatar || 'assets/images/default-profile.png'" alt="Profile">
+            </div>
+            <span>{{ userName || 'Mon Profil' }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </a>
+          
+          <div class="navbar-dropdown">
+            <!-- Admin Dashboard link - only visible to admin users -->
+            <a *ngIf="isAdmin" class="navbar-item" routerLink="/admin">
+              <i class="fas fa-cogs"></i> <span>Administration</span>
+            </a>
+            <a class="navbar-item" routerLink="/dashboard">
+              <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+            </a>
+            <a class="navbar-item" routerLink="/profil">
+              <i class="fas fa-user-circle"></i> <span>Mon Profil</span>
+            </a>
+            <hr class="navbar-divider">
+            <a class="navbar-item logout" (click)="onLogout()">
+              <i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Non-authenticated user links -->
+        <div *ngIf="!isLoggedIn" class="auth-buttons">
+          <a class="navbar-item login-btn" (click)="onLogin()">
+            <i class="fas fa-sign-in-alt"></i> <span>Connexion</span>
+          </a>
+          <a class="navbar-item signup-btn" (click)="onRegister()">
+            <i class="fas fa-user-plus"></i> <span>Inscription</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

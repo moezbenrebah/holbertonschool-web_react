@@ -1,0 +1,35 @@
+.connexion {
+  padding: 60px 0;
+}
+
+.connexion h2 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.connexion form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.connexion .mat-form-field {
+  width: 100%;
+}
+
+.connexion-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

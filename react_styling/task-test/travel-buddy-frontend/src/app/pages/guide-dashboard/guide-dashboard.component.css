@@ -1,0 +1,104 @@
+.dashboard-header {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 1.5rem;
+}
+
+.stats-summary .stat-card {
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stats-summary .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #007bff;
+  position: relative;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #343a40;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: #dc3545;
+  color: white;
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pending-requests {
+  cursor: pointer;
+}
+
+.pending-requests:hover {
+  border-color: #0d6efd;
+}
+
+.pending-requests .stat-icon {
+  color: #ffbf00;
+}
+
+.sortable-header {
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.sortable-header:hover {
+  background-color: #f8f9fa;
+}
+
+.tour-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tour-row:hover {
+  background-color: #f8f9fa;
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #007bff;
+  transition: width 0.6s ease;
+}
+
+.badge.status-published {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge.status-draft {
+  background-color: #6c757d;
+  color: white;
+}

@@ -1,0 +1,13 @@
+<app-navbar></app-navbar>
+
+<router-outlet></router-outlet>
+<!-- Add <app-footer> here if you have one -->
+
+<!-- Floating "+" button for logged-in users -->
+<button *ngIf="isLoggedIn"
+        class="btn btn-primary rounded-circle position-fixed" 
+        style="bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px;" 
+        (click)="onPublishPost()" 
+        title="Publier une visite">
+  +
+</button>

@@ -1,0 +1,74 @@
+<!-- Temporarily disable the shared header content -->
+<!--
+<header class="app-header">
+  <h1>Travel Buddy</h1>
+  <nav>
+    <a routerLink="/" routerLinkActive="active">Home</a>
+    <a routerLink="/connexion" routerLinkActive="active">Login</a>
+    <a routerLink="/inscription" routerLinkActive="active">Register</a>
+  </nav>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <i class="fas fa-globe-americas me-2"></i>
+      Travel Buddy
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="fas fa-home me-1"></i> Accueil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/helpers" routerLinkActive="active">
+            <i class="fas fa-users me-1"></i> Guides
+          </a>
+        </li>
+      </ul>
+      
+      <ul class="navbar-nav">
+        <!-- "Become a Guide" button visible to everyone -->
+        <li class="nav-item">
+          <a class="nav-link" (click)="onBecomeGuide()">
+            <i class="fas fa-user-plus me-1"></i> Devenir Guide
+          </a>
+        </li>
+        
+        <!-- Authenticated user links -->
+        <ng-container *ngIf="isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/profil" routerLinkActive="active">
+              <i class="fas fa-user-circle me-1"></i> Mon Profil
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link logout-link" (click)="onLogout()">
+              <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+            </a>
+          </li>
+        </ng-container>
+        
+        <!-- Non-authenticated user links -->
+        <ng-container *ngIf="!isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link" (click)="onLogin()">
+              <i class="fas fa-sign-in-alt me-1"></i> Connexion
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="onRegister()">
+              <i class="fas fa-user-plus me-1"></i> Inscription
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</nav>
+-->

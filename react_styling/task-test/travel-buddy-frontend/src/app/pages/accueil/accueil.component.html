@@ -1,0 +1,345 @@
+<!-- Modern Hero Section with Animated Elements -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-text-container">
+          <h1 class="animated-heading">Découvrez le monde avec des guides locaux</h1>
+          <p class="animated-subheading">Explorez des lieux authentiques, vivez des expériences uniques et créez des souvenirs inoubliables avec Travel Buddy.</p>
+          <div class="hero-buttons animated-buttons">
+            <button class="btn btn-primary btn-lg rounded-pill me-3" (click)="scrollToSearchBar()">
+              <i class="fas fa-search me-2"></i>Trouvez votre guide
+            </button>
+            <button class="btn btn-outline-light btn-lg rounded-pill" routerLink="/tours">
+              <i class="fas fa-map-marked-alt me-2"></i>Explorer les tours
+            </button>
+          </div>
+          <div class="hero-stats animated-stats">
+            <div class="stat-item">
+              <span class="stat-number">500+</span>
+              <span class="stat-label">Guides locaux</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">50+</span>
+              <span class="stat-label">Destinations</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">10K+</span>
+              <span class="stat-label">Voyageurs satisfaits</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+          <div class="hero-image-container">
+            <img src="assets/images/paris.jpg" alt="Travel Experience" class="hero-image main-image">
+            <img src="assets/images/tokyo.jpg" alt="Local Guide" class="hero-image accent-image-1">
+            <img src="assets/images/newyork.jpg" alt="Tourist Spot" class="hero-image accent-image-2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#ffffff" fill-opacity="1" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+</section>
+
+<!-- Enhanced Search Bar with Visual Appeal -->
+<section class="search-bar">
+  <div class="container">
+    <div class="search-card">
+      <form (ngSubmit)="onSearch()" #searchForm="ngForm">
+        <div class="row align-items-center">
+          <div class="col-lg-10">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text search-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </span>
+              <input type="text" 
+                     class="form-control search-input" 
+                     placeholder="Où souhaitez-vous voyager ?" 
+                     [(ngModel)]="searchQuery" 
+                     name="searchQuery" 
+                     required
+                     list="searchSuggestions"
+                     autocomplete="off">
+              <datalist id="searchSuggestions">
+                <option value="Paris">
+                <option value="Tokyo">
+                <option value="New York">
+                <option value="Rome">
+                <option value="Barcelona">
+                <option value="Londres">
+                <option value="Marrakech">
+                <option value="Istanbul">
+              </datalist>
+            </div>
+          </div>
+          <div class="col-lg-2 mt-3 mt-lg-0">
+            <button class="btn btn-primary btn-lg w-100" type="submit" [disabled]="!searchForm.valid">
+              <i class="fas fa-search me-2"></i>Explorer
+            </button>
+          </div>
+        </div>
+        <div class="popular-searches">
+          <div class="popular-searches-label">Destinations populaires:</div>
+          <div class="popular-searches-items">
+            <a href="#" (click)="setSearchQuery($event, 'Paris')" class="popular-search-item">
+              <span class="popular-item-icon"><i class="fas fa-circle"></i></span>Paris
+            </a>
+            <a href="#" (click)="setSearchQuery($event, 'Tokyo')" class="popular-search-item">
+              <span class="popular-item-icon"><i class="fas fa-circle"></i></span>Tokyo
+            </a>
+            <a href="#" (click)="setSearchQuery($event, 'New York')" class="popular-search-item">
+              <span class="popular-item-icon"><i class="fas fa-circle"></i></span>New York
+            </a>
+            <a href="#" (click)="setSearchQuery($event, 'Rome')" class="popular-search-item">
+              <span class="popular-item-icon"><i class="fas fa-circle"></i></span>Rome
+            </a>
+            <a href="#" (click)="setSearchQuery($event, 'Barcelona')" class="popular-search-item">
+              <span class="popular-item-icon"><i class="fas fa-circle"></i></span>Barcelona
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Modern Features Section with Cards -->
+<section class="features">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-subtitle">Nos avantages</span>
+      <h2 class="section-title">Pourquoi choisir Travel Buddy ?</h2>
+      <div class="section-divider">
+        <span class="divider-circle"></span>
+      </div>
+    </div>
+    
+    <div class="row features-container">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon-container">
+            <div class="feature-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">Guides Vérifiés</h3>
+          <p class="feature-description">Tous nos guides sont soigneusement sélectionnés et vérifiés pour garantir votre sécurité et une expérience de qualité.</p>
+          <div class="feature-link">
+            <a href="#" class="btn-text">En savoir plus <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-card active">
+          <div class="feature-icon-container">
+            <div class="feature-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">Expériences Locales</h3>
+          <p class="feature-description">Découvrez des lieux uniques et vivez des expériences authentiques avec nos guides locaux passionnés.</p>
+          <div class="feature-link">
+            <a href="#" class="btn-text">En savoir plus <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon-container">
+            <div class="feature-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">Réservation Facile</h3>
+          <p class="feature-description">Réservez votre guide en quelques clics et partez à l'aventure en toute simplicité avec notre système sécurisé.</p>
+          <div class="feature-link">
+            <a href="#" class="btn-text">En savoir plus <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <a routerLink="/tours" class="btn btn-outline-primary btn-lg rounded-pill">
+          Découvrir tous nos avantages <i class="fas fa-long-arrow-alt-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Redesigned Popular Destinations Section -->
+<section class="destinations">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-subtitle">Explorez le monde</span>
+      <h2 class="section-title">Destinations Populaires</h2>
+      <div class="section-divider">
+        <span class="divider-circle"></span>
+      </div>
+    </div>
+    <div class="row g-4" *ngIf="destinations.length > 0; else noDestinations">
+      <div class="col-md-4 mb-4" *ngFor="let destination of destinations">
+        <div class="destination-card">
+          <div class="destination-card-image">
+            <img [src]="destination.imageUrl" 
+                 [alt]="destination.name" 
+                 (error)="onImageError($event, destination)"
+                 loading="lazy">
+            <div class="destination-card-badge">
+              <i class="fas fa-star me-1"></i> Populaire
+            </div>
+          </div>
+          <div class="destination-card-content">
+            <h3 class="destination-title">{{ destination.name }}</h3>
+            <div class="destination-meta">
+              <span><i class="fas fa-user-friends me-2"></i>15+ guides</span>
+              <span><i class="fas fa-map-marker-alt me-2"></i>{{ destination.name }}</span>
+            </div>
+            <p class="destination-text">{{ destination.description }}</p>
+            <div class="destination-footer">
+              <button [routerLink]="['/helpers']" 
+                      [queryParams]="{ ville: destination.name }"
+                      class="btn btn-primary rounded-pill w-100">
+                Explorer <i class="fas fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noDestinations>
+      <div class="no-data-container">
+        <div class="no-data-icon">
+          <i class="fas fa-map-marked-alt"></i>
+        </div>
+        <p class="no-data-text">Aucune destination trouvée pour le moment.</p>
+        <button routerLink="/tours" class="btn btn-outline-primary rounded-pill">
+          Découvrir les tours disponibles
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</section>
+
+<!-- Modern Testimonials Section with Cards -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-subtitle">Témoignages</span>
+      <h2 class="section-title">Ce que disent nos voyageurs</h2>
+      <div class="section-divider">
+        <span class="divider-circle"></span>
+      </div>
+    </div>
+    
+    <div class="row testimonials-container" *ngIf="testimonials.length > 0; else noTestimonials">
+      <div class="col-md-6 mb-4" *ngFor="let testimonial of testimonials">
+        <div class="testimonial-card">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+          </div>
+          <div class="testimonial-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"{{ testimonial.comment }}"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-author-image">
+              <img [src]="testimonial.userImage" alt="{{ testimonial.userName }}" class="rounded-circle">
+            </div>
+            <div class="testimonial-author-info">
+              <h4 class="testimonial-author-name">{{ testimonial.userName }}</h4>
+              <p class="testimonial-author-destination">{{ testimonial.destination }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <ng-template #noTestimonials>
+      <div class="no-data-container">
+        <div class="no-data-icon">
+          <i class="fas fa-comments"></i>
+        </div>
+        <p class="no-data-text">Aucun témoignage pour le moment.</p>
+      </div>
+    </ng-template>
+  </div>
+</section>
+
+<!-- Modern Call-to-Action Section -->
+<section class="cta">
+  <div class="cta-background-overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <div class="cta-content">
+          <span class="cta-label">Prêt pour l'aventure ?</span>
+          <h2 class="cta-title">Commencez votre voyage aujourd'hui</h2>
+          <p class="cta-description">Rejoignez des milliers de voyageurs qui ont découvert le monde avec nos guides locaux. Créez des souvenirs inoubliables.</p>
+          <div class="cta-buttons">
+            <a routerLink="/inscription" class="btn btn-light btn-lg rounded-pill me-3">
+              <i class="fas fa-user-plus me-2"></i>Créer un compte
+            </a>
+            <a routerLink="/tours" class="btn btn-outline-light btn-lg rounded-pill">
+              <i class="fas fa-globe me-2"></i>Explorer les tours
+            </a>
+          </div>
+          <div class="cta-trust-badges">
+            <div class="trust-badge">
+              <i class="fas fa-shield-alt"></i>
+              <span>100% Sécurisé</span>
+            </div>
+            <div class="trust-badge">
+              <i class="fas fa-undo"></i>
+              <span>Annulation facile</span>
+            </div>
+            <div class="trust-badge">
+              <i class="fas fa-headset"></i>
+              <span>Support 24/7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h2 class="mb-4">Restez informé</h2>
+        <p class="mb-4">Inscrivez-vous à notre newsletter pour recevoir nos meilleures offres et découvrir de nouvelles destinations.</p>
+        <form class="newsletter-form" (ngSubmit)="onNewsletterSubmit()" #newsletterForm="ngForm">
+          <div class="input-group">
+            <input type="email" 
+                   class="form-control" 
+                   placeholder="Votre adresse email" 
+                   name="email" 
+                   [(ngModel)]="newsletterEmail" 
+                   required 
+                   email>
+            <button class="btn btn-primary" type="submit" [disabled]="!newsletterForm.valid">
+              S'inscrire
+              <i class="fas fa-paper-plane ms-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

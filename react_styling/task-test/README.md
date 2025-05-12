@@ -1,95 +1,87 @@
-# Eazost
-![Logo Eazost](public/logo.png)
+# Travel Buddy
 
-**Eazost** is an application designed to simplify the management of vacation rentals and provide a seamless, secure experience.
+## Project Overview
+Travel Buddy is a web application that connects travelers with local guides. Users can browse available guides based on location, specialties, and languages, then book personalized tours. Guides can create profiles, publish tour offerings, and manage their bookings.
 
-## 🚀 Features
+## Author
+Created by: Rayane ELK
 
-- Property Management: Add and modify property information.
-- Secure Access Codes: Generate and share codes with tenants.
-- Integrated Shop: Order services before vacationers' arrival.
-- Instant Messaging: Direct communication between owners and tenants.
-- Customization: Add profile pictures and specific information.
+## Features
+- User registration and authentication
+- Guide profile creation and management
+- Tour publishing and booking system
+- Booking requests with approval workflow
+- User dashboard for tracking bookings and tours
+- Guide dashboard for managing tours and bookings
+- Search functionality for finding guides and tours
 
-## 🛠️ Technologies Used
+## Tech Stack
+- **Frontend**: Angular
+- **Backend**: Node.js with Express
+- **Database**: MySQL with Sequelize ORM
+- **Authentication**: JWT (JSON Web Tokens)
 
-- **Framework**: Next.js 14
-- **Database**: MySQL with Drizzle
-- **UI**: Tailwind CSS, ShadCN UI
-- **Authentication**: NextAuth.js
-- **Validation**: Zod
-- **Media**: Cloudinary
-- **Testing**: Jest & React Testing Library
-- **State Management**: Zustand
+## Project Structure
+- `backend/`: Server-side code, API endpoints, and database models
+- `travel-buddy-frontend/`: Angular frontend application
+- `backend/models/`: Database models using Sequelize
+- `backend/routes/`: API routes for different features
+- `backend/middlewares/`: Custom middleware functions
 
-## 📦 Installation
+## Setup and Installation
 
 ### Prerequisites
+- Node.js (v14 or higher)
+- MySQL (v8 or higher)
+- Angular CLI
 
-- Node.js 18 or higher
-- MySQL 8 or higher
-- Cloudinary Account
-
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/eazost.git
-   cd eazost
+### Backend Setup
+1. Navigate to the backend directory:
    ```
-
+   cd backend
+   ```
 2. Install dependencies:
-   ```bash
+   ```
    npm install
    ```
-
-3. Configure environment variables in .env.local:
-   ```env
-   DATABASE_URL="mysql://user:password@localhost:3306/eazost"
-   CLOUDINARY_CLOUD_NAME="your_cloud_name"
-   CLOUDINARY_API_KEY="your_api_key"
-   CLOUDINARY_API_SECRET="your_api_secret"
-   NEXTAUTH_SECRET="your_secret"
-   NEXTAUTH_URL="http://localhost:3000"
+3. Create a `.env` file with the following variables:
+   ```
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_NAME=travel_buddy
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRES_IN=24h
+   ```
+4. Initialize the database:
+   ```
+   node scripts/add-example-data.js
+   ```
+5. Start the server:
+   ```
+   npm start
    ```
 
-4. Run the development server:
-   ```bash
-   npm run dev
+### Frontend Setup
+1. Navigate to the frontend directory:
    ```
+   cd travel-buddy-frontend
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm start
+   ```
+4. Access the application at `http://localhost:4200`
 
-## 🏗️ Project Structure
+## API Documentation
+The API provides endpoints for users, guides, tours, and bookings. Full documentation can be found in the Postman collection.
 
-```
-eazost/
-├── app/                # Next.js app router
-├── components/         # Reusable components
-├── lib/               # Utility functions and configurations
-├── public/            # Static assets
-├── styles/           # Global styles
-└── types/            # TypeScript type definitions
-```
-
-## 🧪 Testing
-
-Run the test suite:
-```bash
-npm test
-```
-
-Run linting:
-```bash
-npm run lint
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Future Improvements
+- Review and rating system for guides and tours
+- Messaging system between travelers and guides
+- Payment integration
+- Mobile application

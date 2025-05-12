@@ -1,0 +1,1 @@
+ALTER TABLE `access_code` ADD `created_date` timestamp DEFAULT (now());

@@ -1,0 +1,53 @@
+"use client";
+
+import React from 'react';
+import '@/app/globals.css';
+import { Toaster } from 'sonner';
+import { Poppins, Nunito } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/lib/react-query';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+
+const poppins = Poppins({
+	subsets: ['latin'],
+	weight: ['400', '700'],
+	display: 'swap',
+	preload: true,
+	variable: '--font-poppins'
+});
+
+const nunito = Nunito({
+	subsets: ['latin'],
+	weight: ['400', '700'],
+	display: 'swap',
+	preload: true,
+	variable: '--font-nunito'
+});
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+	return (
+		<html lang="en" className={`${poppins.variable} ${nunito.variable}`} suppressHydrationWarning>
+			<ErrorBoundary>
+			<head>
+				<link
+					rel="shortcut icon"
+					href="/favicon.ico"
+					sizes="any"
+				/>
+			</head>
+			<body suppressHydrationWarning>
+				<QueryClientProvider client={queryClient}>
+					<SessionProvider>
+						<AuthProvider>
+							{children}
+							<Toaster richColors position="bottom-right" />
+						</AuthProvider>
+					</SessionProvider>
+				</QueryClientProvider>
+			</body>
+			</ErrorBoundary>
+		</html>
+	);
+}

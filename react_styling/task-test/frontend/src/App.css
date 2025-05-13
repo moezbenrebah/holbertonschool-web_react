@@ -1,0 +1,12 @@
+/* Apply a global reset for all elements */
+* {
+  margin: 0; /* Remove any default margin */
+  font-style: normal; /* Set the font style to normal (overrides any default italic or oblique styles) */
+  padding: 0; /* Remove any default padding */
+}
+
+/* Style for the logo */
+.logo {
+  margin: 0rem; /* Set margin to 0 (removes any margin around the logo) */
+  padding: 0; /* Set padding to 0 (removes any padding inside the logo container) */
+}

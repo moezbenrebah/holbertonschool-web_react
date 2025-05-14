@@ -1,7 +1,0 @@
-{
-    "name": "shakeitup-root",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "npm install --prefix backend && npm start --prefix backend"
-    }
-}

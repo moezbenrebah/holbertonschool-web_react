@@ -1,9 +1,12 @@
-import { defineConfig } from 'vite' // Import the 'defineConfig' function from Vite
-import react from '@vitejs/plugin-react'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-
-// https://vite.dev/config/
-// Vite configuration file
 export default defineConfig({
-  plugins: [react()], // Enable the React plugin for Vite
-})
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
+});

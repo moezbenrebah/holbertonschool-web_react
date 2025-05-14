@@ -1,7 +1,0 @@
-/* Google Fonts here */
-@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
-
-/* Tailwind CSS directives */
-@tailwind base; /* base style from Tailwind*/
-@tailwind components;
-@tailwind utilities; /* Includes utility for quick styling (spacing, typography) */

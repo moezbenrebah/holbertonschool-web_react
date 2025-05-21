@@ -1,0 +1,46 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:Africa/Tunis
+X-LIC-LOCATION:Africa/Tunis
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0100
+TZNAME:GMT+1
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Africa/Tunis:20250521T113000
+DTEND;TZID=Africa/Tunis:20250521T123000
+DTSTAMP:20250505T111751Z
+ORGANIZER;CN=Omar Yahia:mailto:2730@holbertonstudents.com
+UID:20e1f1fb3egfuqg24ubhc7smum@google.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=5750@holbertonstudents.com;X-NUM-GUESTS=0:mailto:5750@holbertonstud
+ ents.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE
+ ;CN=Omar Yahia;X-NUM-GUESTS=0:mailto:2730@holbertonstudents.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=moez.boul3ez@holbertonschool.com;X-NUM-GUESTS=0:mailto:moez.boul3ez
+ @holbertonschool.com
+X-GOOGLE-CONFERENCE:https://meet.google.com/vev-jzgu-pyb
+X-MICROSOFT-CDO-OWNERAPPTID:1116080409
+CREATED:20250505T111748Z
+DESCRIPTION:-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~
+ :~:~:~:~:~:~:~:~::~:~::-\nJoin with Google Meet: https://meet.google.com/ve
+ v-jzgu-pyb\nOr dial: (US) +1 209-783-9082 PIN: 538776365#\n\nLearn more abo
+ ut Meet at: https://support.google.com/a/users/answer/9282720\n\nPlease do 
+ not edit this section.\n-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~
+ :~:~:~:~:~:~:~:~:~:~:~:~:~:~::~:~::-
+LAST-MODIFIED:20250505T111750Z
+LOCATION:
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Webstack portfolio evaluation - Melek Moalla 
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

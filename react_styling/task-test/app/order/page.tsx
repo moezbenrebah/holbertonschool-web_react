@@ -1,0 +1,159 @@
+"use client"
+
+import { useState } from "react"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { MenuItem } from "@/components/menu/menu-item"
+import { Cart } from "@/components/cart/cart"
+
+export default function OrderPage() {
+  const [activeTab, setActiveTab] = useState("breakfast")
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1 py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold mb-8 text-center">Ordena Online</h1>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="w-full grid grid-cols-4 mb-8">
+                  <TabsTrigger value="breakfast">Desayunos</TabsTrigger>
+                  <TabsTrigger value="lunch">Almuerzos</TabsTrigger>
+                  <TabsTrigger value="dinner">Cenas</TabsTrigger>
+                  <TabsTrigger value="drinks">Bebidas</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="breakfast" className="space-y-8">
+                  <div className="grid grid-cols-1 gap-6">
+                    <MenuItem
+                      name="French Toast"
+                      description="Pan brioche bañado en una mezcla de huevo y canela, servido con frutas frescas y jarabe de arce."
+                      price={12.99}
+                      image="/images/french-toast.jpg"
+                    />
+                    <MenuItem
+                      name="Avocado Toast"
+                      description="Pan de masa madre tostado con aguacate, huevo pochado y semillas de sésamo."
+                      price={10.99}
+                      image="/images/avocado-toast.jpeg"
+                    />
+                    <MenuItem
+                      name="Pancakes de Arándanos"
+                      description="Esponjosos pancakes con arándanos frescos, servidos con mantequilla y jarabe de arce."
+                      price={9.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Huevos Benedictinos"
+                      description="Muffin inglés tostado con jamón, huevos pochados y salsa holandesa."
+                      price={13.99}
+                      image="/images/huevos-benedictinos.jpeg"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="lunch" className="space-y-8">
+                  <div className="grid grid-cols-1 gap-6">
+                    <MenuItem
+                      name="Croquetas"
+                      description="Nuestras deliciosas croquetas en variedad de sabores: Bacalao, Pollo Pepperoni, Corned Beef y Mamposteao."
+                      price={14.99}
+                      image="/images/croquetas.jpg"
+                    />
+                    <MenuItem
+                      name="Ensalada César"
+                      description="Lechuga romana, crutones, parmesano y pollo a la parrilla con aderezo César."
+                      price={12.99}
+                      image="/images/ensalada-cesar.webp"
+                    />
+                    <MenuItem
+                      name="Hamburguesa Gourmet"
+                      description="Carne de res Angus, queso cheddar, bacon, lechuga, tomate y cebolla caramelizada."
+                      price={16.99}
+                      image="/images/hamburguesa-gourmet.jpeg"
+                    />
+                    <MenuItem
+                      name="Wrap de Pollo"
+                      description="Tortilla de trigo con pollo a la parrilla, aguacate, lechuga y salsa de yogur."
+                      price={11.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="dinner" className="space-y-8">
+                  <div className="grid grid-cols-1 gap-6">
+                    <MenuItem
+                      name="Salmón a la Parrilla"
+                      description="Filete de salmón a la parrilla con puré de patatas y espárragos."
+                      price={22.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Risotto de Setas"
+                      description="Cremoso risotto con variedad de setas silvestres y parmesano."
+                      price={18.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Filete Mignon"
+                      description="Tierno filete mignon con salsa de vino tinto, acompañado de puré de patatas y verduras asadas."
+                      price={28.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Pasta al Pesto"
+                      description="Pasta fresca con salsa pesto casera, tomates cherry y piñones tostados."
+                      price={16.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="drinks" className="space-y-8">
+                  <div className="grid grid-cols-1 gap-6">
+                    <MenuItem
+                      name="Limonada Casera"
+                      description="Refrescante limonada con menta fresca y un toque de miel."
+                      price={4.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Smoothie de Frutas"
+                      description="Batido de frutas frescas de temporada con yogur natural."
+                      price={6.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Café Especial"
+                      description="Nuestro café de especialidad, preparado con granos seleccionados."
+                      price={3.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                    <MenuItem
+                      name="Vino de la Casa"
+                      description="Copa de nuestro vino seleccionado, tinto o blanco."
+                      price={7.99}
+                      image="/placeholder.svg?height=200&width=300"
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <div className="lg:col-span-1">
+              <div className="sticky top-24">
+                <Cart />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  )
+}

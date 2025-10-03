@@ -16,8 +16,8 @@ describe('Login Component', () => {
 
   test('renders 2 input elements', () => {
     render(<Login login={jest.fn()} />);
-    const emailInput = screen.getByLabelText(/Email:/i);
-    const passwordInput = screen.getByLabelText(/Password:/i);
+    const emailInput = screen.getByLabelText(/Email:?/i);
+    const passwordInput = screen.getByLabelText(/Password:?/i);
 
     expect(emailInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();

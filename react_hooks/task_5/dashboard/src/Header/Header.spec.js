@@ -1,5 +1,5 @@
 import React from "react";
-import {render, screen, fireEvent} from "@testing-library/react"
+import {render, screen, fireEvent, within} from "@testing-library/react"
 import Header from "./Header";
 import { newContext } from '../Context/context';
 
@@ -27,12 +27,15 @@ test('renders School Dashboard heading', () => {
   });
 
   test('displays the logoutSection when user is logged in', () => {
-    render(
+    const { container } = render(
       <newContext.Provider value={{ user: { isLoggedIn: true, email: 'test@example.com' }, logOut: jest.fn() }}>
         <Header />
       </newContext.Provider>
     );
-    expect(screen.getByText(/Welcome test@example.com/)).toBeInTheDocument();
+    const logoutSection = container.querySelector('#logoutSection');
+    expect(logoutSection).toBeInTheDocument();
+    expect(within(logoutSection).getByText(/Welcome/)).toBeInTheDocument();
+    expect(within(logoutSection).getByText('test@example.com')).toBeInTheDocument();
   });
 
   test('calls logOut when clicking the logout link', () => {

@@ -9,9 +9,13 @@ test('Should return the good title', () => {
 })
 
 test('Should return 2 correct texts', () => {
-  render(<App />)
+  render(<App />);
+
+  const currentYear = new Date().getFullYear();
+  const regex = new RegExp(`copyright ${currentYear} - holberton school`, 'i');
+
   const p1 = screen.getByText(/Login to access the full dashboard/i);
-  const p2 = screen.getByText(/Copyright 2025 - Holberton School/i);
+  const p2 = screen.getByText(regex);
   expect(p1).toBeInTheDocument();
   expect(p2).toBeInTheDocument();
 })

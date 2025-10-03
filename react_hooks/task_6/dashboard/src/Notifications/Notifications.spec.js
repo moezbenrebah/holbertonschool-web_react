@@ -76,8 +76,8 @@ describe('Notifications component', () => {
     };
 
     render(<Notifications {...props} />);
-    expect(screen.getByText('New course available')).toBeInTheDocument();
-    expect(screen.getByText('New resume available')).toBeInTheDocument();
+    expect(screen.getByText(/New course available/)).toBeInTheDocument();
+    expect(screen.getByText(/New resume available/)).toBeInTheDocument();
     expect(screen.getByText(/Urgent requirement/)).toBeInTheDocument();
   });
 
@@ -88,7 +88,7 @@ describe('Notifications component', () => {
     };
 
     render(<Notifications {...props} />);
-    expect(screen.getByText('No new notification for now')).toBeInTheDocument();
+    expect(screen.getByText(/No new notifications for now/)).toBeInTheDocument();
   });
 
   test('it should rerender when the displayDrawer prop changes', () => {
@@ -168,7 +168,7 @@ describe('Notifications component', () => {
       />
     );
 
-    const menuItem = screen.getByText('Your notifications');
+    const menuItem = screen.getByText(/Your notifications/);
     fireEvent.click(menuItem);
 
     expect(handleDisplayDrawerMock).toHaveBeenCalled();

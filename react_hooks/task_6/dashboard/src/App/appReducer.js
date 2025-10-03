@@ -42,7 +42,7 @@ export const APP_ACTIONS = {
         case APP_ACTIONS.MARK_NOTIFICATION_READ:
             return {
               ...state,
-              notifications: state.notifications.filter(notification => notification.id !== action.payload),
+              notifications: state.notifications.filter(notification => notification.id !== action.payload.id),
             };
   
       case APP_ACTIONS.SET_NOTIFICATIONS:

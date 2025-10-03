@@ -1,6 +1,6 @@
 import React from "react";
-import mockAxios from "jest-mock-axios";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import axios from "axios";
 import App from "./App";
 import Header from "../Header/Header";
 import Login from "../Login/Login";
@@ -8,6 +8,40 @@ import Footer from "../Footer/Footer";
 import Notifications from "../Notifications/Notifications";
 
 jest.mock("axios");
+
+describe("App Component Tests", () => {
+  beforeEach(() => {
+    // Mock both endpoints for all tests
+    axios.get.mockImplementation((url) => {
+      if (url.includes('notifications.json')) {
+        return Promise.resolve({
+          data: {
+            notifications: [
+              { id: 1, type: 'default', value: 'New course available' },
+              { id: 2, type: 'urgent', value: 'New resume available' },
+              { id: 3, type: 'urgent', html: { __html: '' } },
+            ],
+          },
+        });
+      }
+      if (url.includes('courses.json')) {
+        return Promise.resolve({
+          data: {
+            courses: [
+              { id: 1, name: 'ES6', credit: 60 },
+              { id: 2, name: 'Webpack', credit: 20 },
+              { id: 3, name: 'React', credit: 40 },
+            ],
+          },
+        });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
 test("renders App component without crashing", () => {
   render(<App />);
@@ -51,7 +85,7 @@ test('displays the title "Course list" above the CourseList component when isLog
     ],
   };
 
-  mockAxios.get.mockResolvedValueOnce({ data: coursesMock });
+  axios.get.mockResolvedValueOnce({ data: coursesMock });
 
   render(<App />);
 
@@ -89,16 +123,25 @@ test('displays "News from the School" and "Holberton School News goes here" by d
 
 test("verifies that notification items are removed and the correct log is printed when clicked", async () => {
   jest.spyOn(console, "log").mockImplementation(() => {});
-  const mockNotifications = {
-    data: {
-      notifications: [
-        { id: 1, type: "default", value: "New course available" },
-        { id: 2, type: "urgent", value: "New course available soon" },
-      ],
-    },
-  };
-  mockAxios.get.mockResolvedValueOnce(mockNotifications);
+
+  // Override default mock with specific notifications for this test
+  axios.get.mockImplementation((url) => {
+    if (url.includes('notifications.json')) {
+      return Promise.resolve({
+        data: {
+          notifications: [
+            { id: 1, type: "default", value: "New course available" },
+            { id: 2, type: "urgent", value: "New course available soon" },
+          ],
+        },
+      });
+    }
+    return Promise.resolve({ data: {} });
+  });
+
   render(<App />);
+
+  // Wait for the exact notification text (not regex to avoid matching both)
   await screen.findByText("New course available");
 
   const notificationItem = screen.getByText("New course available");
@@ -107,6 +150,8 @@ test("verifies that notification items are removed and the correct log is printe
   expect(console.log).toHaveBeenCalledWith(
     "Notification 1 has been marked as read"
   );
+
+  // After clicking, "New course available" should be removed
   const notificationList = screen.queryByText("New course available");
   expect(notificationList).toBeNull();
 });
@@ -120,7 +165,7 @@ it("fetches and displays notifications when App is rendered", async () => {
     ],
   };
 
-  mockAxios.get.mockResolvedValueOnce({ data: mockNotifications });
+  axios.get.mockResolvedValueOnce({ data: mockNotifications });
 
   render(<App />);
 
@@ -164,3 +209,4 @@ it("fetches and displays notifications when App is rendered", async () => {
 //   // expect(getByText('React')).toBeInTheDocument();
 // });
 
+}); // Close describe block

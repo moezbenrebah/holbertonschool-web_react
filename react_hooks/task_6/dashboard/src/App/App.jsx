@@ -46,9 +46,18 @@ function App() {
       const fetchNotifications = async () => {
         try {
           const response = await axios.get('http://localhost:5173/notifications.json');
-          const fetchedNotifications = response.data.notifications.map((notif) => {
+          const notificationsData = response.data?.notifications;
+
+          if (!notificationsData || !Array.isArray(notificationsData)) {
+            return;
+          }
+
+          const fetchedNotifications = notificationsData.map((notif) => {
             if (notif.html && notif.html.__html === "") {
-              notif.html.__html = getLatestNotification();
+              return {
+                ...notif,
+                html: { __html: getLatestNotification() }
+              };
             }
             return notif;
           });
@@ -66,7 +75,11 @@ function App() {
       const fetchCourses = async () => {
         try {
           const response = await axios.get('http://localhost:5173/courses.json');
-          dispatch({ type: APP_ACTIONS.SET_COURSES, payload: response.data.courses });
+          const coursesData = response.data?.courses;
+
+          if (coursesData && Array.isArray(coursesData)) {
+            dispatch({ type: APP_ACTIONS.SET_COURSES, payload: coursesData });
+          }
         } catch (error) {
           console.error('Error fetching courses:', error);
         }

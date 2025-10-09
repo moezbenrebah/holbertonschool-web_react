@@ -71,71 +71,105 @@ test('submit button is enabled after entering valid email and password', async (
   });
 });
 
-test('testing signin form elements', () => {
-  render(<Login />);
+describe('Password Validation Tests', () => {
+  test('submit button remains disabled when password is less than 8 characters', async () => {
+    const user = userEvent.setup();
+    render(<Login />);
 
-  const inputElements = screen.getAllByLabelText(/email|password/i);
-  const emailLabelElement = screen.getByLabelText(/email/i);
-  const passwordLabelElement = screen.getByLabelText(/password/i);
-  const buttonElementText = screen.getByRole('button', { name: 'OK' })
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  expect(inputElements).toHaveLength(2)
-  expect(emailLabelElement).toBeInTheDocument()
-  expect(passwordLabelElement).toBeInTheDocument()
-  expect(buttonElementText).toBeInTheDocument()
-});
+    await user.type(emailInput, 'test@example.com');
 
-test('it should check that the email input element will be focused whenever the associated label is clicked', async () => {
-  render(<Login />)
+    const shortPasswords = [
+      '',
+      '1',
+      'ab',
+      'abc',
+      'pass',
+      'pass1',
+      'pass12',
+      'pass123',
+    ];
 
-  const emailInput = screen.getByLabelText('Email');
-  const emailLabel = screen.getByText('Email');
+    for (const shortPassword of shortPasswords) {
+      await user.clear(passwordInput);
+      if (shortPassword) {
+        await user.type(passwordInput, shortPassword);
+      }
 
-  userEvent.click(emailLabel);
-
-  await waitFor(() => {
-    expect(emailInput).toHaveFocus();
+      await waitFor(() => {
+        expect(submitButton).toBeDisabled();
+      });
+    }
   });
-})
 
-test('it should check that the password input element will be focused whenver the associated label is clicked', async () => {
-  render(<Login />)
+  test('submit button is enabled when password is exactly 8 characters or more', async () => {
+    const user = userEvent.setup();
+    render(<Login />);
 
-  const passwordLabel = screen.getByText('Password');
-  const passwordInput = screen.getByLabelText('Password');
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  userEvent.click(passwordLabel);
+    await user.type(emailInput, 'test@example.com');
 
-  await waitFor(() => {
-    expect(passwordInput).toHaveFocus();
+    const validPasswords = [
+      'pass1234',
+      'password',
+      'password123',
+      'VeryLongPassword123!',
+      '12345678',
+      'P@ssw0rd',
+    ];
+
+    for (const validPassword of validPasswords) {
+      await user.clear(passwordInput);
+      await user.type(passwordInput, validPassword);
+
+      await waitFor(() => {
+        expect(submitButton).toBeEnabled();
+      });
+    }
   });
-});
 
-test('submit button is disabled by default', () => {
-  render(<Login />);
+  test('submit button state changes from enabled to disabled when password becomes too short', async () => {
+    const user = userEvent.setup();
+    render(<Login />);
 
-  const submitButton = screen.getByRole('button', { name: 'OK' });
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  expect(submitButton).toBeDisabled();
-});
+    await user.type(emailInput, 'valid@email.com');
+    await user.type(passwordInput, 'validpassword');
 
-test('submit button is enabled after entering valid email and password', async () => {
-  const user = userEvent.setup();
-  render(<Login />);
+    await waitFor(() => {
+      expect(submitButton).toBeEnabled();
+    });
 
-  const emailInput = screen.getByLabelText('Email');
-  const passwordInput = screen.getByLabelText('Password');
-  const submitButton = screen.getByRole('button', { name: 'OK' });
+    await user.clear(passwordInput);
+    await user.type(passwordInput, 'short');
 
-  expect(submitButton).toBeDisabled();
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+    });
+  });
 
-  await user.type(emailInput, 'test@example.com');
+  test('submit button remains disabled when password is 8 chars but email is invalid', async () => {
+    const user = userEvent.setup();
+    render(<Login />);
 
-  expect(submitButton).toBeDisabled();
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  await user.type(passwordInput, 'password123');
+    await user.type(emailInput, 'invalid-email');
+    await user.type(passwordInput, 'password123');
 
-  await waitFor(() => {
-    expect(submitButton).toBeEnabled();
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+    });
   });
 });

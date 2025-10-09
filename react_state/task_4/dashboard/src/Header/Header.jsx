@@ -42,7 +42,7 @@ class Header extends Component {
         </div>
         {user.isLoggedIn && (
           <section id="logoutSection" className={css(styles.logoutSection)}>
-            Welcome {user.email} (<a onClick={logOut}>(logout)</a>)
+            Welcome {user.email} (<a href='#' onClick={logOut}>(logout)</a>)
           </section>
         )}
       </>

@@ -150,4 +150,23 @@ describe('App Component Integration Tests', () => {
 
     expect(screen.getByText('Log in to continue')).toBeInTheDocument();
   });
+
+  test('should NOT fetch courses when not logged in', async () => {
+    render(<Provider store={store}><App /></Provider>);
+
+    mockAxios.mockResponse({ data: { 
+      notifications: [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        { id: 3, type: 'urgent', value: 'Placeholder' },
+        ]
+      } 
+    });
+
+    await waitFor(() => {
+      expect(store.getState().notifications.notifications).toHaveLength(3);
+    });
+
+    expect(mockAxios.queue()).toHaveLength(0);
+  });
 });

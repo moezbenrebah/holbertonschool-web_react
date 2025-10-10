@@ -56,7 +56,6 @@ test('it should check when the isHeader prop is true, the cell background color 
 
   const trElement = screen.getByRole('row');
 
-  // #deb5b545 converts to rgb(222, 181, 181) with alpha 0.27 (69/255)
   expect(trElement).toHaveStyle({ backgroundColor: '#deb5b545' });
 });
 
@@ -85,6 +84,5 @@ test('it should check when the isHeader prop is false, the cell background color
 
   const trElement = screen.getByRole('row');
 
-  // #f5f5f5ab converts to rgb(245, 245, 245) with alpha 0.67 (171/255)
   expect(trElement).toHaveStyle({ backgroundColor: '#f5f5f5ab' });
 });

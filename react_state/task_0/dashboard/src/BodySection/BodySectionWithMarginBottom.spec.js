@@ -35,7 +35,7 @@ describe('BodySectionWithMarginBottom', () => {
       );
 
       expect(mockBodySection).toHaveBeenCalled();
-      // Check for Aphrodite-generated class name (starts with bodySectionWithMargin_)
+
       const classNames = container.firstChild.className;
       expect(classNames).toMatch(/bodySectionWithMargin_/);
       expect(mockBodySection).toHaveBeenCalledWith(
@@ -45,7 +45,7 @@ describe('BodySectionWithMarginBottom', () => {
         })
       );
       expect(container.firstChild).toHaveTextContent('Hello!');
-      // Use firstChild instead of querySelector since class name is dynamic
+
       const bodySectionWithMargin = container.firstChild;
       expect(bodySectionWithMargin).toHaveTextContent('Hello!');
       expect(bodySectionWithMargin).toHaveTextContent('This is child content');
@@ -66,10 +66,9 @@ describe('BodySectionWithMarginBottom', () => {
       </BodySectionWithMarginBottom>
     );
 
-    // Use firstChild instead of querySelector since Aphrodite generates dynamic class names
     const divWithMargin = container.firstChild;
     expect(divWithMargin).toBeInTheDocument();
-    // Check that it has an Aphrodite-generated class name starting with bodySectionWithMargin_
+
     expect(divWithMargin.className).toMatch(/bodySectionWithMargin_/);
   });
 });

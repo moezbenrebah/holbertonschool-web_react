@@ -56,7 +56,6 @@ test('it should check when the isHeader prop is true, the cell background color 
 
   const trElement = screen.getByRole('row');
 
-  // Check for Aphrodite-generated class name for headerRow style
   expect(trElement.className).toMatch(/headerRow_/);
 });
 
@@ -71,7 +70,6 @@ test('it should check when the isHeader prop is true and secondTextCell is not n
 
   const trElement = screen.getByRole('row');
 
-  // Check for Aphrodite-generated class name for headerRow style
   expect(trElement.className).toMatch(/headerRow_/);
 });
 
@@ -86,6 +84,5 @@ test('it should check when the isHeader prop is false, the cell background color
 
   const trElement = screen.getByRole('row');
 
-  // Check for Aphrodite-generated class name for row style
   expect(trElement.className).toMatch(/row_/);
 });

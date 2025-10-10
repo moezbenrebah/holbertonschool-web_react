@@ -58,19 +58,14 @@ test('submit button is enabled after entering valid email and password', async (
   const passwordInput = screen.getByLabelText('Password');
   const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  // Initially disabled
   expect(submitButton).toBeDisabled();
 
-  // Type valid email (must be valid format)
   await user.type(emailInput, 'test@example.com');
 
-  // Still disabled (password not valid yet)
   expect(submitButton).toBeDisabled();
 
-  // Type valid password (at least 8 characters)
   await user.type(passwordInput, 'password123');
 
-  // Now enabled
   await waitFor(() => {
     expect(submitButton).toBeEnabled();
   });
@@ -86,19 +81,15 @@ test('logIn method is called with email and password when form is submitted', as
   const passwordInput = screen.getByLabelText('Password');
   const submitButton = screen.getByRole('button', { name: 'OK' });
 
-  // Type valid email and password
   await user.type(emailInput, 'test@example.com');
   await user.type(passwordInput, 'password123');
 
-  // Wait for button to be enabled
   await waitFor(() => {
     expect(submitButton).toBeEnabled();
   });
 
-  // Submit the form
   await user.click(submitButton);
 
-  // Verify logIn was called with correct arguments
   expect(mockLogIn).toHaveBeenCalledTimes(1);
   expect(mockLogIn).toHaveBeenCalledWith('test@example.com', 'password123');
 });

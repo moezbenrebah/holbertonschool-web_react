@@ -8,7 +8,6 @@ test('The App component renders without crashing', () => {
 test('The App component renders Login when user is not logged in (default state)', () => {
   render(<App />);
 
-  // Desktop form has proper labels
   const emailLabelElement = screen.getByLabelText(/email/i);
   const passwordLabelElement = screen.getByLabelText(/password/i);
   const buttonElements = screen.getAllByRole('button', { name: /ok/i })

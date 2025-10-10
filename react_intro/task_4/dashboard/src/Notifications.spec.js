@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Notifications from "./Notifications.jsx";
 import { getLatestNotification } from './utils.js';
 
-// Mock the getLatestNotification function
+
 jest.mock('./utils', () => ({
   getLatestNotification: jest.fn(),
 }));

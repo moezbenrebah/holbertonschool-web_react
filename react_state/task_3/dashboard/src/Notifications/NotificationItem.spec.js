@@ -26,7 +26,6 @@ test('it should display the correct notification with a blue color, and set the 
 
   const liElement = screen.getByRole("listitem");
 
-  // Check for Aphrodite-generated class name for default style
   expect(liElement.className).toMatch(/default_/);
   expect(liElement).toHaveAttribute("data-notification-type", "default");
 });

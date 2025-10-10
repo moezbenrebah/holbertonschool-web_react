@@ -8,7 +8,6 @@ import {
 import NotificationItem from "../NotificationItem/NotificationItem";
 import { StyleSheet, css } from "aphrodite";
 import closeIcon from "../../assets/close-icon.png";
-import NotificationItem from "../NotificationItem/NotificationItem";
 
 const opacityKeyframes = {
   from: {

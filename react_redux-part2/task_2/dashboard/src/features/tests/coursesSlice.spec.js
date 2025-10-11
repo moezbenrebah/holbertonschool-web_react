@@ -130,7 +130,6 @@ describe('coursesSlice', () => {
       const action = selectCourse(999);
       const state = coursesSlice(stateWithCourses, action);
 
-      // State should remain unchanged
       expect(state.courses).toEqual([
         { id: 1, name: 'ES6', credit: 60, isSelected: false },
       ]);

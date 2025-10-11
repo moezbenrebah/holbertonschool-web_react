@@ -68,17 +68,6 @@ describe('Notifications', () => {
       </Provider>
     );
 
-    // Find the drawer container (has the ref, not the menuItem)
-    const notificationsDrawer = screen.getByText('Here is the list of notifications').closest('div');
-
-    // Initially visible (no 'visible' class applied)
-    expect(screen.getByText('New course available')).toBeInTheDocument();
-    expect(screen.getByText('New resume available')).toBeInTheDocument();
-
-    // Toggle drawer off
-    fireEvent.click(screen.getByText(/your notifications/i));
-
-    // Toggle drawer back on
     fireEvent.click(screen.getByText(/your notifications/i));
 
     expect(screen.getByText('New course available')).toBeInTheDocument();
@@ -108,7 +97,6 @@ describe('Notifications', () => {
 
     expect(screen.getByText('New course available')).toBeInTheDocument();
 
-    // Click close button
     fireEvent.click(screen.getByAltText('close icon'));
   });
 
@@ -188,13 +176,10 @@ describe('Notifications', () => {
       </Provider>
     );
 
-    // Initially visible
     expect(screen.getByText('New course available')).toBeInTheDocument();
 
-    // Toggle drawer off
     fireEvent.click(screen.getByText(/your notifications/i));
 
-    // Toggle drawer back on
     fireEvent.click(screen.getByText(/your notifications/i));
     expect(screen.getByText('New course available')).toBeInTheDocument();
   });

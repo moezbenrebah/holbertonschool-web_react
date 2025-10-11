@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     marginTop: "20px",
     maxHeight: "25vh",
     overflowY: "auto",
-    opacity: 1,
-    visibility: "visible",
+    opacity: 0,
+    visibility: "hidden",
     transition: "opacity 0.3s ease, visibility 0.3s ease",
     "@media (max-width: 900px)": {
       position: "fixed",
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     },
   },
   visible: {
-    opacity: 0,
-    visibility: "hidden",
+    opacity: 1,
+    visibility: "visible",
   },
   ul: {
     "@media (max-width: 900px)": {

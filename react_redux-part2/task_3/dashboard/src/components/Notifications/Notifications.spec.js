@@ -199,7 +199,6 @@ describe('Notifications', () => {
     jest.useRealTimers();
   });
 
-  // filtering
   describe('Notification filtering', () => {
     test('toggles urgent filter correctly', async () => {
       const promise = store.dispatch(fetchNotifications());

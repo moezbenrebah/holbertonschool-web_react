@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     width: "25%",
     float: "right",
     marginTop: "20px",
-    opacity: 1,
-    visibility: "visible",
+    opacity: 0,
+    visibility: "hidden",
     transition: "opacity 0.3s ease, visibility 0.3s ease",
     "@media (max-width: 900px)": {
       position: "fixed",
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     },
   },
   visible: {
-    opacity: 0,
-    visibility: "hidden",
+    opacity: 1,
+    visibility: "visible",
   },
   ul: {
     "@media (max-width: 900px)": {
@@ -103,7 +103,9 @@ const Notifications = memo(function Notifications () {
   const DrawerRef = useRef(null);
 
   const handleToggleDrawer = useCallback(() => {
-    DrawerRef.current.classList.toggle('visible');
+    if (DrawerRef.current) {
+      DrawerRef.current.classList.toggle(css(styles.visible));
+    }
   }, []);
 
   const handleMarkNotificationAsRead = useCallback((id) => {

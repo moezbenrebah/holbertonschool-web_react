@@ -130,14 +130,11 @@ describe("App Component Integration Tests", () => {
   test("should NOT populate courses when not logged in", async () => {
     renderWithStore();
 
-    // Mock notifications API response (App fetches on mount)
     mockAxios.mockResponse({ data: NOTIFICATIONS_DATA });
 
     await waitFor(() => {
-      // verify courses remain empty
       expect(store.getState().courses.courses).toHaveLength(0);
 
-      // verify notifications structure matches exactly
       const notifications = store.getState().notifications.notifications;
       expect(notifications).toHaveLength(10);
       expect(notifications).toEqual(
@@ -181,20 +178,17 @@ describe("App Component Integration Tests", () => {
 
     renderWithStore();
 
-    // Mock notifications API response (App fetches on mount)
     mockAxios.mockResponse({ data: NOTIFICATIONS_DATA });
-    // Mock courses API response (App fetches when logged in)
+
     mockAxios.mockResponse({ data: { courses: COURSES_DATA } });
 
     await waitFor(() => {
-      // verify courses are populated
       expect(store.getState().courses.courses).toEqual([
         { id: 1, name: "ES6", credit: 60, isSelected: false },
         { id: 2, name: "Webpack", credit: 20, isSelected: false },
         { id: 3, name: "React", credit: 40, isSelected: false },
       ]);
 
-      // verify notifications remain correctly populated
       const notifications = store.getState().notifications.notifications;
       expect(notifications).toHaveLength(10);
       expect(notifications).toEqual(
@@ -227,9 +221,7 @@ describe("App Component Integration Tests", () => {
 
     renderWithStore();
 
-    // Mock notifications API response (App fetches on mount)
     mockAxios.mockResponse({ data: NOTIFICATIONS_DATA });
-    // Mock courses API response (App fetches when logged in)
     mockAxios.mockResponse({ data: { courses: COURSES_DATA } });
 
     await waitFor(() => {
@@ -240,7 +232,6 @@ describe("App Component Integration Tests", () => {
 
     await waitFor(() => {
       expect(store.getState().courses.courses).toHaveLength(0);
-      // verify notifications persist after logout
       expect(store.getState().notifications.notifications).toHaveLength(10);
     });
   });

@@ -8,7 +8,7 @@ function Login() {
         <label htmlFor="email">Email</label>
         <input type="email" name="user_email" id="email" />
         <label htmlFor="password">Password</label>
-        <input type="text" name="user_password" id="password" />
+        <input type="password" name="user_password" id="password" />
         <button>OK</button>
       </div>
     </div>

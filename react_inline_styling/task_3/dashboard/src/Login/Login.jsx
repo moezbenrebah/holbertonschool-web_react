@@ -63,7 +63,7 @@ export default WithLogging(() => {
         <label htmlFor="email" className={css(styles.label)}>Email</label>
         <input type="email" name="user_email" id="email" className={css(styles.input)} />
         <label htmlFor="password" className={css(styles.label)}>Password</label>
-        <input type="text" name="user_password" id="password" className={css(styles.input)} />
+        <input type="password" name="user_password" id="password" className={css(styles.input)} />
         <button className={css(styles.button)}>OK</button>
       </div>
     </div>

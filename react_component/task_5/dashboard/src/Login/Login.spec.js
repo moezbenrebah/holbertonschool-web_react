@@ -8,7 +8,7 @@ test('testing signin form elements', () => {
   const inputElements = screen.getAllByLabelText(/email|password/i);
   const emailLabelElement = screen.getByLabelText(/email/i);
   const passwordLabelElement = screen.getByLabelText(/password/i);
-  const buttonElementText = screen.getByRole('button', { name: 'OK' })
+  const buttonElementText = screen.getByRole('button', { name: /OK/i })
 
   expect(inputElements).toHaveLength(2)
   expect(emailLabelElement).toBeInTheDocument()
@@ -19,8 +19,8 @@ test('testing signin form elements', () => {
 test('it should check that the email input element will be focused whenever the associated label is clicked', async () => {
   render(<Login />)
 
-  const emailInput = screen.getByLabelText('Email');
-  const emailLabel = screen.getByText('Email');
+  const emailInput = screen.getByLabelText(/Email/i);
+  const emailLabel = screen.getByText(/Email/i);
 
   userEvent.click(emailLabel);
 
@@ -32,8 +32,8 @@ test('it should check that the email input element will be focused whenever the 
 test('it should check that the password input element will be focused whenver the associated label is clicked', async () => {
   render(<Login />)
 
-  const passwordLabel = screen.getByText('Password');
-  const passwordInput = screen.getByLabelText('Password');
+  const passwordLabel = screen.getByText(/Password/i);
+  const passwordInput = screen.getByLabelText(/Password/i);
 
   userEvent.click(passwordLabel);
 

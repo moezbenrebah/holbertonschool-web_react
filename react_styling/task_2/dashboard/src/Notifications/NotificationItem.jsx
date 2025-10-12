@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 export default class NotificationItem extends PureComponent {
   render() {
     const { type, html, value, markAsRead, id } = this.props;
-    // this console.log is only for test purposes and not mentionned/required in the student code
     // console.log(`Rendering NotificationItem with id: ${id}, type: ${type}, value: ${value}`);
     
     if (type === 'default') {

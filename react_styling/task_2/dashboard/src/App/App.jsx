@@ -63,7 +63,7 @@ export default class App extends Component {
           }
           <BodySection title="News from the School">
             <p>
-              Holberton news goes here
+              Holberton School news goes here
             </p>
           </BodySection>
         </div>

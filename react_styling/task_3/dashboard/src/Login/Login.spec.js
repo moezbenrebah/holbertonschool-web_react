@@ -17,9 +17,8 @@ test('testing signin form elements', () => {
 test('it should check that the email input element will be focused whenever the associated label is clicked', async () => {
   render(<Login />)
 
-  // Use the desktop version (has proper label)
   const emailInput = screen.getByLabelText('Email');
-  const emailLabel = screen.getAllByText('Email')[0]; // Get first one (desktop label)
+  const emailLabel = screen.getAllByText('Email')[0];
 
   userEvent.click(emailLabel);
 
@@ -31,8 +30,7 @@ test('it should check that the email input element will be focused whenever the 
 test('it should check that the password input element will be focused whenver the associated label is clicked', async () => {
   render(<Login />)
 
-  // Use the desktop version (has proper label)
-  const passwordLabel = screen.getAllByText('Password')[0]; // Get first one (desktop label)
+  const passwordLabel = screen.getAllByText('Password')[0];
   const passwordInput = screen.getByLabelText('Password');
 
   userEvent.click(passwordLabel);

@@ -24,7 +24,6 @@ test('The App component renders Login when isLoggedIn is false', () => {
 
   render(<App {...props} />);
 
-  // Desktop form has proper labels
   const emailLabelElement = screen.getByLabelText(/email/i);
   const passwordLabelElement = screen.getByLabelText(/password/i);
   const buttonElements = screen.getAllByRole('button', { name: /ok/i })

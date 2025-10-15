@@ -43,12 +43,12 @@ export default class App extends Component {
   }
 
   render() {
-    const {isLoggedIn = true, logOut = () => {} } = this.props;
+    const { isLoggedIn = true, logOut = () => {} } = this.props;
 
     return (
-      <div className="relative px-3">
+      <div className="relative px-3 min-h-screen">
         <Notifications notifications={notificationsList} />
-        <div className="h-[95vh]">
+        <div className="flex-1">
           <Header />
           {
             !isLoggedIn ? (
@@ -63,11 +63,11 @@ export default class App extends Component {
           }
           <BodySection title="News from the School">
             <p>
-              holberton school news goes here
+              Holberton School news goes here
             </p>
           </BodySection>
         </div>
-        <Footer className="fixed bottom-0" />
+        <Footer />
       </div>
     );
   }

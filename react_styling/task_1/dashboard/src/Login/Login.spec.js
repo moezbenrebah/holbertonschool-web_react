@@ -5,6 +5,7 @@ import Login from './Login';
 test('testing signin form elements', () => {
   render(<Login />);
 
+  const inputElements = screen.getAllByLabelText(/email|password/i);
   const emailLabelElement = screen.getByLabelText(/email/i);
   const passwordLabelElement = screen.getByLabelText(/password/i);
   const buttonElementText = screen.getByRole('button', { name: /OK/i })

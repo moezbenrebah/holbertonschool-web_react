@@ -1,89 +1,7 @@
 import { memo } from "react";
-import { StyleSheet, css } from "aphrodite";
 import closeIcon from "../assets/close-icon.png";
 import NotificationItem from "./NotificationItem";
 
-const opacityKeyframes = {
-  from: {
-    opacity: 0.5,
-  },
-  to: {
-    opacity: 1,
-  },
-};
-
-const bounceKeyframes = {
-  "0%": {
-    transform: "translateY(0px)",
-  },
-  "50%": {
-    transform: "translateY(-5px)",
-  },
-  "100%": {
-    transform: "translateY(5px)",
-  },
-};
-
-const styles = StyleSheet.create({
-  notificationItems: {
-    position: "relative",
-    border: "3px dotted #e1003c",
-    padding: "5px",
-    fontFamily: "Roboto, sans-serif",
-    width: "25%",
-    float: "right",
-    marginTop: "20px",
-    "@media (max-width: 900px)": {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      border: "none",
-      padding: 0,
-      margin: 0,
-      fontSize: "20px",
-      backgroundColor: "white",
-      zIndex: 1000,
-    },
-  },
-  ul: {
-    "@media (max-width: 900px)": {
-      padding: 0,
-    },
-  },
-  p: {
-    margin: 0,
-    "@media (max-width: 900px)": {
-      fontSize: "20px",
-    },
-  },
-  button: {
-    position: "absolute",
-    cursor: "pointer",
-    right: "calc(0% - 480px)",
-    top: "calc(0% - 480px)",
-    background: "transparent",
-    transform: "scale(0.012)",
-    WebkitTransform: "scale(0.012)",
-    MozTransform: "scale(0.012)",
-    msTransform: "scale(0.012)",
-    OTransform: "scale(0.012)",
-  },
-  menuItem: {
-    float: "right",
-    position: "absolute",
-    right: "10px",
-    top: "-5px",
-    backgroundColor: "#fff8f8",
-    cursor: "pointer",
-    ":hover": {
-      animationName: [opacityKeyframes, bounceKeyframes],
-      animationDuration: "1s, 0.5s",
-      animationIterationCount: "3, 3",
-    },
-  },
-});
 
 const Notifications = memo(function Notifications({
   displayDrawer,
@@ -95,24 +13,27 @@ const Notifications = memo(function Notifications({
   return (
     <>
       <div
-        className={css(styles.menuItem)}
-        onClick={() => handleDisplayDrawer()}
+        className={`notification-title absolute right-3 top-1 whitespace-nowrap ${
+            notifications.length > 0 && displayDrawer === false
+              ? "animate-bounce"
+              : ""
+          }`} onClick={() => handleDisplayDrawer()}
       >
         Your notifications
       </div>
       {displayDrawer ? (
-        <div className={css(styles.notificationItems)}>
+        <div className="notification-items relative border-[3px] border-dotted border-[color:var(--main-color)] right-3 p-1.5 w-[380px] float-right mt-7 max-[912px]:w-full max-[912px]:fixed max-[912px]:top-0 max-[912px]:left-0 max-[912px]:right-0 max-[912px]:bottom-0 max-[912px]:z-50 max-[912px]:float-none max-[912px]:m-0 max-[912px]:p-3 max-[912px]:bg-white max-[912px]:overflow-y-hidden max-[912px]:h-screen max-[430px]:overflow-y-hidden max-[430px]:h-screen">
           {notifications.length > 0 ? (
-            <>
-              <p className={css(styles.p)}>Here is the list of notifications</p>
+            <div className="relative">
+              <p className="m-0 max-[912px]:text-[20px]">Here is the list of notifications</p>
               <button
                 onClick={() => handleHideDrawer()}
                 aria-label="Close"
-                className={css(styles.button)}
+                className="absolute cursor-pointer right-0 top-0 bg-transparent"
               >
-                <img src={closeIcon} alt="close icon" />
+                <img src={closeIcon} alt="close icon" className="w-3 h-3" />
               </button>
-              <ul className={css(styles.ul)}>
+              <ul className="list-[square] pl-5 max-[912px]:p-0 max-[912px]:list-none">
                 {notifications.map((notification) => (
                   <NotificationItem
                     id={notification.id}
@@ -124,9 +45,9 @@ const Notifications = memo(function Notifications({
                   />
                 ))}
               </ul>
-            </>
+            </div>
           ) : (
-            <p className={css(styles.p)}>No new notifications for now</p>
+            <p className="max-[912px]:text-[20px]">No new notifications for now</p>
           )}
         </div>
       ) : (

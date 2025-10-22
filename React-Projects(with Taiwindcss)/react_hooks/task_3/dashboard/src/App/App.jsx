@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { StyleSheet, css } from 'aphrodite';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -22,11 +21,6 @@ const coursesList = [
   { id: 3, name: 'React', credit: 40 }
 ];
 
-const styles = StyleSheet.create({
-  app: {
-    position: 'relative'
-  }
-});
 
 class App extends Component {
 
@@ -107,15 +101,17 @@ class App extends Component {
 
     return (
       <newContext.Provider value={ { user, logOut } }>
-        <div className={css(styles.app)}>
-          <Notifications 
-            notifications={notifications}
-            handleHideDrawer={this.handleHideDrawer}
-            handleDisplayDrawer={this.handleDisplayDrawer}
-            displayDrawer={displayDrawer}
-            markNotificationAsRead={this.markNotificationAsRead}
-          />
-          <>
+        <div className="relative px-3 min-h-screen flex flex-col">
+          <div className="absolute top-0 right-0 z-10">
+            <Notifications 
+              notifications={notifications}
+              handleHideDrawer={this.handleHideDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer}
+              displayDrawer={displayDrawer}
+              markNotificationAsRead={this.markNotificationAsRead}
+            />
+          </div>
+          <div className="flex-1">
             <Header />
             {
               !isLoggedIn ? (
@@ -137,7 +133,7 @@ class App extends Component {
                 Holberton School news goes here
               </p>
             </BodySection>
-          </>
+          </div>
           <Footer />
         </div>
       </newContext.Provider>

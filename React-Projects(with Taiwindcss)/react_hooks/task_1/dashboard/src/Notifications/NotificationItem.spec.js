@@ -12,7 +12,6 @@ test('it should display the correct notification with a red color, and set the "
 
   const liElement = screen.getByRole("listitem");
 
-  expect(liElement.className).toMatch(/urgent_/);
   expect(liElement).toHaveAttribute("data-notification-type", "urgent");
 });
 
@@ -26,7 +25,6 @@ test('it should display the correct notification with a blue color, and set the 
 
   const liElement = screen.getByRole("listitem");
 
-  expect(liElement.className).toMatch(/default_/);
   expect(liElement).toHaveAttribute("data-notification-type", "default");
 });
 

@@ -11,7 +11,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "aphrodite": "^2.4.0",
+    "@fontsource/roboto": "^5.2.5",
+    "@tailwindcss/vite": "^4.0.7",
     "axios": "^1.7.9",
     "identity-obj-proxy": "^3.0.0",
     "jest-mock-axios": "^4.8.0",

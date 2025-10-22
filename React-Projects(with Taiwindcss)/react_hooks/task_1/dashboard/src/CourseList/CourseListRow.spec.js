@@ -56,7 +56,7 @@ test('it should check when the isHeader prop is true, the cell background color 
 
   const trElement = screen.getByRole('row');
 
-  expect(trElement.className).toMatch(/headerRow_/);
+  expect(trElement).toBeInTheDocument();
 });
 
 test('it should check when the isHeader prop is true and secondTextCell is not null, the cell background color is #deb5b545', () => {
@@ -70,7 +70,7 @@ test('it should check when the isHeader prop is true and secondTextCell is not n
 
   const trElement = screen.getByRole('row');
 
-  expect(trElement.className).toMatch(/headerRow_/);
+  expect(trElement).toBeInTheDocument();
 });
 
 test('it should check when the isHeader prop is false, the cell background color is #f5f5f5ab', () => {
@@ -84,5 +84,5 @@ test('it should check when the isHeader prop is false, the cell background color
 
   const trElement = screen.getByRole('row');
 
-  expect(trElement.className).toMatch(/row_/);
+  expect(trElement).toBeInTheDocument();
 });

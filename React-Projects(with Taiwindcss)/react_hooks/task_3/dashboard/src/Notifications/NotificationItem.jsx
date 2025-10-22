@@ -1,28 +1,5 @@
 import { memo } from "react";
-import { StyleSheet, css } from "aphrodite";
 
-const styles = StyleSheet.create({
-  default: {
-    color: "blue",
-    "@media (max-width: 900px)": {
-      width: "100%",
-      borderBottom: "1px solid black",
-      fontSize: "20px",
-      padding: "10px 8px",
-      listStyle: "none",
-    },
-  },
-  urgent: {
-    color: "red",
-    "@media (max-width: 900px)": {
-      width: "100%",
-      borderBottom: "1px solid black",
-      fontSize: "20px",
-      padding: "10px 8px",
-      listStyle: "none",
-    },
-  },
-});
 
 const NotificationItem = memo(function NotificationItem({
   type,
@@ -31,13 +8,22 @@ const NotificationItem = memo(function NotificationItem({
   markAsRead,
   id,
 }) {
-  const itemStyle = type === "default" ? styles.default : styles.urgent;
   // this console.log is only for test purposes and not mentionned/required in the student code
   // console.log(`Rendering NotificationItem with id: ${id}, type: ${type}, value: ${value}`);
-  if (html !== undefined) {
+  if (type === "default") {
     return (
       <li
-        className={css(itemStyle)}
+        className="text-[color:var(--default-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
+        data-notification-type={type}
+        onClick={() => markAsRead(id)}
+      >
+        {value}
+      </li>
+    );
+  } else if (type === "urgent" && html !== undefined) {
+    return (
+      <li
+        className="text-[color:var(--urgent-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
         data-notification-type={type}
         dangerouslySetInnerHTML={html}
         onClick={() => markAsRead(id)}
@@ -46,7 +32,7 @@ const NotificationItem = memo(function NotificationItem({
   } else {
     return (
       <li
-        className={css(itemStyle)}
+        className="text-[color:var(--urgent-notification-item)] pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]"
         data-notification-type={type}
         onClick={() => markAsRead(id)}
       >

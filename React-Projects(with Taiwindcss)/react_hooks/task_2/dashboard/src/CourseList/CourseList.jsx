@@ -1,36 +1,14 @@
-import { StyleSheet, css } from 'aphrodite';
 import CourseListRow from './CourseListRow';
 import WithLogging from '../HOC/WithLogging';
 
-const styles = StyleSheet.create({
-  courses: {
-    margin: '130px auto',
-    width: '90%',
-    height: '33vh'
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    border: '2px solid rgb(161, 161, 161)',
-    ':nth-child(1n) th': {
-      border: '2px solid rgb(161, 161, 161)'
-    },
-    ':nth-child(1n) tr': {
-      border: '2px solid rgb(161, 161, 161)'
-    },
-    ':nth-child(1n) td': {
-      border: '2px solid rgb(161, 161, 161)'
-    }
-  }
-});
 
 function CourseList({ courses = [] }) {
   return (
-    <div className={css(styles.courses)}>
+    <div className="courses mx-auto my-32 w-4/5">
       {
         courses.length > 0 ? 
         (
-          <table id='CourseList' className={css(styles.table)}>
+          <table id='CourseList' className="w-full border-collapse border border-gray-500">
             <thead>
               <CourseListRow 
                 textFirstCell="Available courses" 
@@ -55,7 +33,7 @@ function CourseList({ courses = [] }) {
             </tbody>
           </table>
         ) : (
-          <table id='CourseList' className={css(styles.table)}>
+          <table id='CourseList' className="w-full border-collapse border border-gray-500">
             <thead>
               <CourseListRow 
                 isHeader={true} 

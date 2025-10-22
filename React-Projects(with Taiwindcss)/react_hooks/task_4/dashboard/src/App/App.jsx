@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { StyleSheet, css } from 'aphrodite';
 import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -17,11 +16,6 @@ const ENDPOINTS = {
   notifications: `${API_BASE_URL}/notifications.json`,
 };
 
-const styles = StyleSheet.create({
-  app: {
-    position: 'relative'
-  }
-});
 
 export default function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
@@ -111,15 +105,17 @@ export default function App() {
 
   return (
     <newContext.Provider value={{ user, logOut }}>
-      <div className={css(styles.app)}>
-        <Notifications
-          notifications={notifications}
-          handleHideDrawer={handleHideDrawer}
-          handleDisplayDrawer={handleDisplayDrawer}
-          displayDrawer={displayDrawer}
-          markNotificationAsRead={markNotificationAsRead}
-        />
-        <>
+      <div className="relative px-3 min-h-screen flex flex-col">
+        <div className="absolute top-0 right-0 z-10">
+          <Notifications
+            notifications={notifications}
+            handleHideDrawer={handleHideDrawer}
+            handleDisplayDrawer={handleDisplayDrawer}
+            displayDrawer={displayDrawer}
+            markNotificationAsRead={markNotificationAsRead}
+          />
+        </div>
+        <div className="flex-1">
           <Header />
           {!user.isLoggedIn ? (
             <BodySectionWithMarginBottom title='Log in to continue'>
@@ -137,7 +133,7 @@ export default function App() {
           <BodySection title="News from the School">
             <p>Holberton School news goes here</p>
           </BodySection>
-        </>
+        </div>
         <Footer />
       </div>
     </newContext.Provider>

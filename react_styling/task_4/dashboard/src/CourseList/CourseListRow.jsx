@@ -4,7 +4,7 @@ export default function CourseListRow({
   textSecondCell = null 
 }) {
   return (
-    <tr className={isHeader ? "bg-(--color-table-header)/45" : "bg-(--color-table-rows)/45"}>
+    <tr className={isHeader ? "bg-[color:theme(--color-table-header)]/66" : "bg-[color:theme(--color-table-rows)]/45"}>
       {isHeader ? (
         <>
           <th className="border border-gray-400" colSpan={textSecondCell ? 1 : 2}>{textFirstCell}</th>

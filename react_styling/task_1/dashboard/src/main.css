@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 @theme {
   --color-table-header: #deb5b5;
@@ -9,5 +9,26 @@
 @layer base {
   html {
     font-family: var(--font-roboto);
+  }
+} */
+
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-table-header: #deb5b5;
+    --color-table-rows: #CDCDCD;
+  }
+}
+
+@layer base {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td,
+  th {
+    @apply border border-gray-400 pl-2;
   }
 }
